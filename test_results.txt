@@ -1,0 +1,379 @@
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\AffiliatedCourseTest::it_belongs_to_a_university(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\AffiliatedCourseTest::it_has_enrollments(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\AffiliatedCourseTest::it_can_be_created_with_factory(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\AffiliatedCourseTest::it_has_correct_attributes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\CourseTest::it_belongs_to_an_instructor(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\CourseTest::it_has_enrollments(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\CourseTest::it_can_be_created_with_factory(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\CourseTest::it_has_correct_attributes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\EventTest::it_belongs_to_a_creator(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\EventTest::it_has_registrations(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\EventTest::it_can_be_created_with_factory(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\JobListingTest::it_belongs_to_a_poster(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\JobListingTest::it_has_applications(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\JobListingTest::it_can_be_created_with_factory(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\JobListingTest::it_has_correct_attributes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_a_profile_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_created_events_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_event_registrations_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_taught_courses_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_course_enrollments_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_posted_jobs_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_job_applications_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_affiliated_course_enrollments_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Unit\UserTest::it_has_contact_messages_relationship(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   PASS  Tests\Unit\AffiliatedCourseTest
+  ✓ it belongs to a university                                                                 31.34s  
+  ✓ it has enrollments                                                                          2.38s  
+  ✓ it can be created with factory                                                              0.50s  
+  ✓ it has correct attributes                                                                   0.16s  
+
+   PASS  Tests\Unit\CourseTest
+  ✓ it belongs to an instructor                                                                 0.43s  
+  ✓ it has enrollments                                                                          0.46s  
+  ✓ it can be created with factory                                                              0.22s  
+  ✓ it has correct attributes                                                                   0.17s  
+
+   PASS  Tests\Unit\EventTest
+  ✓ it belongs to a creator                                                                     0.31s  
+  ✓ it has registrations                                                                        0.36s  
+  ✓ it can be created with factory                                                              0.14s  
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true                                                                           0.11s  
+
+   PASS  Tests\Unit\JobListingTest
+  ✓ it belongs to a poster                                                                      0.29s  
+  ✓ it has applications                                                                         0.29s  
+  ✓ it can be created with factory                                                              0.11s  
+  ✓ it has correct attributes                                                                   0.17s  
+
+   PASS  Tests\Unit\UniversityTest
+  ✓ example                                                                                     0.02s  
+
+   PASS  Tests\Unit\UserTest
+  ✓ it has a profile relationship                                                               0.48s  
+  ✓ it has created events relationship                                                          0.13s  
+  ✓ it has event registrations relationship                                                     0.13s  
+  ✓ it has taught courses relationship                                                          0.09s  
+  ✓ it has course enrollments relationship                                                      0.23s  
+  ✓ it has posted jobs relationship                                                             0.17s  
+  ✓ it has job applications relationship                                                        0.14s  
+  ✓ it has affiliated course enrollments relationship                                           0.17s  
+  ✓ it has contact messages relationship                                                        0.34s  
+
+   FAIL  Tests\Feature\Auth\AuthenticationTest
+  ✓ login screen can be rendered                                                               27.93s  
+  ⨯ users can authenticate using the login screen                                               7.13s  
+  ✓ users can not authenticate with invalid password                                            0.39s  
+  ⨯ users can logout                                                                            0.38s  
+
+   PASS  Tests\Feature\Auth\EmailVerificationTest
+  ✓ email verification screen can be rendered                                                   1.50s  
+  ✓ email can be verified                                                                       5.13s  
+  ✓ email is not verified with invalid hash                                                     1.00s  
+
+   FAIL  Tests\Feature\Auth\PasswordConfirmationTest
+  ✓ confirm password screen can be rendered                                                     4.88s  
+  ⨯ password can be confirmed                                                                   0.28s  
+  ⨯ password is not confirmed with invalid password                                             0.26s  
+
+   FAIL  Tests\Feature\Auth\PasswordResetTest
+  ✓ reset password link screen can be rendered                                                  5.46s  
+  ⨯ reset password link can be requested                                                        0.74s  
+  ⨯ reset password screen can be rendered                                                       0.38s  
+  ⨯ password can be reset with valid token                                                      0.32s  
+
+   FAIL  Tests\Feature\Auth\PasswordUpdateTest
+  ⨯ password can be updated                                                                     0.58s  
+  ⨯ correct password must be provided to update password                                        0.26s  
+
+   FAIL  Tests\Feature\Auth\RegistrationTest
+  ✓ registration screen can be rendered                                                         9.74s  
+  ⨯ new users can register                                                                      0.25s  
+
+   FAIL  Tests\Feature\ExampleTest
+  ⨯ the application returns a successful response                                              55.89s  
+
+   FAIL  Tests\Feature\ProfileTest
+  ✓ profile page is displayed                                                                  27.75s  
+  ⨯ profile information can be updated                                                          0.24s  
+  ⨯ email verification status is unchanged when the email address is unchanged                  0.26s  
+  ⨯ user can delete their account                                                               0.23s  
+  ⨯ correct password must be provided to delete account                                         0.21s  
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\AuthenticationTest > users can authenticate using the login screen       
+  The user is not authenticated
+Failed asserting that false is true.
+
+  at tests\Feature\Auth\AuthenticationTest.php:29
+     25▕             'email' => $user->email,
+     26▕             'password' => 'password',
+     27▕         ]);
+     28▕ 
+  ➜  29▕         $this->assertAuthenticated();
+     30▕         $response->assertRedirect(route('dashboard', absolute: false));
+     31▕     }
+     32▕ 
+     33▕     public function test_users_can_not_authenticate_with_invalid_password(): void
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\AuthenticationTest > users can logout                                    
+  The user is authenticated
+Failed asserting that true is false.
+
+  at tests\Feature\Auth\AuthenticationTest.php:51
+     47▕         $user = User::factory()->create();
+     48▕ 
+     49▕         $response = $this->actingAs($user)->post('/logout');
+     50▕ 
+  ➜  51▕         $this->assertGuest();
+     52▕         $response->assertRedirect('/');
+     53▕     }
+     54▕ }
+     55▕
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordConfirmationTest > password can be confirmed                     
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests\Feature\Auth\PasswordConfirmationTest.php:30
+     26▕         $response = $this->actingAs($user)->post('/confirm-password', [
+     27▕             'password' => 'password',
+     28▕         ]);
+     29▕ 
+  ➜  30▕         $response->assertRedirect();
+     31▕         $response->assertSessionHasNoErrors();
+     32▕     }
+     33▕ 
+     34▕     public function test_password_is_not_confirmed_with_invalid_password(): void
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordConfirmationTest > password is not confirmed with invalid pas…   
+  Session is missing expected key [errors].
+Failed asserting that false is true.
+
+  at tests\Feature\Auth\PasswordConfirmationTest.php:42
+     38▕         $response = $this->actingAs($user)->post('/confirm-password', [
+     39▕             'password' => 'wrong-password',
+     40▕         ]);
+     41▕ 
+  ➜  42▕         $response->assertSessionHasErrors();
+     43▕     }
+     44▕ }
+     45▕
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetTest > reset password link can be requested                 
+  The expected [Illuminate\Auth\Notifications\ResetPassword] notification was not sent.
+Failed asserting that false is true.
+
+  at vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+     85▕         if (is_numeric($callback)) {
+     86▕             return $this->assertSentToTimes($notifiable, $notification, $callback);
+     87▕         }
+     88▕ 
+  ➜  89▕         PHPUnit::assertTrue(
+     90▕             $this->sent($notifiable, $notification, $callback)->count() > 0,
+     91▕             "The expected [{$notification}] notification was not sent."
+     92▕         );
+     93▕     }
+
+  1   vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+  2   vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php:363
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetTest > reset password screen can be rendered                
+  The expected [Illuminate\Auth\Notifications\ResetPassword] notification was not sent.
+Failed asserting that false is true.
+
+  at vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+     85▕         if (is_numeric($callback)) {
+     86▕             return $this->assertSentToTimes($notifiable, $notification, $callback);
+     87▕         }
+     88▕ 
+  ➜  89▕         PHPUnit::assertTrue(
+     90▕             $this->sent($notifiable, $notification, $callback)->count() > 0,
+     91▕             "The expected [{$notification}] notification was not sent."
+     92▕         );
+     93▕     }
+
+  1   vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+  2   vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php:363
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetTest > password can be reset with valid token               
+  The expected [Illuminate\Auth\Notifications\ResetPassword] notification was not sent.
+Failed asserting that false is true.
+
+  at vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+     85▕         if (is_numeric($callback)) {
+     86▕             return $this->assertSentToTimes($notifiable, $notification, $callback);
+     87▕         }
+     88▕ 
+  ➜  89▕         PHPUnit::assertTrue(
+     90▕             $this->sent($notifiable, $notification, $callback)->count() > 0,
+     91▕             "The expected [{$notification}] notification was not sent."
+     92▕         );
+     93▕     }
+
+  1   vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+  2   vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php:363
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordUpdateTest > password can be updated                             
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests\Feature\Auth\PasswordUpdateTest.php:29
+     25▕             ]);
+     26▕ 
+     27▕         $response
+     28▕             ->assertSessionHasNoErrors()
+  ➜  29▕             ->assertRedirect('/profile');
+     30▕ 
+     31▕         $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+     32▕     }
+     33▕
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordUpdateTest > correct password must be provided to update pass…   
+  Session is missing expected key [errors].
+Failed asserting that false is true.
+
+  at tests\Feature\Auth\PasswordUpdateTest.php:48
+     44▕                 'password_confirmation' => 'new-password',
+     45▕             ]);
+     46▕ 
+     47▕         $response
+  ➜  48▕             ->assertSessionHasErrorsIn('updatePassword', 'current_password')
+     49▕             ->assertRedirect('/profile');
+     50▕     }
+     51▕ }
+     52▕
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\RegistrationTest > new users can register                                
+  The user is not authenticated
+Failed asserting that false is true.
+
+  at tests\Feature\Auth\RegistrationTest.php:28
+     24▕             'password' => 'password',
+     25▕             'password_confirmation' => 'password',
+     26▕         ]);
+     27▕ 
+  ➜  28▕         $this->assertAuthenticated();
+     29▕         $response->assertRedirect(route('dashboard', absolute: false));
+     30▕     }
+     31▕ }
+     32▕
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ExampleTest > the application returns a successful response                   
+  Expected response status code [200] but received 500.
+Failed asserting that 500 is identical to 200.
+
+  at tests\Feature\ExampleTest.php:17
+     13▕     public function test_the_application_returns_a_successful_response(): void
+     14▕     {
+     15▕         $response = $this->get('/');
+     16▕ 
+  ➜  17▕         $response->assertStatus(200);
+     18▕     }
+     19▕ }
+     20▕
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ProfileTest > profile information can be updated                              
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests\Feature\ProfileTest.php:37
+     33▕             ]);
+     34▕ 
+     35▕         $response
+     36▕             ->assertSessionHasNoErrors()
+  ➜  37▕             ->assertRedirect('/profile');
+     38▕ 
+     39▕         $user->refresh();
+     40▕ 
+     41▕         $this->assertSame('Test User', $user->name);
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ProfileTest > email verification status is unchanged when the email addres…   
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests\Feature\ProfileTest.php:59
+     55▕             ]);
+     56▕ 
+     57▕         $response
+     58▕             ->assertSessionHasNoErrors()
+  ➜  59▕             ->assertRedirect('/profile');
+     60▕ 
+     61▕         $this->assertNotNull($user->refresh()->email_verified_at);
+     62▕     }
+     63▕
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ProfileTest > user can delete their account                                   
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 419.
+Failed asserting that false is true.
+
+  at tests\Feature\ProfileTest.php:76
+     72▕             ]);
+     73▕ 
+     74▕         $response
+     75▕             ->assertSessionHasNoErrors()
+  ➜  76▕             ->assertRedirect('/');
+     77▕ 
+     78▕         $this->assertGuest();
+     79▕         $this->assertNull($user->fresh());
+     80▕     }
+
+  ───────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ProfileTest > correct password must be provided to delete account             
+  Session is missing expected key [errors].
+Failed asserting that false is true.
+
+  at tests\Feature\ProfileTest.php:94
+     90▕                 'password' => 'wrong-password',
+     91▕             ]);
+     92▕ 
+     93▕         $response
+  ➜  94▕             ->assertSessionHasErrorsIn('userDeletion', 'password')
+     95▕             ->assertRedirect('/profile');
+     96▕ 
+     97▕         $this->assertNotNull($user->fresh());
+     98▕     }
+
+
+  Tests:    15 failed, 35 passed (105 assertions)
+  Duration: 211.16s
+

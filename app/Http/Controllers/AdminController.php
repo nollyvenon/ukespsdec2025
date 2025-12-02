@@ -108,8 +108,59 @@ class AdminController extends Controller
      */
     public function users()
     {
+        $currentUser = auth()->user();
+
+        if (!$currentUser->is_admin) {
+            abort(403, 'Unauthorized to view users.');
+        }
+
         $users = User::with('profile')->paginate(15);
         return view('admin.users.index', compact('users'));
+    }
+
+    /**
+     * Show the form for creating a new user.
+     */
+    public function createUser()
+    {
+        $currentUser = auth()->user();
+
+        if (!$currentUser->is_admin) {
+            abort(403, 'Unauthorized to create users.');
+        }
+
+        return view('admin.users.create');
+    }
+
+    /**
+     * Store a newly created user in storage.
+     */
+    public function storeUser(Request $request)
+    {
+        $currentUser = auth()->user();
+
+        // Prevent unauthorized privilege escalation
+        if (($request->role === 'admin' || $request->is_admin) && !$currentUser->is_admin) {
+            abort(403, 'Unauthorized to create admin users.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:user,instructor,admin,moderator',
+            'is_admin' => 'boolean',
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+            'role' => $validated['role'],
+            'is_admin' => $validated['is_admin'] ?? false,
+        ]);
+
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
     /**
@@ -195,6 +246,23 @@ class AdminController extends Controller
      */
     public function updateUser(Request $request, User $user)
     {
+        $currentUser = auth()->user();
+
+        // Prevent unauthorized privilege escalation
+        if ($request->role === 'admin' && $request->is_admin && !$currentUser->is_admin) {
+            abort(403, 'Unauthorized to grant admin privileges to other users.');
+        }
+
+        // Prevent users from modifying their own admin status to prevent self-lockout
+        if ($user->id === $currentUser->id && $request->filled('is_admin') && !$request->is_admin) {
+            return redirect()->back()->with('error', 'You cannot remove admin status from yourself.');
+        }
+
+        // Prevent regular users from demoting admins
+        if ($user->is_admin && !$currentUser->is_admin && $request->filled('is_admin') && !$request->is_admin) {
+            abort(403, 'Unauthorized to modify admin status of other admin users.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,

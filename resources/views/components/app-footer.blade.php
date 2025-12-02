@@ -8,7 +8,15 @@
                 </div>
             </div>
             <div class="mt-4 md:mt-0 md:order-1">
-                <div class="flex justify-center space-x-6">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="{{ route('blog.index') }}" class="text-gray-500 hover:text-gray-700">
+                        <span class="sr-only">Blog</span>
+                        Blog
+                    </a>
+                    <a href="{{ route('support.index') }}" class="text-gray-500 hover:text-gray-700">
+                        <span class="sr-only">Support</span>
+                        Support
+                    </a>
                     <a href="{{ route('faqs.index') }}" class="text-gray-500 hover:text-gray-700">
                         <span class="sr-only">FAQs</span>
                         FAQs

@@ -1,6 +1,9 @@
-@extends('layouts.app')
-
-@section('content')
+<x-app-layout>
+<x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Advertisements') }}
+    </h2>
+</x-slot>
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Advertisements</h1>
@@ -104,4 +107,5 @@
         </div>
     @endif
 </div>
-@endsection
+</div>
+</x-app-layout>

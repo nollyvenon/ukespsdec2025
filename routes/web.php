@@ -203,6 +203,10 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::put('/users/{user}', [App\Http\Controllers\AdminController::class, 'updateUser'])->name('users.update');
         Route::delete('/users/{user}', [App\Http\Controllers\AdminController::class, 'deleteUser'])->name('users.destroy');
 
+        // Admin routes for creating users
+        Route::get('/users/create', [App\Http\Controllers\AdminController::class, 'createUser'])->name('users.create');
+        Route::post('/users', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('users.store');
+
         // Admin routes for ads
         Route::get('/ads', [App\Http\Controllers\AdController::class, 'adminIndex'])->name('ads.index');
         Route::get('/ads/slider', [App\Http\Controllers\AdController::class, 'sliderManagement'])->name('ads.slider');

@@ -1,0 +1,116 @@
+name: Deploy to Server via FTP
+
+on:
+  push:
+    branches:
+      - main  # Change this to your default branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, xml, ctype, iconv, intl, json, openssl, pdo, tokenizer, xmlwriter, xmlreader, dom, zip, curl, gd, mysql
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install PHP dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    - name: Install Node.js dependencies
+      run: npm install
+
+    - name: Build assets
+      run: npm run build # Or npm run prod for production builds
+
+    - name: Prepare deployment files
+      run: |
+        # Create deployment directory
+        mkdir -p deploy
+        # Copy all necessary files
+        rsync -av --progress . deploy/ \
+        --exclude deploy/ \
+        --exclude .git/ \
+        --exclude .github/ \
+        --exclude .gitignore \
+        --exclude .env \
+        --exclude .env.example \
+        --exclude .vscode/ \
+        --exclude README.md \
+        --exclude CONTRIBUTING.md \
+        --exclude LICENSE \
+        --exclude .editorconfig \
+        --exclude .styleci.yml \
+        --exclude .php_cs.dist \
+        --exclude docker-compose.yml \
+        --exclude Dockerfile \
+        --exclude Vagrantfile \
+        --exclude phpstan.neon \
+        --exclude .phpstorm.meta.php \
+        --exclude .php_cs \
+        --exclude tests/ \
+        --exclude phpunit.xml \
+        --exclude phpunit.xml.dist \
+        --exclude .idea/ \
+        --exclude .vscode/ \
+        --exclude node_modules/ \
+        --exclude .gitattributes \
+        --exclude .github/
+
+    - name: Deploy via FTP
+      uses: sebastianpopp/ftp-deploy-action@v2.0.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: ${{ secrets.FTP_PORT || '21' }}
+        local-dir: ./deploy/
+        server-dir: ${{ secrets.FTP_SERVER_DIR || './' }}
+        protocol: ${{ secrets.FTP_PROTOCOL || 'ftp' }}
+        dry-run: ${{ secrets.DRY_RUN || 'false' }}
+        danger-drop-connection-after-transfer: ${{ secrets.DANGER_DROP_CONNECTION || 'false' }}
+
+    - name: Run post-deployment commands
+      uses: appleboy/ssh-action@v1.0.0
+      if: success()  # Only run if deployment succeeded
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT || '22' }}
+        script: |
+          cd ${{ secrets.REMOTE_PROJECT_PATH }}
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan route:clear
+          php artisan view:clear
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          php artisan event:cache
+          php artisan migrate --force
+          php artisan storage:link
+          composer dump-autoload --optimize
+          chown -R www-data:www-data storage bootstrap/cache
+          chmod -R 775 storage bootstrap/cache
+          
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" = "success" ]; then
+          echo "✅ Deployment completed successfully!"
+        else
+          echo "❌ Deployment failed!"
+        fi

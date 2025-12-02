@@ -284,6 +284,83 @@ The platform offers advanced search across all content types:
 - Support tickets you've created
 - Blog posts you've written (if applicable)
 
+## GitHub Actions Deployment Guide
+
+### Overview
+The Ukesps application includes automated deployment using GitHub Actions. This enables automatic updates to your web server when code is pushed to the repository.
+
+### Setup Requirements
+1. **GitHub Repository**: The code must be hosted in a GitHub repository
+2. **Server Access**: You need FTP access to your web server
+3. **Secrets Configuration**: Set up deployment secrets in repository settings
+
+### Configuring GitHub Secrets
+Navigate to your repository → Settings → Secrets and variables → Actions and add the following secrets:
+
+**Required for FTP Deployment:**
+- `FTP_SERVER` - Your FTP server hostname (e.g., ftp.yourdomain.com)
+- `FTP_USERNAME` - Your FTP login username
+- `FTP_PASSWORD` - Your FTP login password
+
+**Optional for Advanced Configuration:**
+- `FTP_PORT` - FTP port (default: 21)
+- `FTP_SERVER_DIR` - Target directory on server (default: root directory)
+- `FTP_PROTOCOL` - Protocol to use: `ftp` or `ftps` (default: `ftp`)
+
+**Optional for Post-Deployment SSH Tasks:**
+- `SSH_HOST` - Your server hostname for SSH access
+- `SSH_USERNAME` - SSH username
+- `SSH_PRIVATE_KEY` - SSH private key for authentication
+- `SSH_PORT` - SSH port (default: 22)
+- `REMOTE_PROJECT_PATH` - Path to your project on the remote server
+
+### Deployment Process
+When code is pushed to the main branch:
+1. Code is retrieved from the repository
+2. PHP and Node.js dependencies are installed
+3. Frontend assets are built and compiled
+4. Files are transferred to the server via FTP
+5. Post-deployment tasks are executed via SSH (if configured):
+   - Configuration caching
+   - Database migrations
+   - Storage linking
+   - File permission adjustments
+
+### Post-Deployment Tasks
+The following Laravel commands are automatically executed:
+- `php artisan config:cache` - Cache application configuration
+- `php artisan route:cache` - Cache application routes
+- `php artisan view:cache` - Cache compiled views
+- `php artisan migrate --force` - Run pending database migrations
+- `php artisan storage:link` - Create symbolic link for storage directory
+
+### Customizing Deployment
+To modify the deployment process:
+1. Edit `.github/workflows/deploy.yml` in your repository
+2. Adjust triggers (branches, tags)
+3. Modify build steps as needed
+4. Change file exclusions if necessary
+5. Customize post-deployment commands
+
+### Troubleshooting
+
+#### Common Issues:
+- **Connection Issues**: Verify FTP server details and credentials
+- **Permission Errors**: Ensure FTP user has proper write permissions
+- **Deployment Failures**: Check GitHub Action logs for detailed error messages
+- **SSH Connection**: Validate SSH host details and private key format
+
+#### Testing Deployment:
+- Use a staging branch first
+- Set up dry run mode if available
+- Monitor the GitHub Actions log for successful deployment
+
+### Security Best Practices
+- Never commit credentials to the repository
+- Use strong passwords for FTP accounts
+- Consider using FTPS for encrypted file transfers
+- Regularly rotate deployment credentials
+
 ## Tips & Best Practices
 
 ### For Event Attendees

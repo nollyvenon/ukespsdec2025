@@ -30,6 +30,10 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $request->merge([
+            'role' => $request->role ?? 'student'
+        ]);
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -41,6 +45,7 @@ class RegisteredUserController extends Controller
                     ->symbols()
                     ->uncompromised()
             ],
+            'role' => ['required', 'in:student,job_seeker,recruiter,university_manager,event_hoster'],
             'g-recaptcha-response' => ['required', 'recaptcha'],
         ]);
 
@@ -48,6 +53,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         event(new Registered($user));

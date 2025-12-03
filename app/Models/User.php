@@ -217,4 +217,36 @@ class User extends Authenticatable
     {
         return in_array($this->role, $roles);
     }
+
+    /**
+     * Get the user's active subscription.
+     */
+    public function activeSubscription()
+    {
+        return $this->hasOne(Subscription::class)->where('status', 'active')->where('end_date', '>', now());
+    }
+
+    /**
+     * Get all subscriptions for the user.
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    /**
+     * Check if user has an active subscription.
+     */
+    public function hasActiveSubscription(): bool
+    {
+        return $this->activeSubscription()->exists();
+    }
+
+    /**
+     * Check if user's subscription is active and not expired.
+     */
+    public function isSubscribed(): bool
+    {
+        return $this->hasActiveSubscription();
+    }
 }

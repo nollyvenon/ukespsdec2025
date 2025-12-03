@@ -236,6 +236,14 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         // Admin routes for payment gateways
         Route::resource('payment-gateways', App\Http\Controllers\PaymentController::class);
         Route::post('/payment-gateways/{paymentGateway}/toggle-status', [App\Http\Controllers\PaymentController::class, 'toggleStatus'])->name('payment-gateways.toggle');
+
+        // Admin routes for subscription packages
+        Route::get('/subscription-packages', [App\Http\Controllers\AdminController::class, 'subscriptionPackages'])->name('admin.subscription-packages.index');
+        Route::get('/subscription-packages/create', [App\Http\Controllers\AdminController::class, 'createSubscriptionPackage'])->name('admin.subscription-packages.create');
+        Route::post('/subscription-packages', [App\Http\Controllers\AdminController::class, 'storeSubscriptionPackage'])->name('admin.subscription-packages.store');
+        Route::get('/subscription-packages/{package}/edit', [App\Http\Controllers\AdminController::class, 'editSubscriptionPackage'])->name('admin.subscription-packages.edit');
+        Route::put('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'updateSubscriptionPackage'])->name('admin.subscription-packages.update');
+        Route::delete('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'deleteSubscriptionPackage'])->name('admin.subscription-packages.delete');
     });
 //}); // Close the auth middleware group
 
@@ -283,6 +291,14 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
             Route::get('/', [App\Http\Controllers\EventsManagerController::class, 'index'])->name('dashboard');
             Route::get('/events', [App\Http\Controllers\EventsManagerController::class, 'events'])->name('events');
             Route::get('/registrations', [App\Http\Controllers\EventsManagerController::class, 'registrations'])->name('registrations');
+        });
+
+        // Subscription routes
+        Route::prefix('subscriptions')->name('subscriptions.')->group(function () {
+            Route::get('/', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('index');
+            Route::get('/history', [App\Http\Controllers\SubscriptionController::class, 'history'])->name('history');
+            Route::post('/subscribe/{packageId}', [App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
+            Route::post('/switch-role', [App\Http\Controllers\SubscriptionController::class, 'switchRole'])->name('switch-role');
         });
     });
 

@@ -1,78 +1,98 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-gradient-to-r from-purple-900 to-indigo-900 border-b border-purple-800 shadow-lg">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 text-white animate-pulse">
+                        <i class="fas fa-graduation-cap text-yellow-300"></i>
+                        <span class="font-bold text-xl">{{ config('app.name', 'Ukesps') }}</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
                     @auth
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                        <!-- Role-specific navigation -->
+                        @if(auth()->user()->hasRole('recruiter'))
+                            <x-nav-link :href="route('recruiter.dashboard')" :active="request()->routeIs('recruiter.*')" class="text-white hover:text-purple-200">
+                                <i class="fas fa-users mr-1"></i> Recruiters
+                            </x-nav-link>
+                        @elseif(auth()->user()->hasRole('university_manager'))
+                            <x-nav-link :href="route('university.dashboard')" :active="request()->routeIs('university.*')" class="text-white hover:text-purple-200">
+                                <i class="fas fa-university mr-1"></i> University
+                            </x-nav-link>
+                        @elseif(auth()->user()->hasRole('event_hoster'))
+                            <x-nav-link :href="route('events-manager.dashboard')" :active="request()->routeIs('events-manager.*')" class="text-white hover:text-purple-200">
+                                <i class="fas fa-calendar-alt mr-1"></i> Events
+                            </x-nav-link>
+                        @else
+                            <x-nav-link :href="route('student.dashboard')" :active="request()->routeIs('student.*')" class="text-white hover:text-purple-200">
+                                <i class="fas fa-user-graduate mr-1"></i> Student
+                            </x-nav-link>
+                        @endif
+
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
                         </x-nav-link>
 
-                        <x-nav-link :href="route('portal.events')" :active="request()->routeIs('portal.events')">
-                            {{ __('Events') }}
+                        <x-nav-link :href="route('portal.events')" :active="request()->routeIs('portal.events')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-calendar mr-1"></i> Events
                         </x-nav-link>
 
-                        <x-nav-link :href="route('portal.courses')" :active="request()->routeIs('portal.courses')">
-                            {{ __('Courses') }}
+                        <x-nav-link :href="route('portal.courses')" :active="request()->routeIs('portal.courses')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-book mr-1"></i> Courses
                         </x-nav-link>
 
-                        <x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')">
-                            {{ __('University Courses') }}
+                        <x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-university mr-1"></i> Uni Courses
                         </x-nav-link>
 
-                        <x-nav-link :href="route('portal.jobs')" :active="request()->routeIs('portal.jobs')">
-                            {{ __('Jobs') }}
+                        <x-nav-link :href="route('portal.jobs')" :active="request()->routeIs('portal.jobs')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-briefcase mr-1"></i> Jobs
                         </x-nav-link>
 
-                        <x-nav-link :href="route('matching.index')" :active="request()->routeIs('matching.*')">
-                            {{ __('Matches') }}
+                        <x-nav-link :href="route('matching.index')" :active="request()->routeIs('matching.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-magic mr-1"></i> Matches
                         </x-nav-link>
 
                         @if(Auth::user()->is_admin)
-                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                                {{ __('Admin') }}
+                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" class="text-white hover:text-purple-200">
+                                <i class="fas fa-cog mr-1"></i> Admin
                             </x-nav-link>
                         @endif
                     @else
-                        <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                            {{ __('Home') }}
+                        <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-home mr-1"></i> Home
                         </x-nav-link>
 
-                        <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
-                            {{ __('Events') }}
+                        <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-calendar mr-1"></i> Events
                         </x-nav-link>
 
-                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
-                            {{ __('Courses') }}
+                        <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-book mr-1"></i> Courses
                         </x-nav-link>
 
-                        <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.*')">
-                            {{ __('Jobs') }}
+                        <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-briefcase mr-1"></i> Jobs
                         </x-nav-link>
 
-                        <x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')">
-                            {{ __('University Courses') }}
+                        <x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-university mr-1"></i> Uni Courses
                         </x-nav-link>
 
-                        <x-nav-link :href="route('faqs.index')" :active="request()->routeIs('faqs.*')">
-                            {{ __('FAQs') }}
+                        <x-nav-link :href="route('faqs.index')" :active="request()->routeIs('faqs.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-question-circle mr-1"></i> FAQs
                         </x-nav-link>
 
-                        <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
-                            {{ __('Login') }}
+                        <x-nav-link :href="route('login')" :active="request()->routeIs('login')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-sign-in-alt mr-1"></i> Login
                         </x-nav-link>
 
-                        <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
-                            {{ __('Register') }}
+                        <x-nav-link :href="route('register')" :active="request()->routeIs('register')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-user-plus mr-1"></i> Register
                         </x-nav-link>
                     @endauth
                 </div>

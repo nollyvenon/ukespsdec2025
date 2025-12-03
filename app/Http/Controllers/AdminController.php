@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\JobListing;
 use App\Models\User;
 use App\Models\SiteSetting;
+use App\Models\SubscriptionPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -292,5 +293,90 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
+    }
+
+    /**
+     * Display subscription packages management page.
+     */
+    public function subscriptionPackages()
+    {
+        $packages = SubscriptionPackage::orderBy('sort_order', 'asc')->paginate(15);
+        return view('admin.subscription-packages.index', compact('packages'));
+    }
+
+    /**
+     * Show form to create a new subscription package.
+     */
+    public function createSubscriptionPackage()
+    {
+        return view('admin.subscription-packages.create');
+    }
+
+    /**
+     * Store a new subscription package.
+     */
+    public function storeSubscriptionPackage(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'role_type' => 'required|in:student,job_seeker,recruiter,university_manager,event_hoster',
+            'type' => 'required|in:one_time,monthly,yearly',
+            'price' => 'required|numeric|min:0',
+            'features' => 'nullable|array',
+            'description' => 'nullable|string',
+            'duration_days' => 'nullable|integer|min:1',
+            'is_active' => 'boolean',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $validated['is_active'] = $request->has('is_active');
+        $validated['features'] = json_encode($request->features ?? []);
+
+        SubscriptionPackage::create($validated);
+
+        return redirect()->route('admin.subscription-packages.index')->with('success', 'Subscription package created successfully.');
+    }
+
+    /**
+     * Show form to edit a subscription package.
+     */
+    public function editSubscriptionPackage(SubscriptionPackage $package)
+    {
+        return view('admin.subscription-packages.edit', compact('package'));
+    }
+
+    /**
+     * Update a subscription package.
+     */
+    public function updateSubscriptionPackage(Request $request, SubscriptionPackage $package)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'role_type' => 'required|in:student,job_seeker,recruiter,university_manager,event_hoster',
+            'type' => 'required|in:one_time,monthly,yearly',
+            'price' => 'required|numeric|min:0',
+            'features' => 'nullable|array',
+            'description' => 'nullable|string',
+            'duration_days' => 'nullable|integer|min:1',
+            'is_active' => 'boolean',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $validated['is_active'] = $request->has('is_active');
+        $validated['features'] = json_encode($request->features ?? []);
+
+        $package->update($validated);
+
+        return redirect()->route('admin.subscription-packages.index')->with('success', 'Subscription package updated successfully.');
+    }
+
+    /**
+     * Delete a subscription package.
+     */
+    public function deleteSubscriptionPackage(SubscriptionPackage $package)
+    {
+        $package->delete();
+
+        return redirect()->route('admin.subscription-packages.index')->with('success', 'Subscription package deleted successfully.');
     }
 }

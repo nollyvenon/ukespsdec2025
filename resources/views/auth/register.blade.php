@@ -39,6 +39,19 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- User Role Selection -->
+        <div class="mt-4">
+            <x-input-label for="role" :value="__('I am registering as')" />
+            <select id="role" name="role" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <option value="student" selected>Student/Learner</option>
+                <option value="job_seeker">Job Seeker</option>
+                <option value="recruiter">Recruiter/HR</option>
+                <option value="university_manager">University Representative</option>
+                <option value="event_hoster">Event Manager</option>
+            </select>
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+        </div>
+
         <!-- reCAPTCHA -->
         <div class="mt-4">
             {!! NoCaptcha::renderJs() !!}

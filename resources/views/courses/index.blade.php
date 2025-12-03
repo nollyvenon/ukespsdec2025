@@ -118,7 +118,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse($courses as $course)
-                        <div class="border rounded-lg overflow-hidden shadow-md">
+                        <div class="border rounded-lg overflow-hidden shadow-md {{ $course->is_premium ? 'border-yellow-400 border-2' : '' }}">
                             @if($course->course_image)
                                 <img src="{{ Storage::url($course->course_image) }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
                             @else
@@ -127,15 +127,24 @@
                                 </div>
                             @endif
                             <div class="p-4">
-                                <h3 class="text-xl font-bold mb-2">{{ $course->title }}</h3>
+                                <h3 class="text-xl font-bold mb-2 {{ $course->is_premium ? 'text-yellow-600' : '' }}">
+                                    {{ $course->is_premium ? '⭐ ' : '' }}{{ $course->title }}
+                                </h3>
                                 <p class="text-gray-600 text-sm mb-1">Level: {{ ucfirst($course->level) }}</p>
                                 <p class="text-gray-600 text-sm mb-1">Duration: {{ $course->duration }} weeks</p>
                                 <p class="text-gray-700 mb-4">{{ Str::limit($course->description, 100) }}</p>
 
                                 <div class="flex justify-between items-center">
-                                    <span class="inline-block bg-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
-                                        {{ ucfirst($course->course_status) }}
-                                    </span>
+                                    <div class="flex flex-col">
+                                        @if($course->is_premium)
+                                            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full mb-1">
+                                                Premium
+                                            </span>
+                                        @endif
+                                        <span class="inline-block bg-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
+                                            {{ ucfirst($course->course_status) }}
+                                        </span>
+                                    </div>
                                     <a href="{{ route('courses.show', $course) }}" class="text-green-600 hover:underline">View Details</a>
                                 </div>
 

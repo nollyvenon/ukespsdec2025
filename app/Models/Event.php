@@ -26,6 +26,9 @@ class Event extends Model
         'event_image',
         'event_status',
         'created_by',
+        'is_premium',
+        'premium_fee',
+        'premium_expires_at',
     ];
 
     /**
@@ -37,6 +40,9 @@ class Event extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'registration_deadline' => 'datetime',
+        'is_premium' => 'boolean',
+        'premium_fee' => 'decimal:2',
+        'premium_expires_at' => 'datetime',
     ];
 
     /**
@@ -53,5 +59,29 @@ class Event extends Model
     public function registrations()
     {
         return $this->hasMany(EventRegistration::class, 'event_id');
+    }
+
+    /**
+     * Scope a query to only include premium events.
+     */
+    public function scopePremium($query)
+    {
+        return $query->where('is_premium', true);
+    }
+
+    /**
+     * Scope a query to only include non-premium events.
+     */
+    public function scopeFree($query)
+    {
+        return $query->where('is_premium', false);
+    }
+
+    /**
+     * Check if the event is currently premium and valid.
+     */
+    public function isCurrentlyPremium(): bool
+    {
+        return $this->is_premium && (!$this->premium_expires_at || $this->premium_expires_at->isFuture());
     }
 }

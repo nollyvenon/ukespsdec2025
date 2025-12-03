@@ -110,16 +110,25 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse($jobListings as $job)
-                        <div class="border rounded-lg p-4 shadow-md">
+                        <div class="border rounded-lg p-4 shadow-md {{ $job->is_premium ? 'border-yellow-400 border-2' : '' }}">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <h3 class="text-xl font-bold mb-1">{{ $job->title }}</h3>
+                                    <h3 class="text-xl font-bold mb-1 {{ $job->is_premium ? 'text-yellow-600' : '' }}">
+                                        {{ $job->is_premium ? '⭐ ' : '' }}{{ $job->title }}
+                                    </h3>
                                     <p class="text-gray-600 text-sm mb-1">{{ $job->job_type }} • {{ $job->experience_level }} Level</p>
                                     <p class="text-gray-600 text-sm mb-2">{{ $job->location }}</p>
                                 </div>
-                                <span class="inline-block bg-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
-                                    {{ ucfirst($job->job_status) }}
-                                </span>
+                                <div class="flex flex-col items-end">
+                                    @if($job->is_premium)
+                                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full mb-1">
+                                            Premium
+                                        </span>
+                                    @endif
+                                    <span class="inline-block bg-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
+                                        {{ ucfirst($job->job_status) }}
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="mb-3">

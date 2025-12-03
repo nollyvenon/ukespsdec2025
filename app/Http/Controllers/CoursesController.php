@@ -60,7 +60,10 @@ class CoursesController extends Controller
             });
         }
 
-        $courses = $query->with('instructor')->orderBy('created_at', 'desc')->paginate(10);
+        $courses = $query->with('instructor')
+            ->orderBy('is_premium', 'desc')  // Premium courses first
+            ->orderBy('created_at', 'desc')  // Then by creation date
+            ->paginate(10);
 
         // Get filter options for the view
         $levels = ['beginner', 'intermediate', 'advanced', 'all_levels'];
@@ -115,10 +118,16 @@ class CoursesController extends Controller
             'max_enrollment' => 'nullable|integer|min:1',
             'prerequisites' => 'nullable|string',
             'syllabus' => 'nullable|string',
+            'is_premium' => 'boolean',
         ]);
 
         $data = $request->all();
         $data['instructor_id'] = Auth::id();
+
+        // Set premium defaults if premium is requested but fee not specified
+        if ($request->is_premium && !$request->premium_fee) {
+            $data['is_premium'] = false; // Don't allow premium without payment
+        }
 
         if ($request->hasFile('course_image')) {
             $path = $request->file('course_image')->store('courses', 'public');
@@ -171,9 +180,10 @@ class CoursesController extends Controller
             'max_enrollment' => 'nullable|integer|min:1',
             'prerequisites' => 'nullable|string',
             'syllabus' => 'nullable|string',
+            'is_premium' => 'boolean',
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['instructor_id']); // Don't allow changing instructor_id
 
         if ($request->hasFile('course_image')) {
             $path = $request->file('course_image')->store('courses', 'public');

@@ -39,6 +39,9 @@
                 <a href="{{ route('admin.faqs.index') }}" class="block py-2 px-4 hover:bg-gray-700">
                     <i class="fas fa-question-circle mr-2"></i>FAQs
                 </a>
+                <a href="{{ route('admin.payment-gateways.index') }}" class="block py-2 px-4 hover:bg-gray-700">
+                    <i class="fas fa-credit-card mr-2"></i>Payment Gateways
+                </a>
                 <a href="{{ route('admin.settings') }}" class="block py-2 px-4 hover:bg-gray-700">
                     <i class="fas fa-cog mr-2"></i>General Settings
                 </a>

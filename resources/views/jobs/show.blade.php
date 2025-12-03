@@ -11,8 +11,16 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h1 class="text-3xl font-bold mb-2">{{ $job->title }}</h1>
+                            <h1 class="text-3xl font-bold mb-2 {{ $job->is_premium ? 'text-yellow-600' : '' }}">
+                                {{ $job->is_premium ? '⭐ ' : '' }}{{ $job->title }}
+                            </h1>
                             <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                @if($job->is_premium)
+                                    <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
+                                        Premium
+                                    </span>
+                                    <span>•</span>
+                                @endif
                                 <span>{{ ucfirst($job->job_type) }}</span>
                                 <span>•</span>
                                 <span>{{ ucfirst($job->experience_level) }} Level</span>

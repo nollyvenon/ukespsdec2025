@@ -26,6 +26,35 @@ class UserProfile extends Model
         'interests',
         'education_level',
         'resume_path',
+        // University-specific fields
+        'university_name',
+        'university_description',
+        'university_logo',
+        'university_website',
+        'university_contact_person',
+        'university_contact_email',
+        'university_contact_phone',
+        'university_address',
+        // Company/Recruiter-specific fields
+        'company_name',
+        'company_description',
+        'company_logo',
+        'company_website',
+        'company_industry',
+        'company_size',
+        'company_contact_person',
+        'company_contact_email',
+        'company_contact_phone',
+        'company_address',
+        // Organization/Event-specific fields
+        'organization_name',
+        'organization_description',
+        'organization_logo',
+        'organization_website',
+        'organization_contact_person',
+        'organization_contact_email',
+        'organization_contact_phone',
+        'organization_address',
     ];
 
     /**

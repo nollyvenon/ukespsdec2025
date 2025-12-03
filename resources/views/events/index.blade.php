@@ -123,7 +123,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse($events as $event)
-                        <div class="border rounded-lg overflow-hidden shadow-md">
+                        <div class="border rounded-lg overflow-hidden shadow-md {{ $event->is_premium ? 'border-yellow-400 border-2' : '' }}">
                             @if($event->event_image)
                                 <img src="{{ Storage::url($event->event_image) }}" alt="{{ $event->title }}" class="w-full h-48 object-cover">
                             @else
@@ -132,15 +132,24 @@
                                 </div>
                             @endif
                             <div class="p-4">
-                                <h3 class="text-xl font-bold mb-2">{{ $event->title }}</h3>
+                                <h3 class="text-xl font-bold mb-2 {{ $event->is_premium ? 'text-yellow-600' : '' }}">
+                                    {{ $event->is_premium ? '⭐ ' : '' }}{{ $event->title }}
+                                </h3>
                                 <p class="text-gray-600 text-sm mb-1">{{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y g:i A') }} - {{ \Carbon\Carbon::parse($event->end_date)->format('F j, Y g:i A') }}</p>
                                 <p class="text-gray-600 text-sm mb-2">Location: {{ $event->location }}</p>
                                 <p class="text-gray-700 mb-4">{{ Str::limit($event->description, 100) }}</p>
 
                                 <div class="flex justify-between items-center">
-                                    <span class="inline-block bg-{{ $event->event_status === 'published' ? 'green' : ($event->event_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $event->event_status === 'published' ? 'green' : ($event->event_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
-                                        {{ ucfirst($event->event_status) }}
-                                    </span>
+                                    <div class="flex flex-col">
+                                        @if($event->is_premium)
+                                            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full mb-1">
+                                                Premium
+                                            </span>
+                                        @endif
+                                        <span class="inline-block bg-{{ $event->event_status === 'published' ? 'green' : ($event->event_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $event->event_status === 'published' ? 'green' : ($event->event_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
+                                            {{ ucfirst($event->event_status) }}
+                                        </span>
+                                    </div>
                                     <a href="{{ route('events.show', $event) }}" class="text-blue-600 hover:underline">View Details</a>
                                 </div>
 

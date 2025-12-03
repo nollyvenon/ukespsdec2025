@@ -85,7 +85,16 @@
                             <label for="syllabus" class="block text-sm font-medium text-gray-700">Syllabus (Optional)</label>
                             <textarea name="syllabus" id="syllabus" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
                         </div>
-                        
+
+                        <div class="mb-4">
+                            <div class="flex items-center">
+                                <input type="hidden" name="is_premium" value="0">
+                                <input type="checkbox" name="is_premium" id="is_premium" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <label for="is_premium" class="ml-2 block text-sm text-gray-900">Make this a premium course (featured)</label>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">Premium courses appear at the top of search results and get more visibility.</p>
+                        </div>
+
                         <div class="flex items-center justify-end mt-6">
                             <a href="{{ route('courses.index') }}" class="mr-4 px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Cancel</a>
                             <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">

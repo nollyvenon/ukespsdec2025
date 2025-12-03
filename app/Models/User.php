@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -168,5 +168,53 @@ class User extends Authenticatable
     public function getIsAdminAttribute()
     {
         return $this->role === 'admin' || ($this->attributes['is_admin'] ?? false);
+    }
+
+    /**
+     * Check if user is a student.
+     */
+    public function isStudent(): bool
+    {
+        return $this->role === 'student';
+    }
+
+    /**
+     * Check if user is a job seeker.
+     */
+    public function isJobSeeker(): bool
+    {
+        return $this->role === 'job_seeker';
+    }
+
+    /**
+     * Check if user is a recruiter.
+     */
+    public function isRecruiter(): bool
+    {
+        return $this->role === 'recruiter';
+    }
+
+    /**
+     * Check if user is a university manager.
+     */
+    public function isUniversityManager(): bool
+    {
+        return $this->role === 'university_manager';
+    }
+
+    /**
+     * Check if user is an event hoster.
+     */
+    public function isEventHoster(): bool
+    {
+        return $this->role === 'event_hoster';
+    }
+
+    /**
+     * Check if the user has any of the specified roles.
+     */
+    public function hasRole(string ...$roles): bool
+    {
+        return in_array($this->role, $roles);
     }
 }

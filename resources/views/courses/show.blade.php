@@ -11,8 +11,16 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h1 class="text-3xl font-bold mb-2">{{ $course->title }}</h1>
+                            <h1 class="text-3xl font-bold mb-2 {{ $course->is_premium ? 'text-yellow-600' : '' }}">
+                                {{ $course->is_premium ? '⭐ ' : '' }}{{ $course->title }}
+                            </h1>
                             <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                @if($course->is_premium)
+                                    <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
+                                        Premium
+                                    </span>
+                                    <span>•</span>
+                                @endif
                                 <span>Level: {{ ucfirst($course->level) }}</span>
                                 <span>•</span>
                                 <span>Duration: {{ $course->duration }} weeks</span>

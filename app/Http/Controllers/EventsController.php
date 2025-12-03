@@ -55,7 +55,10 @@ class EventsController extends Controller
             $query->whereDate('end_date', '<=', $request->input('date_to'));
         }
 
-        $events = $query->orderBy('start_date', 'asc')->paginate(10);
+        $events = $query
+            ->orderBy('is_premium', 'desc')  // Premium events first
+            ->orderBy('start_date', 'asc')   // Then by start date
+            ->paginate(10);
 
         // Get filter options for the view
         $eventTypes = ['workshop', 'seminar', 'conference', 'training', 'webinar', 'course', 'meetup', 'social'];
@@ -90,10 +93,16 @@ class EventsController extends Controller
             'registration_deadline' => 'nullable|date|before_or_equal:start_date',
             'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'event_status' => 'required|in:draft,published,cancelled,completed',
+            'is_premium' => 'boolean',
         ]);
 
         $data = $request->all();
         $data['created_by'] = Auth::id();
+
+        // Set premium defaults if premium is requested but fee not specified
+        if ($request->is_premium && !$request->premium_fee) {
+            $data['is_premium'] = false; // Don't allow premium without payment
+        }
 
         if ($request->hasFile('event_image')) {
             $path = $request->file('event_image')->store('events', 'public');
@@ -144,9 +153,10 @@ class EventsController extends Controller
             'registration_deadline' => 'nullable|date|before_or_equal:start_date',
             'event_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'event_status' => 'required|in:draft,published,cancelled,completed',
+            'is_premium' => 'boolean',
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['created_by']); // Don't allow changing created_by
 
         if ($request->hasFile('event_image')) {
             $path = $request->file('event_image')->store('events', 'public');

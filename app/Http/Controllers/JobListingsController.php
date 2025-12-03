@@ -58,7 +58,10 @@ class JobListingsController extends Controller
             }
         }
 
-        $jobListings = $query->with('poster')->orderBy('created_at', 'desc')->paginate(10);
+        $jobListings = $query->with('poster')
+            ->orderBy('is_premium', 'desc')  // Premium listings first
+            ->orderBy('created_at', 'desc')  // Then by creation date
+            ->paginate(10);
 
         // Get filter options for the view
         $jobTypes = ['full_time', 'part_time', 'contract', 'internship', 'remote'];
@@ -95,10 +98,16 @@ class JobListingsController extends Controller
             'location' => 'required|string|max:255',
             'application_deadline' => 'nullable|date|after:now',
             'job_status' => 'required|in:draft,published,closed,cancelled',
+            'is_premium' => 'boolean',
         ]);
 
         $data = $request->all();
         $data['posted_by'] = Auth::id();
+
+        // Set premium defaults if premium is requested but fee not specified
+        if ($request->is_premium && !$request->premium_fee) {
+            $data['is_premium'] = false; // Don't allow premium without payment
+        }
 
         JobListing::create($data);
 
@@ -146,9 +155,11 @@ class JobListingsController extends Controller
             'location' => 'required|string|max:255',
             'application_deadline' => 'nullable|date|after:now',
             'job_status' => 'required|in:draft,published,closed,cancelled',
+            'is_premium' => 'boolean',
         ]);
 
-        $jobListing->update($request->all());
+        $data = $request->except(['posted_by']); // Don't allow changing posted_by
+        $jobListing->update($data);
 
         return redirect()->route('jobs.index')->with('success', 'Job listing updated successfully.');
     }

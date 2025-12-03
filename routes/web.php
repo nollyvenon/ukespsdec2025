@@ -232,6 +232,10 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::get('/applications', [App\Http\Controllers\JobListingsController::class, 'adminApplications'])->name('applications.index');
         Route::get('/applications/{application}', [App\Http\Controllers\JobListingsController::class, 'showApplication'])->name('applications.show');
         Route::patch('/applications/{application}/status', [App\Http\Controllers\JobListingsController::class, 'updateApplicationStatus'])->name('applications.update-status');
+
+        // Admin routes for payment gateways
+        Route::resource('payment-gateways', App\Http\Controllers\PaymentController::class);
+        Route::post('/payment-gateways/{paymentGateway}/toggle-status', [App\Http\Controllers\PaymentController::class, 'toggleStatus'])->name('payment-gateways.toggle');
     });
 //}); // Close the auth middleware group
 
@@ -241,5 +245,45 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
 //     Route::get('/search-results', [UniversityController::class, 'searchResults'])->name('search-results');
 //     Route::get('/courses/{universityId}', [UniversityController::class, 'coursesByUniversity'])->name('courses');
 // });
+
+    // Payment processing routes
+    Route::prefix('payment')->name('payment.')->group(function () {
+        Route::get('/process/{transactionId}', [App\Http\Controllers\PaymentController::class, 'process'])->name('process');
+        Route::post('/webhook/{gateway}', [App\Http\Controllers\PaymentController::class, 'webhook'])->name('webhook');
+        Route::get('/success/{transactionId}', [App\Http\Controllers\PaymentController::class, 'success'])->name('success');
+        Route::get('/cancel/{transactionId}', [App\Http\Controllers\PaymentController::class, 'cancel'])->name('cancel');
+    });
+
+    // Portal routes for different user types
+    Route::middleware(['auth'])->group(function () {
+        // Recruiter Portal
+        Route::middleware('role:recruiter,admin')->prefix('recruiter')->name('recruiter.')->group(function () {
+            Route::get('/', [App\Http\Controllers\RecruitersController::class, 'index'])->name('dashboard');
+            Route::get('/applications', [App\Http\Controllers\RecruitersController::class, 'applications'])->name('applications');
+        });
+
+        // Student/Job Seeker Portal
+        Route::middleware('role:student,job_seeker,admin')->prefix('student')->name('student.')->group(function () {
+            Route::get('/', [App\Http\Controllers\StudentsController::class, 'index'])->name('dashboard');
+            Route::get('/courses', [App\Http\Controllers\StudentsController::class, 'courses'])->name('courses');
+            Route::get('/events', [App\Http\Controllers\StudentsController::class, 'events'])->name('events');
+            Route::get('/jobs', [App\Http\Controllers\StudentsController::class, 'jobs'])->name('job-applications');
+        });
+
+        // University Portal
+        Route::middleware('role:university_manager,admin')->prefix('university')->name('university.')->group(function () {
+            Route::get('/', [App\Http\Controllers\UniversitiesController::class, 'index'])->name('dashboard');
+            Route::get('/courses', [App\Http\Controllers\UniversitiesController::class, 'courses'])->name('courses');
+            Route::get('/courses/create', [App\Http\Controllers\UniversitiesController::class, 'createCourse'])->name('courses.create');
+            Route::post('/courses', [App\Http\Controllers\UniversitiesController::class, 'storeCourse'])->name('courses.store');
+        });
+
+        // Events Manager Portal
+        Route::middleware('role:event_hoster,admin')->prefix('events-manager')->name('events-manager.')->group(function () {
+            Route::get('/', [App\Http\Controllers\EventsManagerController::class, 'index'])->name('dashboard');
+            Route::get('/events', [App\Http\Controllers\EventsManagerController::class, 'events'])->name('events');
+            Route::get('/registrations', [App\Http\Controllers\EventsManagerController::class, 'registrations'])->name('registrations');
+        });
+    });
 
 require __DIR__.'/auth.php';

@@ -67,7 +67,16 @@
                                 <option value="completed">Completed</option>
                             </select>
                         </div>
-                        
+
+                        <div class="mb-4">
+                            <div class="flex items-center">
+                                <input type="hidden" name="is_premium" value="0">
+                                <input type="checkbox" name="is_premium" id="is_premium" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <label for="is_premium" class="ml-2 block text-sm text-gray-900">Make this a premium event (featured)</label>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">Premium events appear at the top of search results and get more visibility.</p>
+                        </div>
+
                         <div class="flex items-center justify-end mt-6">
                             <a href="{{ route('events.index') }}" class="mr-4 px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Cancel</a>
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

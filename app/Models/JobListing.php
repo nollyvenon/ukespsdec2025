@@ -28,6 +28,9 @@ class JobListing extends Model
         'posted_by',
         'application_deadline',
         'job_status',
+        'is_premium',
+        'premium_fee',
+        'premium_expires_at',
     ];
 
     /**
@@ -39,6 +42,9 @@ class JobListing extends Model
         'salary_min' => 'decimal:2',
         'salary_max' => 'decimal:2',
         'application_deadline' => 'date',
+        'is_premium' => 'boolean',
+        'premium_fee' => 'decimal:2',
+        'premium_expires_at' => 'datetime',
     ];
 
     /**
@@ -55,5 +61,29 @@ class JobListing extends Model
     public function applications()
     {
         return $this->hasMany(JobApplication::class, 'job_id');
+    }
+
+    /**
+     * Scope a query to only include premium job listings.
+     */
+    public function scopePremium($query)
+    {
+        return $query->where('is_premium', true);
+    }
+
+    /**
+     * Scope a query to only include non-premium job listings.
+     */
+    public function scopeFree($query)
+    {
+        return $query->where('is_premium', false);
+    }
+
+    /**
+     * Check if the job listing is currently premium and valid.
+     */
+    public function isCurrentlyPremium(): bool
+    {
+        return $this->is_premium && (!$this->premium_expires_at || $this->premium_expires_at->isFuture());
     }
 }

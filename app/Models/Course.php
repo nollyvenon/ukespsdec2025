@@ -28,6 +28,9 @@ class Course extends Model
         'max_enrollment',
         'prerequisites',
         'syllabus',
+        'is_premium',
+        'premium_fee',
+        'premium_expires_at',
     ];
 
     /**
@@ -38,6 +41,9 @@ class Course extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'is_premium' => 'boolean',
+        'premium_fee' => 'decimal:2',
+        'premium_expires_at' => 'datetime',
     ];
 
     /**
@@ -54,5 +60,29 @@ class Course extends Model
     public function enrollments()
     {
         return $this->hasMany(CourseEnrollment::class, 'course_id');
+    }
+
+    /**
+     * Scope a query to only include premium courses.
+     */
+    public function scopePremium($query)
+    {
+        return $query->where('is_premium', true);
+    }
+
+    /**
+     * Scope a query to only include non-premium courses.
+     */
+    public function scopeFree($query)
+    {
+        return $query->where('is_premium', false);
+    }
+
+    /**
+     * Check if the course is currently premium and valid.
+     */
+    public function isCurrentlyPremium(): bool
+    {
+        return $this->is_premium && (!$this->premium_expires_at || $this->premium_expires_at->isFuture());
     }
 }

@@ -244,6 +244,14 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::get('/subscription-packages/{package}/edit', [App\Http\Controllers\AdminController::class, 'editSubscriptionPackage'])->name('admin.subscription-packages.edit');
         Route::put('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'updateSubscriptionPackage'])->name('admin.subscription-packages.update');
         Route::delete('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'deleteSubscriptionPackage'])->name('admin.subscription-packages.delete');
+
+        // Admin routes for CV management
+        Route::prefix('cvs')->name('admin.cvs.')->middleware(['auth', 'admin'])->group(function () {
+            Route::get('/', [App\Http\Controllers\CvUploadController::class, 'adminIndex'])->name('index');
+            Route::get('/{cv}', [App\Http\Controllers\CvUploadController::class, 'adminShow'])->name('show');
+            Route::delete('/{cv}', [App\Http\Controllers\CvUploadController::class, 'adminDestroy'])->name('destroy');
+            Route::post('/{cv}/toggle-public', [App\Http\Controllers\CvUploadController::class, 'adminTogglePublic'])->name('toggle-public');
+        });
     });
 //}); // Close the auth middleware group
 
@@ -300,6 +308,29 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
             Route::post('/subscribe/{packageId}', [App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
             Route::post('/switch-role', [App\Http\Controllers\SubscriptionController::class, 'switchRole'])->name('switch-role');
         });
+
+        // CV upload routes
+        Route::prefix('cv')->name('cv.')->group(function () {
+            Route::get('/', [App\Http\Controllers\CvUploadController::class, 'index'])->name('index');
+            Route::get('/create', [App\Http\Controllers\CvUploadController::class, 'create'])->name('create');
+            Route::post('/', [App\Http\Controllers\CvUploadController::class, 'store'])->name('store');
+            Route::get('/{cvUpload}', [App\Http\Controllers\CvUploadController::class, 'show'])->name('show');
+            Route::get('/{cvUpload}/edit', [App\Http\Controllers\CvUploadController::class, 'edit'])->name('edit');
+            Route::put('/{cvUpload}', [App\Http\Controllers\CvUploadController::class, 'update'])->name('update');
+            Route::delete('/{cvUpload}', [App\Http\Controllers\CvUploadController::class, 'destroy'])->name('destroy');
+        });
+
+        // CV download route
+        Route::get('/cv/{cvUpload}/download', [App\Http\Controllers\CvUploadController::class, 'download'])->name('cv.download');
+
+        // CV search routes for recruiters
+        Route::get('/cv-search', [App\Http\Controllers\CvUploadController::class, 'search'])->name('cv.search');
+
+        // Premium content payment routes
+        Route::post('/payment/premium-job-post', [App\Http\Controllers\PaymentController::class, 'processPremiumJobPost'])->name('payment.premium-job-post');
+        Route::post('/payment/premium-course', [App\Http\Controllers\PaymentController::class, 'processPremiumCoursePayment'])->name('payment.premium-course');
+        Route::post('/payment/premium-event', [App\Http\Controllers\PaymentController::class, 'processPremiumEventPayment'])->name('payment.premium-event');
+        Route::post('/payment/university-admission', [App\Http\Controllers\PaymentController::class, 'processUniversityAdmissionPayment'])->name('payment.university-admission');
     });
 
 require __DIR__.'/auth.php';

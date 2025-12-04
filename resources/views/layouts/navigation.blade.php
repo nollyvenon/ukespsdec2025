@@ -79,6 +79,18 @@
                             <i class="fas fa-briefcase mr-1"></i> Jobs
                         </x-nav-link>
 
+                        @auth
+                            @if(auth()->user()->canUploadCv())
+                                <x-nav-link :href="route('cv.index')" :active="request()->routeIs('cv.*')" class="text-white hover:text-purple-200">
+                                    <i class="fas fa-file-alt mr-1"></i> My CVs
+                                </x-nav-link>
+                            @elseif(auth()->user()->canSearchCvs())
+                                <x-nav-link :href="route('cv.search')" :active="request()->routeIs('cv.search')" class="text-white hover:text-purple-200">
+                                    <i class="fas fa-search mr-1"></i> Search CVs
+                                </x-nav-link>
+                            @endif
+                        @endauth
+
                         <x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
                             <i class="fas fa-university mr-1"></i> Uni Courses
                         </x-nav-link>
@@ -195,6 +207,18 @@
                 <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.*')">
                     {{ __('Jobs') }}
                 </x-responsive-nav-link>
+
+                @auth
+                    @if(auth()->user()->canUploadCv())
+                        <x-responsive-nav-link :href="route('cv.index')" :active="request()->routeIs('cv.*')">
+                            {{ __('My CVs') }}
+                        </x-responsive-nav-link>
+                    @elseif(auth()->user()->canSearchCvs())
+                        <x-responsive-nav-link :href="route('cv.search')" :active="request()->routeIs('cv.search')">
+                            {{ __('Search CVs') }}
+                        </x-responsive-nav-link>
+                    @endif
+                @endauth
 
                 <x-responsive-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')">
                     {{ __('University Courses') }}

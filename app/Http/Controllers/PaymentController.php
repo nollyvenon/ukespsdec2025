@@ -166,4 +166,190 @@ class PaymentController extends Controller
 
         return response()->json(['status' => 'received']);
     }
+
+    /**
+     * Process a premium job post payment.
+     */
+    public function processPremiumJobPost(Request $request)
+    {
+        $request->validate([
+            'job_id' => 'required|exists:job_listings,id',
+            'package_id' => 'required|exists:subscription_packages,id',
+        ]);
+
+        $job = JobListing::find($request->job_id);
+        $package = \App\Models\SubscriptionPackage::find($request->package_id);
+
+        // Verify the package is for job listings
+        if ($package->role_type !== 'recruiter' || $package->type !== 'job_featured') {
+            return redirect()->back()->withErrors(['package' => 'Invalid package selected for job posting']);
+        }
+
+        // Create a transaction
+        $transaction = \App\Models\Transaction::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'type' => 'premium_job_post',
+            'status' => 'pending',
+            'payment_gateway' => $package->payment_gateway ?? 'default',
+            'amount' => $package->price,
+            'currency' => 'USD',
+            'metadata' => [
+                'job_id' => $request->job_id,
+                'package_id' => $request->package_id,
+                'content_type' => 'job',
+            ],
+            'description' => 'Premium job posting for ' . $job->title,
+        ]);
+
+        // In a real implementation, redirect to payment gateway
+        // For now, simulate successful payment
+        $transaction->update(['status' => 'completed']);
+
+        // Update the job listing
+        $job->update([
+            'is_premium' => true,
+            'premium_expires_at' => now()->addDays($package->duration_days ?? 30),
+        ]);
+
+        return redirect()->route('jobs.show', $job)
+            ->with('success', 'Job listing has been upgraded to premium successfully!');
+    }
+
+    /**
+     * Process a premium course payment.
+     */
+    public function processPremiumCoursePayment(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'package_id' => 'required|exists:subscription_packages,id',
+        ]);
+
+        $course = \App\Models\Course::find($request->course_id);
+        $package = \App\Models\SubscriptionPackage::find($request->package_id);
+
+        // Verify the package is for course promotion
+        if ($package->role_type !== 'university_manager' || $package->type !== 'course_promotion') {
+            return redirect()->back()->withErrors(['package' => 'Invalid package selected for course promotion']);
+        }
+
+        // Create a transaction
+        $transaction = \App\Models\Transaction::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'type' => 'premium_course_promotion',
+            'status' => 'pending',
+            'payment_gateway' => $package->payment_gateway ?? 'default',
+            'amount' => $package->price,
+            'currency' => 'USD',
+            'metadata' => [
+                'course_id' => $request->course_id,
+                'package_id' => $request->package_id,
+                'content_type' => 'course',
+            ],
+            'description' => 'Premium course promotion for ' . $course->title,
+        ]);
+
+        // In a real implementation, redirect to payment gateway
+        // For now, simulate successful payment
+        $transaction->update(['status' => 'completed']);
+
+        // Update the course
+        $course->update([
+            'is_premium' => true,
+            'premium_expires_at' => now()->addDays($package->duration_days ?? 30),
+        ]);
+
+        return redirect()->route('courses.show', $course)
+            ->with('success', 'Course has been upgraded to premium successfully!');
+    }
+
+    /**
+     * Process a premium event payment.
+     */
+    public function processPremiumEventPayment(Request $request)
+    {
+        $request->validate([
+            'event_id' => 'required|exists:events,id',
+            'package_id' => 'required|exists:subscription_packages,id',
+        ]);
+
+        $event = \App\Models\Event::find($request->event_id);
+        $package = \App\Models\SubscriptionPackage::find($request->package_id);
+
+        // Verify the package is for event promotion
+        if ($package->role_type !== 'event_hoster' || $package->type !== 'event_promotion') {
+            return redirect()->back()->withErrors(['package' => 'Invalid package selected for event promotion']);
+        }
+
+        // Create a transaction
+        $transaction = \App\Models\Transaction::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'type' => 'premium_event_promotion',
+            'status' => 'pending',
+            'payment_gateway' => $package->payment_gateway ?? 'default',
+            'amount' => $package->price,
+            'currency' => 'USD',
+            'metadata' => [
+                'event_id' => $request->event_id,
+                'package_id' => $request->package_id,
+                'content_type' => 'event',
+            ],
+            'description' => 'Premium event promotion for ' . $event->title,
+        ]);
+
+        // In a real implementation, redirect to payment gateway
+        // For now, simulate successful payment
+        $transaction->update(['status' => 'completed']);
+
+        // Update the event
+        $event->update([
+            'is_premium' => true,
+            'premium_expires_at' => now()->addDays($package->duration_days ?? 30),
+        ]);
+
+        return redirect()->route('events.show', $event)
+            ->with('success', 'Event has been upgraded to premium successfully!');
+    }
+
+    /**
+     * Process a university admission services payment.
+     */
+    public function processUniversityAdmissionPayment(Request $request)
+    {
+        $request->validate([
+            'university_id' => 'required|exists:universities,id', // Assuming a universities table exists
+            'service_package_id' => 'required|exists:subscription_packages,id',
+        ]);
+
+        $package = \App\Models\SubscriptionPackage::find($request->service_package_id);
+
+        // Verify the package is for university admission services
+        if ($package->role_type !== 'university_manager' || !str_contains($package->name, 'Admission')) {
+            return redirect()->back()->withErrors(['package' => 'Invalid package selected for university admission services']);
+        }
+
+        // Create a transaction
+        $transaction = \App\Models\Transaction::create([
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
+            'type' => 'university_admission_service',
+            'status' => 'pending',
+            'payment_gateway' => $package->payment_gateway ?? 'default',
+            'amount' => $package->price,
+            'currency' => 'USD',
+            'metadata' => [
+                'university_id' => $request->university_id,
+                'package_id' => $request->service_package_id,
+                'content_type' => 'university_admission',
+                'service_type' => 'admission_assistance',
+            ],
+            'description' => 'University admission assistance services',
+        ]);
+
+        // In a real implementation, redirect to payment gateway
+        // For now, simulate successful payment
+        $transaction->update(['status' => 'completed']);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'University admission service payment processed successfully!');
+    }
 }

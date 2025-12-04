@@ -331,6 +331,11 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::post('/payment/premium-course', [App\Http\Controllers\PaymentController::class, 'processPremiumCoursePayment'])->name('payment.premium-course');
         Route::post('/payment/premium-event', [App\Http\Controllers\PaymentController::class, 'processPremiumEventPayment'])->name('payment.premium-event');
         Route::post('/payment/university-admission', [App\Http\Controllers\PaymentController::class, 'processUniversityAdmissionPayment'])->name('payment.university-admission');
+
+        // Job Alert routes
+        Route::resource('job-alerts', App\Http\Controllers\JobAlertController::class);
+        Route::patch('/job-alerts/{jobAlert}/toggle-status', [App\Http\Controllers\JobAlertController::class, 'toggleStatus'])->name('job-alerts.toggle-status');
+        Route::get('/job-alerts/{jobAlert}/find-matching', [App\Http\Controllers\JobAlertController::class, 'findMatchingJobs'])->name('job-alerts.find-matching-jobs');
     });
 
 require __DIR__.'/auth.php';

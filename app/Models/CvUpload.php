@@ -34,6 +34,18 @@ class CvUpload extends Model
         'view_count',
         'status',
         'last_viewed_at',
+        'overall_score',
+        'match_scores',
+        'relevance_score',
+        'parsed_data',
+        'contact_info',
+        'languages',
+        'cv_completeness_score',
+        'last_parsed_at',
+        'auto_parse_enabled',
+        'last_position_applied',
+        'application_count',
+        'last_application_at',
     ];
 
     /**
@@ -51,6 +63,17 @@ class CvUpload extends Model
         'last_viewed_at' => 'datetime',
         'file_size' => 'integer',
         'view_count' => 'integer',
+        'overall_score' => 'float',
+        'match_scores' => 'array',
+        'relevance_score' => 'integer',
+        'parsed_data' => 'array',
+        'contact_info' => 'array',
+        'languages' => 'array',
+        'cv_completeness_score' => 'float',
+        'last_parsed_at' => 'datetime',
+        'auto_parse_enabled' => 'boolean',
+        'application_count' => 'integer',
+        'last_application_at' => 'datetime',
     ];
 
     /**

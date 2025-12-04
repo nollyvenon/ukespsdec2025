@@ -59,6 +59,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the job alerts created by the user.
+     */
+    public function jobAlerts()
+    {
+        return $this->hasMany(\App\Models\JobAlert::class);
+    }
+
+    /**
      * Get the events created by the user.
      */
     public function createdEvents()

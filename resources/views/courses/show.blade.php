@@ -10,9 +10,10 @@
             <!-- Course Header Section -->
             <div class="bg-white shadow rounded-lg overflow-hidden mb-6">
                 <div class="p-6">
-                    <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-6">
-                        <div class="flex-1">
-                            <div class="flex items-center mb-2">
+                    <!-- Course Header -->
+                    <div class="md:flex md:justify-between md:items-start mb-8">
+                        <div class="md:flex-1">
+                            <div class="flex items-center mb-4">
                                 @if($course->is_premium)
                                     <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full mr-3">
                                         Premium
@@ -21,24 +22,55 @@
                                 @endif
                                 <h1 class="text-3xl font-bold text-gray-900">{{ $course->title }}</h1>
                             </div>
-                            <div class="flex flex-wrap items-center text-sm text-gray-600 mb-4">
-                                <span class="mr-4">Level: {{ ucfirst($course->level) }}</span>
-                                <span class="mr-4">Duration: {{ $course->duration }} weeks</span>
-                                <span class="mr-4">Starts: {{ \Carbon\Carbon::parse($course->start_date)->format('F j, Y') }}</span>
-                                <span class="inline-block bg-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
-                                    {{ ucfirst($course->course_status) }}
+
+                            <div class="flex flex-wrap gap-4 mb-4 text-sm text-gray-600">
+                                <span class="flex items-center">
+                                    <i class="fas fa-user-graduate mr-1"></i> Provider: {{ $course->instructor->name }}
+                                </span>
+                                <span class="flex items-center">
+                                    <i class="fas fa-chart-line mr-1"></i> Level: {{ ucfirst($course->level) }}
+                                </span>
+                                <span class="flex items-center">
+                                    <i class="fas fa-clock mr-1"></i> Duration: {{ $course->duration }} weeks
+                                </span>
+                                <span class="flex items-center">
+                                    <i class="fas fa-calendar mr-1"></i> Start: {{ \Carbon\Carbon::parse($course->start_date)->format('j M Y') }}
                                 </span>
                             </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                    <p class="text-sm text-gray-600">Level</p>
+                                    <p class="font-medium">{{ ucfirst($course->level) }}</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                    <p class="text-sm text-gray-600">Duration</p>
+                                    <p class="font-medium">{{ $course->duration }} weeks</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                    <p class="text-sm text-gray-600">Start Date</p>
+                                    <p class="font-medium">{{ \Carbon\Carbon::parse($course->start_date)->format('j M Y') }}</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                    <p class="text-sm text-gray-600">Status</p>
+                                    <p class="font-medium">
+                                        <span class="inline-block bg-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $course->course_status === 'published' || $course->course_status === 'ongoing' ? 'green' : ($course->course_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
+                                            {{ ucfirst($course->course_status) }}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+
                         @if(Auth::check() && Auth::id() === $course->instructor_id)
-                            <div class="flex space-x-2 mt-4 md:mt-0">
-                                <a href="{{ route('courses.edit', $course) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white py-2 px-4 rounded text-sm">
+                            <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
+                                <a href="{{ route('courses.edit', $course) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg text-sm inline-flex items-center">
                                     <i class="fas fa-edit mr-1"></i> Edit
                                 </a>
                                 <form action="{{ route('courses.destroy', $course) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded text-sm" onclick="return confirm('Are you sure you want to delete this course?')">
+                                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm inline-flex items-center" onclick="return confirm('Are you sure you want to delete this course?')">
                                         <i class="fas fa-trash mr-1"></i> Delete
                                     </button>
                                 </form>

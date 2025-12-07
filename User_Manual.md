@@ -49,13 +49,107 @@
 1. Go to Profile section
 2. Find the "Password" section
 3. Enter your current password
-4. Enter new password twice for confirmation
+4. Enter your new password twice
 5. Click "Update Password"
+
+## Premium Features
+
+### CV/Resume Management
+1. **Uploading CVs**:
+   - Navigate to "My CVs" section
+   - Click "Upload CV"
+   - Select your CV file (PDF, DOC, DOCX)
+   - Add location and preferences if desired
+   - Choose if you want it public or private
+   - Optionally make it a premium/featured listing
+
+2. **Managing CVs**:
+   - View all your uploaded CVs
+   - Edit CV details and settings
+   - Download your CVs
+   - Delete unwanted CVs
+
+3. **CV Search (for Recruiters)**:
+   - Go to "Search CVs" section
+   - Enter search criteria (skills, location, experience)
+   - Browse search results
+   - Download CVs of interest
+   - Contact candidates directly
+
+### Job Alerts
+1. **Creating Alerts**:
+   - Go to "Job Alerts" section
+   - Click "Create Alert"
+   - Define your search criteria
+   - Set notification frequency (daily, weekly, immediate)
+   - Save your alert
+
+2. **Managing Alerts**:
+   - View all your active alerts
+   - Edit alert criteria
+   - Enable/disable alerts
+   - Delete unnecessary alerts
+
+### Premium Content
+1. **Premium Job Listings**:
+   - When posting a job, select "Premium" option
+   - Pay the required fee
+   - Your listing will appear at the top of search results
+   - Get increased visibility and applications
+
+2. **Promoted Courses**:
+   - When creating a course, choose "Promote" option
+   - Pay promotional fee
+   - Course gets featured placement
+   - Higher enrollment rates expected
+
+3. **Featured Events**:
+   - When creating an event, select "Feature" option
+   - Pay feature fee
+   - Event gets priority placement
+   - Higher attendance expected
+
+### Payment Methods
+1. **Supported Gateways**:
+   - Paystack
+   - Flutterwave
+   - Stripe
+   - Mpesa
+   - And more based on region
+
+2. **Making Payments**:
+   - Select premium feature
+   - Choose payment gateway
+   - Complete payment securely
+   - Feature activates automatically
+
+### University Admission Assistance
+1. **Applying for University**:
+   - Find universities offering admission assistance
+   - Contact university representatives
+   - Get help with application process
+   - Receive visa and documentation guidance
+
+### Direct Recruitment Services
+1. **For Companies**:
+   - Register as a company/employer
+   - Post multiple job listings
+   - Access CV database
+   - Manage application process
+   - Get direct recruitment support
+
+### Subscription Packages
+1. **Choosing a Package**:
+   - Go to "Subscriptions" or "Plans" section
+   - Compare features of different packages
+   - Select the package that meets your needs
+   - Complete payment process
+   - Enjoy premium benefits immediately
 
 ### Email Verification
 - You'll receive a verification email after registration
 - Click the verification link in the email
-- If you don't receive the email, click "Resend Verification"
+- If you don't receive the email, click "Resend Verification" in profile settings
 
 ## Events Management
 
@@ -387,3 +481,22 @@ To modify the deployment process:
 - Add images to make content more engaging
 - Proofread before publishing
 - Follow up on comments and feedback
+
+## Reed.co.uk Style Interface
+
+### Premium Feature Indicators
+1. **Star Icons & Badges**:
+   - Look for ⭐ icons to identify premium content
+   - Premium job listings will have "Premium" badges
+   - Featured courses will have "Featured" indicators
+   - Highlighted events will show "Featured" badges
+
+2. **Professional Layouts**:
+   - Job listings use horizontal card layouts with clear information hierarchy
+   - Course listings feature prominent university logos and clear payment indicators
+   - Event listings emphasize important details like dates and location
+
+3. **Enhanced Search Results**:
+   - Premium content appears at the top of search results
+   - Job alerts allow you to save search criteria and receive notifications
+   - Advanced filtering options for better search precision

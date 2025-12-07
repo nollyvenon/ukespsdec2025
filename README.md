@@ -18,6 +18,24 @@ Ukesps is a comprehensive educational platform that provides event management, c
 - **Role-based Access**: Different permissions for users, instructors, and administrators
 - **Responsive Design**: Works on all device sizes
 
+### Premium Features
+- **CV/Resume Management**: Upload, parse, and manage CVs with automated skill extraction
+- **CV Search Engine**: Advanced search functionality for recruiters to find candidates
+- **Job Alerts**: Automated notifications when new jobs match user criteria
+- **Premium Job Listings**: Enhanced visibility options for job postings
+- **Course Promotion**: Paid options to promote courses to more students
+- **Featured Events**: Special placement for events to increase attendance
+- **University Admission Assistance**: Services to help students apply to universities
+- **Direct Recruitment Platform**: Tools for companies to manage their hiring process
+- **Payment Gateway Integration**: Support for multiple payment processors (Paystack, Flutterwave, Stripe, Mpesa, etc.)
+- **Subscription Packages**: Tiered packages for different user types with varying features
+- **Ad Campaign Management**: Advertising platform with payment options
+- **Revenue Stream Support**: Built-in support for four revenue streams:
+  - Job posting fees
+  - Course promotion services
+  - Direct recruitment services
+  - University admission assistance
+
 ## Installation
 
 ### Prerequisites
@@ -25,6 +43,24 @@ Ukesps is a comprehensive educational platform that provides event management, c
 - Composer
 - MySQL or SQLite database
 - Web server (Apache/Nginx) or PHP Built-in Server
+
+### Security & Permissions
+
+#### Required File/Folder Permissions
+```
+storage/                775 (drwxrwxr-x) for web server user
+bootstrap/cache/        775 (drwxrwxr-x) for web server user
+public/storage/         775 (drwxrwxr-x) for web server user
+.env                    600 (rw-------) for web server user only
+```
+
+#### Security Requirements
+- **HTTPS**: Use SSL/TLS for secure connections
+- **File Upload Validation**: MIME type checking and size limits
+- **Payment Security**: PCI-compliant processing through external gateways
+- **Environment Protection**: Sensitive data in .env files, access limited to web server
+- **Role-based Access**: Different permissions for each user type
+- **Content Access Control**: Public vs private content restrictions
 
 ### Quick Setup
 1. Clone the repository or download the files

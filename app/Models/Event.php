@@ -43,6 +43,7 @@ class Event extends Model
         'is_premium' => 'boolean',
         'premium_fee' => 'decimal:2',
         'premium_expires_at' => 'datetime',
+        'event_image' => 'string',
     ];
 
     /**

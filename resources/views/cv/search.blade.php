@@ -10,7 +10,7 @@
             <!-- Search Form -->
             <div class="bg-white shadow rounded-lg mb-8 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">Search CVs</h3>
-                <form method="GET" action="{{ route('cv.search') }}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <form method="GET" action="{{ route('cv.search') }}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                     <div>
                         <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Keywords</label>
                         <input type="text" name="search" id="search"
@@ -35,10 +35,23 @@
                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     </div>
 
+                    <div>
+                        <label for="experience_level" class="block text-sm font-medium text-gray-700 mb-1">Experience Level</label>
+                        <select name="experience_level" id="experience_level"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <option value="">All Levels</option>
+                            <option value="entry" {{ request('experience_level') == 'entry' ? 'selected' : '' }}>Entry Level</option>
+                            <option value="junior" {{ request('experience_level') == 'junior' ? 'selected' : '' }}>Junior</option>
+                            <option value="mid" {{ request('experience_level') == 'mid' ? 'selected' : '' }}>Mid</option>
+                            <option value="senior" {{ request('experience_level') == 'senior' ? 'selected' : '' }}>Senior</option>
+                            <option value="executive" {{ request('experience_level') == 'executive' ? 'selected' : '' }}>Executive</option>
+                        </select>
+                    </div>
+
                     <div class="flex items-end">
                         <button type="submit"
                                 class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded">
-                            Search CVs
+                            <i class="fas fa-search mr-1"></i> Search CVs
                         </button>
                     </div>
                 </form>

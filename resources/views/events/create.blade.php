@@ -71,11 +71,32 @@
                         <div class="mb-4">
                             <div class="flex items-center">
                                 <input type="hidden" name="is_premium" value="0">
-                                <input type="checkbox" name="is_premium" id="is_premium" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                <input type="checkbox" name="is_premium" id="is_premium" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onchange="togglePremiumFields()">
                                 <label for="is_premium" class="ml-2 block text-sm text-gray-900">Make this a premium event (featured)</label>
                             </div>
                             <p class="mt-1 text-sm text-gray-500">Premium events appear at the top of search results and get more visibility.</p>
                         </div>
+
+                        <!-- Premium Fee Field (Hidden by default) -->
+                        <div id="premium_fee_section" class="mb-4" style="display: none;">
+                            <label for="premium_fee" class="block text-sm font-medium text-gray-700 mb-1">Premium Fee ($)</label>
+                            <input type="number" name="premium_fee" id="premium_fee" step="0.01" min="0" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <small class="text-gray-500">This fee will be charged for premium placement</small>
+                        </div>
+
+                        <script>
+                            function togglePremiumFields() {
+                                const isPremiumChecked = document.getElementById('is_premium').checked;
+                                const premiumSection = document.getElementById('premium_fee_section');
+
+                                if (isPremiumChecked) {
+                                    premiumSection.style.display = 'block';
+                                } else {
+                                    premiumSection.style.display = 'none';
+                                    document.getElementById('premium_fee').value = '';
+                                }
+                            }
+                        </script>
 
                         <div class="flex items-center justify-end mt-6">
                             <a href="{{ route('events.index') }}" class="mr-4 px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Cancel</a>

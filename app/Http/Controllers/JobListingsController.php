@@ -186,7 +186,29 @@ class JobListingsController extends Controller
     }
 
     /**
-     * Apply for a job.
+     * Show the application form for a job.
+     */
+    public function showApplicationForm(JobListing $jobListing)
+    {
+        // Check if user has already applied
+        $existingApplication = JobApplication::where('job_id', $jobListing->id)
+            ->where('applicant_id', Auth::id())
+            ->first();
+
+        if ($existingApplication) {
+            return redirect()->back()->with('error', 'You have already applied for this position.');
+        }
+
+        // Check if application deadline has passed
+        if ($jobListing->application_deadline && $jobListing->application_deadline < now()) {
+            return redirect()->back()->with('error', 'Application deadline has passed for this job.');
+        }
+
+        return view('jobs.apply', compact('jobListing'));
+    }
+
+    /**
+     * Apply for a job (process the submission).
      */
     public function apply(JobListing $jobListing, Request $request)
     {

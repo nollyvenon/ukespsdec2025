@@ -268,39 +268,6 @@ class User extends Authenticatable
         return $this->hasRole('recruiter', 'employer', 'admin');
     }
 
-    /**
-     * Check if the user can upload a CV.
-     */
-    public function canUploadCv(): bool
-    {
-        return $this->hasRole('student', 'job_seeker', 'user');
-    }
-
-    /**
-     * Check if the user can search CVs.
-     */
-    public function canSearchCvs(): bool
-    {
-        return $this->hasRole('recruiter', 'employer', 'admin');
-    }
-
-    /**
-     * Check if the user can download a CV.
-     */
-    public function canDownloadCv(CvUpload $cv): bool
-    {
-        // User can download their own CV
-        if ($this->id === $cv->user_id) {
-            return true;
-        }
-
-        // Recruiter can download if CV is public
-        if ($this->hasRole('recruiter', 'employer') && $cv->is_public) {
-            return true;
-        }
-
-        return $this->hasRole('admin');
-    }
 
     /**
      * Get the user's active subscription.

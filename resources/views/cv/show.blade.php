@@ -52,18 +52,29 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <!-- Main Content -->
                         <div class="lg:col-span-2">
+                            <!-- CV Document Card -->
                             <div class="bg-gray-50 rounded-lg p-6 mb-8">
                                 <div class="flex justify-between items-center mb-4">
-                                    <h2 class="text-xl font-bold text-gray-900">CV Document</h2>
-                                    <div class="flex items-center">
-                                        @if($cvUpload->file_type === 'pdf')
-                                            <i class="fas fa-file-pdf text-red-500 text-2xl mr-2"></i>
-                                        @elseif(in_array($cvUpload->file_type, ['doc', 'docx']))
-                                            <i class="fas fa-file-word text-blue-500 text-2xl mr-2"></i>
-                                        @else
-                                            <i class="fas fa-file text-gray-500 text-2xl mr-2"></i>
+                                    <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                                        <i class="fas fa-file-alt text-gray-600 mr-2"></i>
+                                        CV Document
+                                    </h2>
+                                    <div class="flex items-center space-x-3">
+                                        @if($cvUpload->is_featured)
+                                            <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">
+                                                Featured
+                                            </span>
                                         @endif
-                                        <span class="text-sm text-gray-600">{{ strtoupper($cvUpload->file_type) }} • {{ number_format($cvUpload->file_size / 1024, 2) }} KB</span>
+                                        <span class="text-sm text-gray-600 flex items-center">
+                                            @if($cvUpload->file_type === 'pdf')
+                                                <i class="fas fa-file-pdf text-red-500 mr-1"></i>
+                                            @elseif(in_array($cvUpload->file_type, ['doc', 'docx']))
+                                                <i class="fas fa-file-word text-blue-500 mr-1"></i>
+                                            @else
+                                                <i class="fas fa-file text-gray-500 mr-1"></i>
+                                            @endif
+                                            {{ strtoupper($cvUpload->file_type) }} • {{ number_format($cvUpload->file_size / 1024, 2) }} KB
+                                        </span>
                                     </div>
                                 </div>
                                 <a href="{{ route('cv.download', $cvUpload) }}" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-center">

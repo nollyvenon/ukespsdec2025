@@ -119,14 +119,25 @@ class CoursesController extends Controller
             'prerequisites' => 'nullable|string',
             'syllabus' => 'nullable|string',
             'is_premium' => 'boolean',
+            'premium_fee' => 'nullable|numeric|min:0',
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['instructor_id']);
         $data['instructor_id'] = Auth::id();
 
-        // Set premium defaults if premium is requested but fee not specified
-        if ($request->is_premium && !$request->premium_fee) {
-            $data['is_premium'] = false; // Don't allow premium without payment
+        // Handle premium course settings
+        if ($request->is_premium) {
+            if ($request->premium_fee) {
+                $data['is_premium'] = true;
+                $data['premium_fee'] = $request->premium_fee;
+                $data['premium_expires_at'] = now()->addDays(30); // Default to 30 days
+            } else {
+                $data['is_premium'] = false; // Don't allow premium without specifying fee
+            }
+        } else {
+            $data['is_premium'] = false;
+            $data['premium_fee'] = null;
+            $data['premium_expires_at'] = null;
         }
 
         if ($request->hasFile('course_image')) {

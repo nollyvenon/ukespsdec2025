@@ -101,8 +101,8 @@
 
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">Job Opportunities</h1>
-                        <p class="text-gray-600">{{ $jobListings->total() }} jobs available</p>
+                        <h1 class="text-2xl font-bold text-gray-900">Find Your Perfect Job</h1>
+                        <p class="text-gray-600">{{ $jobListings->total() }} job{{ $jobListings->total() != 1 ? 's' : '' }} available</p>
                     </div>
                     @auth
                         <a href="{{ route('jobs.create') }}" class="mt-4 sm:mt-0 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg inline-flex items-center">
@@ -112,17 +112,17 @@
                 </div>
 
                 @if($jobListings->count() > 0)
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
                         @foreach($jobListings as $job)
-                            <div class="border border-gray-200 rounded-lg p-6 hover:border-indigo-300 transition duration-300 {{ $job->is_premium ? 'ring-2 ring-yellow-400 ring-opacity-50' : '' }}">
-                                <div class="flex">
-                                    <div class="flex-shrink-0 mr-6">
+                            <div class="border border-gray-200 rounded-lg p-6 hover:border-indigo-300 transition duration-300 {{ $job->is_premium ? 'border-2 border-yellow-400' : '' }}">
+                                <div class="flex flex-col md:flex-row">
+                                    <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
                                         <div class="bg-gray-200 w-16 h-16 flex items-center justify-center rounded">
                                             <i class="fas fa-building text-gray-500 text-xl"></i>
                                         </div>
                                     </div>
                                     <div class="flex-1">
-                                        <div class="flex justify-between">
+                                        <div class="flex justify-between flex-wrap gap-4">
                                             <div>
                                                 <h3 class="text-xl font-bold text-gray-900 {{ $job->is_premium ? 'text-yellow-600' : '' }}">
                                                     {{ $job->is_premium ? '⭐ ' : '' }}
@@ -130,57 +130,71 @@
                                                         {{ $job->title }}
                                                     </a>
                                                 </h3>
-                                                <p class="text-gray-600 mt-1">By {{ $job->poster->name }}</p>
+                                                <div class="flex flex-wrap items-center gap-4 mt-1 text-sm text-gray-600">
+                                                    <span>By {{ $job->poster->name }}</span>
+                                                    <span>•</span>
+                                                    <span>{{ $job->location }}</span>
+                                                    <span>•</span>
+                                                    <span>{{ \Carbon\Carbon::parse($job->created_at)->diffForHumans() }}</span>
+                                                </div>
                                             </div>
-                                            @if($job->is_premium)
-                                                <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium">
-                                                    Premium
+                                            <div class="flex flex-col items-end">
+                                                @if($job->is_premium)
+                                                    <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-medium mb-1">
+                                                        Premium
+                                                    </span>
+                                                @endif
+                                                <span class="inline-block bg-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
+                                                    {{ ucfirst($job->job_status) }}
                                                 </span>
-                                            @endif
+                                            </div>
                                         </div>
 
-                                        <div class="mt-3 flex flex-wrap gap-2 text-sm">
+                                        <div class="mt-4 flex flex-wrap gap-2 text-sm">
                                             <span class="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded">
                                                 <i class="fas fa-briefcase mr-1"></i> {{ ucfirst(str_replace('_', ' ', $job->job_type)) }}
                                             </span>
                                             <span class="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded">
-                                                <i class="fas fa-chart-line mr-1"></i> {{ ucfirst($job->experience_level) }}
+                                                <i class="fas fa-chart-line mr-1"></i> {{ ucfirst($job->experience_level) }} Level
                                             </span>
                                             <span class="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded">
                                                 <i class="fas fa-map-marker-alt mr-1"></i> {{ $job->location }}
                                             </span>
+                                            @if($job->salary_min && $job->salary_max)
+                                                <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded">
+                                                    <i class="fas fa-dollar-sign mr-1"></i> ${{ number_format($job->salary_min) }} - ${{ number_format($job->salary_max) }}
+                                                </span>
+                                            @elseif($job->salary_min)
+                                                <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded">
+                                                    <i class="fas fa-dollar-sign mr-1"></i> ${{ number_format($job->salary_min) }}+
+                                                </span>
+                                            @else
+                                                <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded">
+                                                    <i class="fas fa-dollar-sign mr-1"></i> Negotiable
+                                                </span>
+                                            @endif
                                         </div>
 
-                                        <p class="text-gray-700 mt-3">{{ Str::limit($job->description, 150) }}</p>
+                                        <p class="text-gray-700 mt-4">{{ Str::limit($job->description, 200) }}</p>
 
-                                        <div class="mt-4 flex justify-between items-center">
+                                        <div class="mt-6 flex flex-wrap justify-between items-center gap-4">
                                             <div>
-                                                @if($job->salary_min && $job->salary_max)
-                                                    <p class="text-sm font-medium text-green-600">${{ number_format($job->salary_min) }} - ${{ number_format($job->salary_max) }}</p>
-                                                @elseif($job->salary_min)
-                                                    <p class="text-sm font-medium text-green-600">Min: ${{ number_format($job->salary_min) }}+</p>
-                                                @else
-                                                    <p class="text-sm font-medium text-green-600">Salary: Negotiable</p>
-                                                @endif
                                                 @if($job->application_deadline)
-                                                    <p class="text-sm text-gray-600">Deadline: {{ \Carbon\Carbon::parse($job->application_deadline)->format('M j, Y') }}</p>
+                                                    <p class="text-sm text-gray-600">
+                                                        <i class="fas fa-clock mr-1"></i> Closes {{ \Carbon\Carbon::parse($job->application_deadline)->format('j M Y') }}
+                                                    </p>
                                                 @endif
                                             </div>
-
-                                            <span class="inline-block bg-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $job->job_status === 'published' ? 'green' : ($job->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
-                                                {{ ucfirst($job->job_status) }}
-                                            </span>
-                                        </div>
-
-                                        <div class="mt-4 flex justify-between">
-                                            @if($job->job_status === 'published' && (!$job->application_deadline || $job->application_deadline > now()))
-                                                <a href="{{ route('jobs.apply', $job) }}" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg text-sm font-medium">
-                                                    Apply Now
+                                            <div class="flex flex-wrap gap-3">
+                                                @if($job->job_status === 'published' && (!$job->application_deadline || $job->application_deadline > now()))
+                                                    <a href="{{ route('jobs.apply.form', $job) }}" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg text-sm font-medium inline-flex items-center">
+                                                        <i class="fas fa-paper-plane mr-1"></i> Apply Now
+                                                    </a>
+                                                @endif
+                                                <a href="{{ route('jobs.show', $job) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg text-sm font-medium inline-flex items-center">
+                                                    <i class="fas fa-info-circle mr-1"></i> View Details
                                                 </a>
-                                            @endif
-                                            <a href="{{ route('jobs.show', $job) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg text-sm font-medium">
-                                                View Details
-                                            </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

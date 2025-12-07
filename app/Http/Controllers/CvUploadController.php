@@ -153,9 +153,10 @@ class CvUploadController extends Controller
     {
         $this->authorize('searchCvs', CvUpload::class);
 
-        $query = CvUpload::public();
+        $query = CvUpload::where('is_public', true)
+                         ->where('status', 'active');
 
-        // Apply filters
+        // Apply keyword search
         if ($request->filled('search')) {
             $searchTerm = $request->input('search');
             $query->where(function($q) use ($searchTerm) {
@@ -167,10 +168,12 @@ class CvUploadController extends Controller
             });
         }
 
+        // Apply location filter
         if ($request->filled('location')) {
             $query->where('location', 'LIKE', '%' . $request->input('location') . '%');
         }
 
+        // Apply skills filter
         if ($request->filled('skills')) {
             $skills = explode(',', $request->input('skills'));
             foreach ($skills as $skill) {
@@ -184,9 +187,19 @@ class CvUploadController extends Controller
             }
         }
 
+        // Apply experience level filter
+        if ($request->filled('experience_level')) {
+            $query->where('experience_level', $request->input('experience_level'));
+        }
+
+        // Apply education level filter
+        if ($request->filled('education_level')) {
+            $query->where('education_level', $request->input('education_level'));
+        }
+
         $cvs = $query->with('user')
-                     ->orderBy('is_featured', 'desc')
-                     ->orderBy('updated_at', 'desc')
+                     ->orderBy('is_featured', 'desc')  // Featured CVs first
+                     ->orderBy('updated_at', 'desc')   // Then by recent updates
                      ->paginate(15);
 
         return view('cv.search', compact('cvs'));

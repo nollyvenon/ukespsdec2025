@@ -75,6 +75,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/jobs/{jobListing}/edit', [JobListingsController::class, 'edit'])->name('jobs.edit');
     Route::put('/jobs/{jobListing}', [JobListingsController::class, 'update'])->name('jobs.update');
     Route::delete('/jobs/{jobListing}', [JobListingsController::class, 'destroy'])->name('jobs.destroy');
+    Route::get('/jobs/{jobListing}/apply', [JobListingsController::class, 'showApplicationForm'])->name('jobs.apply.form');
     Route::post('/jobs/{jobListing}/apply', [JobListingsController::class, 'apply'])->name('jobs.apply');
 });
 // Public show route goes last to avoid conflict
@@ -208,16 +209,16 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::post('/users', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('users.store');
 
         // Admin routes for ads
-        Route::get('/ads', [App\Http\Controllers\AdController::class, 'adminIndex'])->name('ads.index');
-        Route::get('/ads/slider', [App\Http\Controllers\AdController::class, 'sliderManagement'])->name('ads.slider');
-        Route::get('/ads/create', [App\Http\Controllers\AdController::class, 'create'])->name('ads.create');
-        Route::post('/ads', [App\Http\Controllers\AdController::class, 'store'])->name('ads.store');
-        Route::get('/ads/{ad}', [App\Http\Controllers\AdController::class, 'show'])->name('ads.show');
-        Route::get('/ads/{ad}/edit', [App\Http\Controllers\AdController::class, 'edit'])->name('ads.edit');
-        Route::put('/ads/{ad}', [App\Http\Controllers\AdController::class, 'update'])->name('ads.update');
-        Route::delete('/ads/{ad}', [App\Http\Controllers\AdController::class, 'destroy'])->name('ads.destroy');
-        Route::post('/ads/{ad}/toggle-status', [App\Http\Controllers\AdController::class, 'toggleStatus'])->name('ads.toggle-status');
-        Route::get('/ads/api/positions/{position}/{page?}', [App\Http\Controllers\AdController::class, 'getAdsForPosition'])->name('ads.get-ads-for-position');
+        Route::get('/ads', [App\Http\Controllers\AdController::class, 'adminIndex'])->name('admin.ads.index');
+        Route::get('/ads/slider', [App\Http\Controllers\AdController::class, 'sliderManagement'])->name('admin.ads.slider');
+        Route::get('/ads/create', [App\Http\Controllers\AdController::class, 'create'])->name('admin.ads.create');
+        Route::post('/ads', [App\Http\Controllers\AdController::class, 'store'])->name('admin.ads.store');
+        Route::get('/ads/{ad}', [App\Http\Controllers\AdController::class, 'show'])->name('admin.ads.show');
+        Route::get('/ads/{ad}/edit', [App\Http\Controllers\AdController::class, 'edit'])->name('admin.ads.edit');
+        Route::put('/ads/{ad}', [App\Http\Controllers\AdController::class, 'update'])->name('admin.ads.update');
+        Route::delete('/ads/{ad}', [App\Http\Controllers\AdController::class, 'destroy'])->name('admin.ads.destroy');
+        Route::post('/ads/{ad}/toggle-status', [App\Http\Controllers\AdController::class, 'toggleStatus'])->name('admin.ads.toggle-status');
+        Route::get('/ads/api/positions/{position}/{page?}', [App\Http\Controllers\AdController::class, 'getAdsForPosition'])->name('admin.ads.get-ads-for-position');
 
         // Admin routes for hero content (explicitly named to ensure admin prefix)
         Route::get('/hero-contents', [App\Http\Controllers\HeroContentController::class, 'index'])->name('hero-contents.index');
@@ -238,29 +239,60 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::post('/payment-gateways/{paymentGateway}/toggle-status', [App\Http\Controllers\PaymentController::class, 'toggleStatus'])->name('payment-gateways.toggle');
 
         // Admin routes for subscription packages
-        Route::get('/subscription-packages', [App\Http\Controllers\AdminController::class, 'subscriptionPackages'])->name('admin.subscription-packages.index');
-        Route::get('/subscription-packages/create', [App\Http\Controllers\AdminController::class, 'createSubscriptionPackage'])->name('admin.subscription-packages.create');
-        Route::post('/subscription-packages', [App\Http\Controllers\AdminController::class, 'storeSubscriptionPackage'])->name('admin.subscription-packages.store');
-        Route::get('/subscription-packages/{package}/edit', [App\Http\Controllers\AdminController::class, 'editSubscriptionPackage'])->name('admin.subscription-packages.edit');
-        Route::put('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'updateSubscriptionPackage'])->name('admin.subscription-packages.update');
-        Route::delete('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'deleteSubscriptionPackage'])->name('admin.subscription-packages.delete');
+        Route::get('/subscription-packages', [App\Http\Controllers\AdminController::class, 'subscriptionPackages'])->name('subscription-packages.index');
+        Route::get('/subscription-packages/create', [App\Http\Controllers\AdminController::class, 'createSubscriptionPackage'])->name('subscription-packages.create');
+        Route::post('/subscription-packages', [App\Http\Controllers\AdminController::class, 'storeSubscriptionPackage'])->name('subscription-packages.store');
+        Route::get('/subscription-packages/{package}/edit', [App\Http\Controllers\AdminController::class, 'editSubscriptionPackage'])->name('subscription-packages.edit');
+        Route::put('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'updateSubscriptionPackage'])->name('subscription-packages.update');
+        Route::delete('/subscription-packages/{package}', [App\Http\Controllers\AdminController::class, 'deleteSubscriptionPackage'])->name('subscription-packages.delete');
 
         // Admin routes for CV management
-        Route::prefix('cvs')->name('admin.cvs.')->middleware(['auth', 'admin'])->group(function () {
+        Route::prefix('cvs')->name('cvs.')->middleware(['auth', 'admin'])->group(function () {
             Route::get('/', [App\Http\Controllers\CvUploadController::class, 'adminIndex'])->name('index');
             Route::get('/{cv}', [App\Http\Controllers\CvUploadController::class, 'adminShow'])->name('show');
             Route::delete('/{cv}', [App\Http\Controllers\CvUploadController::class, 'adminDestroy'])->name('destroy');
             Route::post('/{cv}/toggle-public', [App\Http\Controllers\CvUploadController::class, 'adminTogglePublic'])->name('toggle-public');
         });
+
+        // Admin portal routes
+        Route::prefix('portals')->name('portals.')->middleware(['auth', 'admin'])->group(function () {
+            Route::get('/recruitment', [App\Http\Controllers\AdminController::class, 'recruitmentPortal'])->name('recruitment');
+            Route::get('/events', [App\Http\Controllers\AdminController::class, 'eventsPortal'])->name('events');
+            Route::get('/blog', [App\Http\Controllers\AdminController::class, 'blogPortal'])->name('blog');
+            Route::get('/users', [App\Http\Controllers\AdminController::class, 'usersPortal'])->name('users');
+            Route::get('/courses', [App\Http\Controllers\AdminController::class, 'coursesPortal'])->name('courses');
+            Route::get('/university', [App\Http\Controllers\AdminController::class, 'universityPortal'])->name('university');
+            Route::get('/jobs', [App\Http\Controllers\AdminController::class, 'jobsPortal'])->name('jobs');
+            Route::get('/students', [App\Http\Controllers\AdminController::class, 'studentsPortal'])->name('students');
+        });
+
+        // Admin routes for transactions and payments
+        Route::prefix('transactions')->name('transactions.')->middleware(['auth', 'admin'])->group(function () {
+            Route::get('/', [App\Http\Controllers\AdminController::class, 'transactions'])->name('index');
+        });
+
+        // Admin routes for subscriptions
+        Route::prefix('subscriptions')->name('subscriptions.')->middleware(['auth', 'admin'])->group(function () {
+            Route::get('/', [App\Http\Controllers\AdminController::class, 'allSubscriptions'])->name('all');
+            Route::get('/active', [App\Http\Controllers\AdminController::class, 'activeSubscriptions'])->name('active');
+        });
+
+        // Admin routes for payment statistics
+        Route::prefix('payments')->name('payments.')->middleware(['auth', 'admin'])->group(function () {
+            Route::get('/stats', [App\Http\Controllers\AdminController::class, 'paymentStats'])->name('stats');
+            Route::get('/premium', [App\Http\Controllers\AdminController::class, 'premiumPayments'])->name('premium');
+        });
     });
 //}); // Close the auth middleware group
 
-// University and Course Search Routes (commented out as controller doesn't exist)
-// Route::prefix('universities')->name('universities.')->group(function () {
-//     Route::get('/search-courses', [UniversityController::class, 'searchCourses'])->name('search-courses');
-//     Route::get('/search-results', [UniversityController::class, 'searchResults'])->name('search-results');
-//     Route::get('/courses/{universityId}', [UniversityController::class, 'coursesByUniversity'])->name('courses');
-// });
+// Public Universities Routes
+Route::prefix('universities')->name('universities.')->group(function () {
+    Route::get('/', [App\Http\Controllers\PublicUniversitiesController::class, 'index'])->name('index');
+    Route::get('/{id}', [App\Http\Controllers\PublicUniversitiesController::class, 'show'])->name('show');
+    Route::get('/search-courses', [App\Http\Controllers\UniversityController::class, 'searchCourses'])->name('search-courses');
+    Route::get('/search-results', [App\Http\Controllers\UniversityController::class, 'searchResults'])->name('search-results');
+    Route::get('/courses/{id}', [App\Http\Controllers\UniversityController::class, 'coursesByUniversity'])->name('courses');
+});
 
     // Payment processing routes
     Route::prefix('payment')->name('payment.')->group(function () {
@@ -331,8 +363,10 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::post('/payment/premium-course', [App\Http\Controllers\PaymentController::class, 'processPremiumCoursePayment'])->name('payment.premium-course');
         Route::post('/payment/premium-event', [App\Http\Controllers\PaymentController::class, 'processPremiumEventPayment'])->name('payment.premium-event');
         Route::post('/payment/university-admission', [App\Http\Controllers\PaymentController::class, 'processUniversityAdmissionPayment'])->name('payment.university-admission');
+    });
 
-        // Job Alert routes
+    // Job Alert routes - accessible to authenticated users (not just admin)
+    Route::middleware(['auth'])->group(function () {
         Route::resource('job-alerts', App\Http\Controllers\JobAlertController::class);
         Route::patch('/job-alerts/{jobAlert}/toggle-status', [App\Http\Controllers\JobAlertController::class, 'toggleStatus'])->name('job-alerts.toggle-status');
         Route::get('/job-alerts/{jobAlert}/find-matching', [App\Http\Controllers\JobAlertController::class, 'findMatchingJobs'])->name('job-alerts.find-matching-jobs');

@@ -28,12 +28,89 @@
 
 The application uses Laravel's built-in authentication with Breeze, including:
 - Registration and login
-- Email verification
 - Password reset
-- Two-factor authentication (if implemented)
-- Session management
+- Email verification
+- Role-based access control with enhanced permissions for different user types (recruiter, university_manager, event_hoster, student, job_seeker)
+- User profile management
 
-### 2. Event Management Module
+### 2. Premium Content & Payment System
+```
+├── app/Models/PaymentGateway.php
+├── app/Models/Transaction.php
+├── app/Models/SubscriptionPackage.php
+├── app/Models/CvUpload.php
+├── app/Models/JobAlert.php
+├── app/Http/Controllers/PaymentController.php
+├── app/Http/Controllers/CvUploadController.php
+├── app/Http/Controllers/JobAlertController.php
+├── app/Services/PaymentService.php
+├── app/Middleware/RoleMiddleware.php
+└── resources/views/payment/
+    ├── process.blade.php
+    ├── success.blade.php
+    └── cancel.blade.php
+```
+
+Core payment system includes:
+- Multiple payment gateway support (Paystack, Flutterwave, Stripe, Mpesa, etc.)
+- Transaction tracking and management
+- Subscription packages with different feature sets
+- Premium content management for jobs, courses, and events
+- CV/Resume management system with parsing and extraction
+- Job alert system with automated notifications
+
+### 3. Content Management
+```
+├── app/Models/JobListing.php
+├── app/Models/Course.php
+├── app/Models/Event.php
+├── app/Models/AffiliatedCourse.php
+├── app/Http/Controllers/JobListingsController.php
+├── app/Http/Controllers/CoursesController.php
+├── app/Http/Controllers/EventsController.php
+├── app/Http/Controllers/AffiliatedCoursesController.php
+└── app/Services/CvParsingService.php
+```
+
+Enhanced content management with:
+- Premium content flagging (is_premium, premium_expires_at)
+- Sorting algorithms to prioritize premium content
+- Featured placement for enhanced visibility
+- Revenue stream tracking for different content types
+- Advanced search with filtering capabilities
+- CV/Resume parsing and extraction with automated skills detection
+- Professional Reed.co.uk-style layouts with enhanced UI/UX
+
+### 4. Frontend & UI Components
+```
+├── resources/views/jobs/index.blade.php
+├── resources/views/jobs/show.blade.php
+├── resources/views/courses/index.blade.php
+├── resources/views/courses/show.blade.php
+├── resources/views/events/index.blade.php
+├── resources/views/events/show.blade.php
+├── resources/views/affiliated-courses/index.blade.php
+├── resources/views/affiliated-courses/show.blade.php
+├── resources/views/cv/index.blade.php
+├── resources/views/cv/show.blade.php
+├── resources/views/job-alerts/index.blade.php
+├── resources/views/dashboard.blade.php
+└── resources/views/layouts/
+    ├── app.blade.php
+    └── navigation.blade.php
+```
+
+UI/UX enhancements include:
+- Reed.co.uk style horizontal job and course cards with premium badges
+- Professional layout structures with clear information hierarchy
+- Enhanced visual indicators (star icons, premium badges, featured labels)
+- Dark purple header/footer theme with consistent styling
+- Responsive design for all device sizes
+- Improved search result layouts
+- Better action buttons and call-to-actions
+- Modern card-based design patterns
+
+### 5. Event Management Module
 ```
 ├── app/Models/Event.php
 ├── app/Http/Controllers/EventsController.php

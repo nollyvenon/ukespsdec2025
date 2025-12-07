@@ -63,6 +63,52 @@
                         </div>
                     </div>
                     
+                    <!-- Premium Features Section -->
+                    <div class="mt-12 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 rounded-xl p-6">
+                        <h2 class="text-2xl font-bold mb-4 flex items-center">
+                            <i class="fas fa-crown text-yellow-500 mr-3"></i> Premium Features
+                        </h2>
+                        <p class="text-gray-700 mb-6">Upgrade your experience with premium features</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-bullhorn text-yellow-500 text-xl mr-3"></i>
+                                    <h3 class="font-bold text-gray-900">Premium Job Posts</h3>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4">Make your job listings stand out with premium placement</p>
+                                <a href="{{ route('jobs.create') }}" class="text-indigo-600 hover:underline text-sm font-medium">Post Premium Job</a>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-chalkboard-teacher text-indigo-500 text-xl mr-3"></i>
+                                    <h3 class="font-bold text-gray-900">Promoted Courses</h3>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4">Increase visibility for your courses with promoted placement</p>
+                                <a href="{{ route('courses.create') }}" class="text-indigo-600 hover:underline text-sm font-medium">Create Promoted Course</a>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-calendar-star text-green-500 text-xl mr-3"></i>
+                                    <h3 class="font-bold text-gray-900">Featured Events</h3>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4">Get more attendees by featuring your events prominently</p>
+                                <a href="{{ route('events.create') }}" class="text-indigo-600 hover:underline text-sm font-medium">Create Featured Event</a>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-bell text-purple-500 text-xl mr-3"></i>
+                                    <h3 class="font-bold text-gray-900">Job Alerts</h3>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4">Get notified when new jobs match your criteria</p>
+                                <a href="{{ route('job-alerts.index') }}" class="text-indigo-600 hover:underline text-sm font-medium">Create Job Alert</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mt-12">
                         <h2 class="text-2xl font-bold mb-6">Latest Events</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

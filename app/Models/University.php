@@ -53,6 +53,14 @@ class University extends Model
     }
 
     /**
+     * Get the affiliated courses for this university.
+     */
+    public function affiliatedCourses()
+    {
+        return $this->hasMany(AffiliatedCourse::class);
+    }
+
+    /**
      * Scope to filter universities by country.
      */
     public function scopeByCountry($query, $countryId)

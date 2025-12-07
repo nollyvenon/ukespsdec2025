@@ -42,6 +42,62 @@
                 <a href="{{ route('admin.payment-gateways.index') }}" class="block py-2 px-4 hover:bg-gray-700">
                     <i class="fas fa-credit-card mr-2"></i>Payment Gateways
                 </a>
+
+                <!-- Portal Links -->
+                <div class="mt-4">
+                    <h3 class="text-xs uppercase px-4 py-2 text-gray-500 font-semibold">Portals</h3>
+                    <a href="{{ route('admin.portals.recruitment') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-bullhorn mr-2"></i>Recruitment Portal
+                    </a>
+                    <a href="{{ route('admin.portals.events') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-calendar-alt mr-2"></i>Events Portal
+                    </a>
+                    <a href="{{ route('admin.portals.blog') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-blog mr-2"></i>Blog Portal
+                    </a>
+                    <a href="{{ route('admin.portals.users') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-users mr-2"></i>Users Portal
+                    </a>
+                    <a href="{{ route('admin.portals.courses') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-book mr-2"></i>Courses Portal
+                    </a>
+                    <a href="{{ route('admin.portals.university') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-university mr-2"></i>University Portal
+                    </a>
+                    <a href="{{ route('admin.portals.jobs') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-briefcase mr-2"></i>Jobs Portal
+                    </a>
+                    <a href="{{ route('admin.portals.students') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-user-graduate mr-2"></i>Students Portal
+                    </a>
+                </div>
+
+                <!-- Payment & Revenue Management -->
+                <div class="mt-4">
+                    <h3 class="text-xs uppercase px-4 py-2 text-gray-500 font-semibold">Payments & Revenue</h3>
+                    <a href="{{ route('admin.payments.stats') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-chart-line mr-2"></i>Payment Statistics
+                    </a>
+                    <a href="{{ route('admin.transactions.index') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-receipt mr-2"></i>All Transactions
+                    </a>
+                    <a href="{{ route('admin.subscriptions.active') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-subscript mr-2"></i>Active Subscriptions
+                    </a>
+                    <a href="{{ route('admin.subscriptions.all') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-list mr-2"></i>All Subscriptions
+                    </a>
+                    <a href="{{ route('admin.payments.premium') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-bullhorn mr-2"></i>Premium Payments
+                    </a>
+                    <a href="{{ route('admin.payment-gateways.index') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-credit-card mr-2"></i>Payment Gateways
+                    </a>
+                    <a href="{{ route('admin.subscription-packages.index') }}" class="block py-2 px-4 hover:bg-gray-700 pl-8">
+                        <i class="fas fa-box-open mr-2"></i>Subscription Packages
+                    </a>
+                </div>
+
                 <a href="{{ route('admin.settings') }}" class="block py-2 px-4 hover:bg-gray-700">
                     <i class="fas fa-cog mr-2"></i>General Settings
                 </a>

@@ -8,6 +8,14 @@ use App\Models\JobListing;
 use App\Models\User;
 use App\Models\SiteSetting;
 use App\Models\SubscriptionPackage;
+use App\Models\JobApplication;
+use App\Models\BlogPost;
+use App\Models\BlogCategory;
+use App\Models\BlogComment;
+use App\Models\EventRegistration;
+use App\Models\CourseEnrollment;
+use App\Models\AffiliatedCourse;
+use App\Models\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -378,5 +386,196 @@ class AdminController extends Controller
         $package->delete();
 
         return redirect()->route('admin.subscription-packages.index')->with('success', 'Subscription package deleted successfully.');
+    }
+
+    /**
+     * Display the recruitment portal.
+     */
+    public function recruitmentPortal()
+    {
+        $recruiters = User::where(function($query) {
+            $query->where('role', 'recruiter')
+                  ->orWhere('role', 'employer');
+        })->paginate(20);
+        $jobListings = JobListing::with('poster')->orderBy('created_at', 'desc')->limit(10)->get();
+        $applications = JobApplication::with('job', 'applicant')->orderBy('created_at', 'desc')->limit(10)->get();
+
+        return view('admin.portals.recruitment', compact('recruiters', 'jobListings', 'applications'));
+    }
+
+    /**
+     * Display the events portal.
+     */
+    public function eventsPortal()
+    {
+        $events = Event::with('creator')->orderBy('created_at', 'desc')->paginate(20);
+        $registrations = EventRegistration::with('event', 'user')->orderBy('created_at', 'desc')->limit(10)->get();
+
+        return view('admin.portals.events', compact('events', 'registrations'));
+    }
+
+    /**
+     * Display the blog portal.
+     */
+    public function blogPortal()
+    {
+        $posts = BlogPost::with('author')->orderBy('created_at', 'desc')->paginate(20);
+        $categories = BlogCategory::orderBy('name')->get();
+        $comments = BlogComment::with('author', 'post')->orderBy('created_at', 'desc')->limit(10)->get();
+
+        return view('admin.portals.blog', compact('posts', 'categories', 'comments'));
+    }
+
+    /**
+     * Display the users portal.
+     */
+    public function usersPortal()
+    {
+        $users = User::with('profile')->orderBy('created_at', 'desc')->paginate(20);
+        $userRoles = User::select('role')->distinct()->pluck('role');
+
+        return view('admin.portals.users', compact('users', 'userRoles'));
+    }
+
+    /**
+     * Display the courses portal.
+     */
+    public function coursesPortal()
+    {
+        $courses = Course::with('instructor')->orderBy('created_at', 'desc')->paginate(20);
+        $enrollments = CourseEnrollment::with('course', 'student')->orderBy('created_at', 'desc')->limit(10)->get();
+
+        return view('admin.portals.courses', compact('courses', 'enrollments'));
+    }
+
+    /**
+     * Display the university portal.
+     */
+    public function universityPortal()
+    {
+        $universities = University::whereIn('id', AffiliatedCourse::pluck('university_id'))->distinct()->get();
+        $universityCourses = AffiliatedCourse::with('university')->orderBy('created_at', 'desc')->paginate(20);
+        $universityManagers = User::where(function($query) {
+            $query->where('role', 'university_manager')
+                  ->orWhere('role', 'academic');
+        })->orderBy('created_at', 'desc')->paginate(20);
+
+        return view('admin.portals.university', compact('universities', 'universityCourses', 'universityManagers'));
+    }
+
+    /**
+     * Display the jobs portal.
+     */
+    public function jobsPortal()
+    {
+        $jobListings = JobListing::with('poster')->orderBy('created_at', 'desc')->paginate(20);
+        $applications = JobApplication::with('job', 'applicant')->orderBy('created_at', 'desc')->limit(10)->get();
+
+        return view('admin.portals.jobs', compact('jobListings', 'applications'));
+    }
+
+    /**
+     * Display the students portal.
+     */
+    public function studentsPortal()
+    {
+        $students = User::where(function($query) {
+            $query->where('role', 'student')
+                  ->orWhere('role', 'job_seeker');
+        })->orderBy('created_at', 'desc')->paginate(20);
+        $enrollments = CourseEnrollment::with('course', 'student')->orderBy('created_at', 'desc')->limit(10)->get();
+        $jobApplications = JobApplication::with('job', 'applicant')->orderBy('created_at', 'desc')->limit(10)->get();
+
+        return view('admin.portals.students', compact('students', 'enrollments', 'jobApplications'));
+    }
+
+    /**
+     * Display all transactions/payments.
+     */
+    public function transactions()
+    {
+        $this->authorize('viewAny', \App\Models\Transaction::class);
+
+        $transactions = \App\Models\Transaction::with('user')
+                                  ->orderBy('created_at', 'desc')
+                                  ->paginate(20);
+
+        return view('admin.transactions.index', compact('transactions'));
+    }
+
+    /**
+     * Display all active subscriptions.
+     */
+    public function activeSubscriptions()
+    {
+        $this->authorize('viewAny', \App\Models\Subscription::class);
+
+        $subscriptions = \App\Models\Subscription::with('user')
+                                                 ->where('status', 'active')
+                                                 ->orderBy('start_date', 'desc')
+                                                 ->paginate(20);
+
+        return view('admin.subscriptions.active', compact('subscriptions'));
+    }
+
+    /**
+     * Display all subscriptions (active, expired, cancelled).
+     */
+    public function allSubscriptions()
+    {
+        $this->authorize('viewAny', \App\Models\Subscription::class);
+
+        $subscriptions = \App\Models\Subscription::with('user')
+                                                 ->orderBy('start_date', 'desc')
+                                                 ->paginate(20);
+
+        return view('admin.subscriptions.all', compact('subscriptions'));
+    }
+
+    /**
+     * Display payment statistics dashboard.
+     */
+    public function paymentStats()
+    {
+        $this->authorize('viewAny', \App\Models\Transaction::class);
+
+        // Get payment statistics
+        $totalRevenue = \App\Models\Transaction::where('status', 'completed')->sum('amount');
+        $totalTransactions = \App\Models\Transaction::where('status', 'completed')->count();
+        $activeSubscriptions = \App\Models\Subscription::where('status', 'active')->count();
+        $pendingPayments = \App\Models\Transaction::where('status', 'pending')->count();
+
+        // Get recent transactions
+        $recentTransactions = \App\Models\Transaction::with('user')
+                                         ->orderBy('created_at', 'desc')
+                                         ->limit(10)
+                                         ->get();
+
+        return view('admin.payments.stats', compact(
+            'totalRevenue',
+            'totalTransactions',
+            'activeSubscriptions',
+            'pendingPayments',
+            'recentTransactions'
+        ));
+    }
+
+    /**
+     * Display premium content payments (job posts, course promotions, etc.).
+     */
+    public function premiumPayments()
+    {
+        $transactions = \App\Models\Transaction::with('user')
+                                  ->where(function($query) {
+                                      $query->where('type', 'like', '%premium%')
+                                            ->orWhere('type', 'like', '%featured%')
+                                            ->orWhere('type', 'like', '%promotion%')
+                                            ->orWhere('type', 'ad_payment')
+                                            ->orWhere('type', 'university_admission_service');
+                                  })
+                                  ->orderBy('created_at', 'desc')
+                                  ->paginate(20);
+
+        return view('admin.payments.premium', compact('transactions'));
     }
 }

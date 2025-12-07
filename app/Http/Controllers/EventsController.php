@@ -96,12 +96,22 @@ class EventsController extends Controller
             'is_premium' => 'boolean',
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['created_by']);
         $data['created_by'] = Auth::id();
 
-        // Set premium defaults if premium is requested but fee not specified
-        if ($request->is_premium && !$request->premium_fee) {
-            $data['is_premium'] = false; // Don't allow premium without payment
+        // Handle premium event settings
+        if ($request->is_premium) {
+            if ($request->premium_fee) {
+                $data['is_premium'] = true;
+                $data['premium_fee'] = $request->premium_fee;
+                $data['premium_expires_at'] = now()->addDays(30); // Default to 30 days
+            } else {
+                $data['is_premium'] = false; // Don't allow premium without specifying fee
+            }
+        } else {
+            $data['is_premium'] = false;
+            $data['premium_fee'] = null;
+            $data['premium_expires_at'] = null;
         }
 
         if ($request->hasFile('event_image')) {

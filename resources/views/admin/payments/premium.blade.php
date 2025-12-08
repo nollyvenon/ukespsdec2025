@@ -20,7 +20,7 @@
                                     <span class="info-box-text">Premium Job Posts</span>
                                     <span class="info-box-number">{{ $transactions->where('type', 'premium_job_post')->count() }}</span>
                                     <div class="progress progress-sm">
-                                        <div class="progress-bar bg-green" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'premium_job_post')->count() / $transactions->count() * 100) }}%"></div>
+                                        <div class="progress-bar bg-green" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'premium_job_post')->count() / $transactions->count() * 100) : 0 }}%"></div>
                                     </div>
                                     <span class="progress-description">
                                         ${{ number_format($transactions->where('type', 'premium_job_post')->sum('amount'), 2) }}
@@ -37,7 +37,7 @@
                                     <span class="info-box-text">Course Promotions</span>
                                     <span class="info-box-number">{{ $transactions->where('type', 'premium_course_promotion')->count() }}</span>
                                     <div class="progress progress-sm">
-                                        <div class="progress-bar bg-blue" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'premium_course_promotion')->count() / $transactions->count() * 100) }}%"></div>
+                                        <div class="progress-bar bg-blue" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'premium_course_promotion')->count() / $transactions->count() * 100) : 0 }}%"></div>
                                     </div>
                                     <span class="progress-description">
                                         ${{ number_format($transactions->where('type', 'premium_course_promotion')->sum('amount'), 2) }}
@@ -54,7 +54,7 @@
                                     <span class="info-box-text">Event Promotions</span>
                                     <span class="info-box-number">{{ $transactions->where('type', 'premium_event_promotion')->count() }}</span>
                                     <div class="progress progress-sm">
-                                        <div class="progress-bar bg-orange" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'premium_event_promotion')->count() / $transactions->count() * 100) }}%"></div>
+                                        <div class="progress-bar bg-orange" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'premium_event_promotion')->count() / $transactions->count() * 100) : 0 }}%"></div>
                                     </div>
                                     <span class="progress-description">
                                         ${{ number_format($transactions->where('type', 'premium_event_promotion')->sum('amount'), 2) }}
@@ -71,7 +71,7 @@
                                     <span class="info-box-text">University Services</span>
                                     <span class="info-box-number">{{ $transactions->where('type', 'university_admission_service')->count() }}</span>
                                     <div class="progress progress-sm">
-                                        <div class="progress-bar bg-purple" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'university_admission_service')->count() / $transactions->count() * 100) }}%"></div>
+                                        <div class="progress-bar bg-purple" style="width: {{ $transactions->count() > 0 ? round($transactions->where('type', 'university_admission_service')->count() / $transactions->count() * 100) : 0 }}%"></div>
                                     </div>
                                     <span class="progress-description">
                                         ${{ number_format($transactions->where('type', 'university_admission_service')->sum('amount'), 2) }}
@@ -118,18 +118,18 @@
 
                     <!-- Premium Transactions Table -->
                     <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead class="table-dark">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Content Type</th>
-                                    <th>Package/Service</th>
-                                    <th>Amount</th>
-                                    <th>Payment Gateway</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Content Type</th>
+                                    <th scope="col">Package/Service</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Payment Gateway</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -137,8 +137,10 @@
                                     <tr>
                                         <td>{{ $transaction->id }}</td>
                                         <td>
-                                            <div>{{ $transaction->user->name ?? 'N/A' }}</div>
-                                            <small class="text-muted">{{ $transaction->user->email ?? 'N/A' }}</small>
+                                            <div class="d-flex flex-column">
+                                                <span>{{ $transaction->user->name ?? 'N/A' }}</span>
+                                                <small class="text-muted">{{ $transaction->user->email ?? 'N/A' }}</small>
+                                            </div>
                                         </td>
                                         <td>
                                             @if($transaction->type == 'premium_job_post')
@@ -155,7 +157,7 @@
                                                 <span class="badge bg-secondary">{{ ucfirst(str_replace('_', ' ', $transaction->type)) }}</span>
                                             @endif
                                         </td>
-                                        <td>{{ $transaction->package_name ?: 'N/A' }}</td>
+                                        <td class="text-truncate" style="max-width: 150px;" title="{{ $transaction->package_name ?: 'N/A' }}">{{ $transaction->package_name ?: 'N/A' }}</td>
                                         <td>${{ number_format($transaction->amount, 2) }}</td>
                                         <td>{{ ucfirst($transaction->payment_gateway) }}</td>
                                         <td>
@@ -165,14 +167,14 @@
                                         </td>
                                         <td>{{ $transaction->created_at->format('M j, Y g:i A') }}</td>
                                         <td>
-                                            <a href="{{ route('admin.transactions.show', $transaction) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('admin.transactions.show', $transaction) }}" class="btn btn-sm btn-info btn-block">
                                                 <i class="fas fa-eye"></i> View
                                             </a>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="9" class="text-center">No premium payments found</td>
+                                        <td colspan="9" class="text-center py-4">No premium payments found</td>
                                     </tr>
                                 @endforelse
                             </tbody>

@@ -14,7 +14,7 @@ class PublicUniversitiesController extends Controller
      */
     public function index(Request $request)
     {
-        $query = University::withCount('courses as courses_count')
+        $query = University::withCount('affiliatedCourses as courses_count')
                           ->where('is_active', true);
 
         // Search by name
@@ -40,17 +40,17 @@ class PublicUniversitiesController extends Controller
     public function show($id)
     {
         $university = University::with('country')->findOrFail($id);
-        
+
         // Check if university is active
         if (!$university->is_active) {
             abort(404, 'University not found');
         }
-        
+
         $courses = AffiliatedCourse::where('university_id', $id)
                                    ->where('status', 'published')
                                    ->orderBy('created_at', 'desc')
                                    ->paginate(12);
 
-        return view('universities.courses-by-university', compact('university', 'courses'));
+        return view('universities.show', compact('university', 'courses'));
     }
 }

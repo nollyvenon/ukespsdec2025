@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $this->call(SubscriptionPackageSeeder::class);
+        $this->call([
+            SubscriptionPackageSeeder::class,
+            AdminUserSeeder::class,
+        ]);
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('title', 'Universities')
 
@@ -45,7 +45,11 @@
             @foreach($universities as $university)
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                     @if($university->logo)
-                        <img src="{{ asset('storage/' . $university->logo) }}" alt="{{ $university->name }}" class="w-full h-48 object-contain bg-gray-100 p-4">
+                        @if(filter_var($university->logo, FILTER_VALIDATE_URL))
+                            <img src="{{ $university->logo }}" alt="{{ $university->name }}" class="w-full h-48 object-contain bg-gray-100 p-4">
+                        @else
+                            <img src="{{ asset('storage/' . $university->logo) }}" alt="{{ $university->name }}" class="w-full h-48 object-contain bg-gray-100 p-4">
+                        @endif
                     @endif
                     
                     <div class="p-6">

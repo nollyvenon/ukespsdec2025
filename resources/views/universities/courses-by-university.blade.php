@@ -8,7 +8,11 @@
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <div class="flex items-center">
             @if($university->logo)
-                <img src="{{ asset('storage/' . $university->logo) }}" alt="{{ $university->name }}" class="w-16 h-16 object-contain mr-4">
+                @if(filter_var($university->logo, FILTER_VALIDATE_URL))
+                    <img src="{{ $university->logo }}" alt="{{ $university->name }}" class="w-16 h-16 object-contain mr-4">
+                @else
+                    <img src="{{ asset('storage/' . $university->logo) }}" alt="{{ $university->name }}" class="w-16 h-16 object-contain mr-4">
+                @endif
             @endif
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">{{ $university->name }}</h1>
@@ -48,7 +52,15 @@
                 @foreach($courses as $course)
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                         @if($course->course_image)
-                            <img src="{{ asset('storage/' . $course->course_image) }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
+                            @if(filter_var($course->course_image, FILTER_VALIDATE_URL))
+                                <img src="{{ $course->course_image }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
+                            @else
+                                <img src="{{ asset('storage/' . $course->course_image) }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
+                            @endif
+                        @else
+                            <div class="bg-gray-200 w-full h-48 flex items-center justify-center">
+                                <span class="text-gray-500">No Image</span>
+                            </div>
                         @endif
                         
                         <div class="p-6">

@@ -78,6 +78,9 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
+                        @if($siteLogoPath ?? null)
+                            <img src="{{ $siteLogoPath }}" alt="{{ $siteName ?? config('app.name', 'Ukesps') }}" class="h-10 w-auto mr-3">
+                        @endif
                         <div class="text-xl font-bold text-indigo-600">{{ $siteName ?? config('app.name', 'Ukesps') }}</div>
                     </div>
                     <div class="hidden md:flex items-center space-x-8">
@@ -85,6 +88,7 @@
                         <a href="{{ route('about') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">About Us</a>
                         <a href="{{ route('services') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Services</a>
                         <a href="{{ route('courses.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Courses</a>
+                        <a href="{{ route('universities.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Universities</a>
                         <a href="{{ route('jobs.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Jobs</a>
                         <a href="{{ route('events.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Events</a>
                         <a href="{{ route('faqs.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">FAQs</a>
@@ -111,6 +115,7 @@
                     <a href="{{ route('about') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">About Us</a>
                     <a href="{{ route('services') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Services</a>
                     <a href="{{ route('courses.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Courses</a>
+                    <a href="{{ route('universities.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Universities</a>
                     <a href="{{ route('jobs.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Jobs</a>
                     <a href="{{ route('events.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Events</a>
                     <a href="{{ route('faqs.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">FAQs</a>
@@ -326,7 +331,7 @@
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-gray-900 mb-4">About Our Platform</h2>
                     <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                        We're dedicated to connecting learners with the best educational opportunities and career paths.
+                        {{ \App\Models\SiteSetting::get('about_us') ?: 'We\'re dedicated to connecting learners with the best educational opportunities and career paths.' }}
                     </p>
                 </div>
 
@@ -334,9 +339,9 @@
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
                         <p class="text-gray-600 mb-6">
-                            Our mission is to democratize access to quality education and career opportunities.
+                            {{ \App\Models\SiteSetting::get('about_us') ?: 'Our mission is to democratize access to quality education and career opportunities.
                             We connect students, professionals, and organizations through our comprehensive platform
-                            that offers courses, job listings, and career matching services.
+                            that offers courses, job listings, and career matching services.' }}
                         </p>
 
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
@@ -377,7 +382,7 @@
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
                     <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                        Comprehensive solutions for all your educational and career development needs.
+                        {{ \App\Models\SiteSetting::get('services_info') ?: 'Comprehensive solutions for all your educational and career development needs.' }}
                     </p>
                 </div>
 
@@ -832,6 +837,9 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
+                        @if($siteLogoPath ?? null)
+                            <img src="{{ $siteLogoPath }}" alt="{{ $siteName ?? config('app.name', 'Ukesps') }}" class="h-8 w-auto mb-4">
+                        @endif
                         <h3 class="text-xl font-bold mb-4">{{ $siteName ?? config('app.name', 'Ukesps') }}</h3>
                         <p class="text-gray-400">
                             Connecting learners with the best educational opportunities and career paths.
@@ -844,6 +852,7 @@
                             <li><a href="{{ route('courses.index') }}" class="text-gray-400 hover:text-white">Courses</a></li>
                             <li><a href="{{ route('jobs.index') }}" class="text-gray-400 hover:text-white">Jobs</a></li>
                             <li><a href="{{ route('events.index') }}" class="text-gray-400 hover:text-white">Events</a></li>
+                            <li><a href="{{ route('universities.index') }}" class="text-gray-400 hover:text-white">Universities</a></li>
                         </ul>
                     </div>
                     <div>

@@ -408,7 +408,7 @@ class AdminController extends Controller
      */
     public function eventsPortal()
     {
-        $events = Event::with('creator')->orderBy('created_at', 'desc')->paginate(20);
+        $events = Event::with(['creator', 'registrations'])->orderBy('created_at', 'desc')->paginate(20);
         $registrations = EventRegistration::with('event', 'user')->orderBy('created_at', 'desc')->limit(10)->get();
 
         return view('admin.portals.events', compact('events', 'registrations'));
@@ -453,7 +453,8 @@ class AdminController extends Controller
      */
     public function universityPortal()
     {
-        $universities = University::whereIn('id', AffiliatedCourse::pluck('university_id'))->distinct()->get();
+        $universityIds = AffiliatedCourse::pluck('university_id')->toArray();
+        $universities = $universityIds ? University::whereIn('id', $universityIds)->distinct()->get() : collect([]);
         $universityCourses = AffiliatedCourse::with('university')->orderBy('created_at', 'desc')->paginate(20);
         $universityManagers = User::where(function($query) {
             $query->where('role', 'university_manager')
@@ -577,5 +578,35 @@ class AdminController extends Controller
                                   ->paginate(20);
 
         return view('admin.payments.premium', compact('transactions'));
+    }
+
+    /**
+     * Display all universities.
+     */
+    public function universitiesIndex()
+    {
+        $universities = University::with('affiliatedCourses')->orderBy('name', 'asc')->paginate(15);
+        return view('admin.universities.index', compact('universities'));
+    }
+
+    /**
+     * Display courses for a specific university.
+     */
+    public function universityCourses(University $university)
+    {
+        $courses = AffiliatedCourse::with(['university', 'enrollments'])
+            ->where('university_id', $university->id)
+            ->orderBy('title', 'asc')
+            ->paginate(15);
+
+        $totalStudents = $courses->sum(function($course) {
+            return $course->enrollments->count();
+        });
+
+        $totalRevenue = $courses->sum(function($course) {
+            return $course->fee * $course->enrollments->count();
+        });
+
+        return view('admin.universities.show', compact('university', 'courses', 'totalStudents', 'totalRevenue'));
     }
 }

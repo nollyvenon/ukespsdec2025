@@ -6,8 +6,12 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 text-white animate-pulse">
-                        <i class="fas fa-graduation-cap text-yellow-300"></i>
-                        <span class="font-bold text-xl">{{ config('app.name', 'Ukesps') }}</span>
+                        @if($siteLogoPath ?? null)
+                            <img src="{{ $siteLogoPath }}" alt="{{ $siteName ?? config('app.name', 'Ukesps') }}" class="h-8 w-auto">
+                        @else
+                            <i class="fas fa-graduation-cap text-yellow-300"></i>
+                        @endif
+                        <span class="font-bold text-xl">{{ $siteName ?? config('app.name', 'Ukesps') }}</span>
                     </a>
                 </div>
 
@@ -21,7 +25,7 @@
                             </x-nav-link>
                         @elseif(auth()->user()->hasRole('university_manager'))
                             <x-nav-link :href="route('university.dashboard')" :active="request()->routeIs('university.*')" class="text-white hover:text-purple-200">
-                                <i class="fas fa-university mr-1"></i> University
+                                <i class="fas fa-university mr-1"></i> University Portal
                             </x-nav-link>
                         @elseif(auth()->user()->hasRole('event_hoster'))
                             <x-nav-link :href="route('events-manager.dashboard')" :active="request()->routeIs('events-manager.*')" class="text-white hover:text-purple-200">
@@ -45,12 +49,20 @@
                             <i class="fas fa-book mr-1"></i> Courses
                         </x-nav-link>
 
-                        <x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
+                        <!--<x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
                             <i class="fas fa-university mr-1"></i> Uni Courses
+                        </x-nav-link>-->
+
+                        <x-nav-link :href="route('universities.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-university mr-1"></i> Universities
                         </x-nav-link>
 
                         <x-nav-link :href="route('portal.jobs')" :active="request()->routeIs('portal.jobs')" class="text-white hover:text-purple-200">
                             <i class="fas fa-briefcase mr-1"></i> Jobs
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.portals.university')" :active="request()->routeIs('admin.portals.university')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-university mr-1"></i> Universities
                         </x-nav-link>
 
                         <x-nav-link :href="route('matching.index')" :active="request()->routeIs('matching.*')" class="text-white hover:text-purple-200">
@@ -79,20 +91,22 @@
                             <i class="fas fa-briefcase mr-1"></i> Jobs
                         </x-nav-link>
 
-                        @auth
-                            @if(auth()->user()->canUploadCv())
-                                <x-nav-link :href="route('cv.index')" :active="request()->routeIs('cv.*')" class="text-white hover:text-purple-200">
-                                    <i class="fas fa-file-alt mr-1"></i> My CVs
-                                </x-nav-link>
-                            @elseif(auth()->user()->canSearchCvs())
-                                <x-nav-link :href="route('cv.search')" :active="request()->routeIs('cv.search')" class="text-white hover:text-purple-200">
-                                    <i class="fas fa-search mr-1"></i> Search CVs
-                                </x-nav-link>
-                            @endif
-                        @endauth
+                        @if(auth()->check() && auth()->user()->canUploadCv())
+                            <x-nav-link :href="route('cv.index')" :active="request()->routeIs('cv.*')" class="text-white hover:text-purple-200">
+                                <i class="fas fa-file-alt mr-1"></i> My CVs
+                            </x-nav-link>
+                        @elseif(auth()->check() && auth()->user()->canSearchCvs())
+                            <x-nav-link :href="route('cv.search')" :active="request()->routeIs('cv.search')" class="text-white hover:text-purple-200">
+                                <i class="fas fa-search mr-1"></i> Search CVs
+                            </x-nav-link>
+                        @endif
 
-                        <x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
+                        <!--<x-nav-link :href="route('affiliated-courses.index')" :active="request()->routeIs('affiliated-courses.*')" class="text-white hover:text-purple-200">
                             <i class="fas fa-university mr-1"></i> Uni Courses
+                        </x-nav-link>-->
+
+                        <x-nav-link :href="route('universities.index')" :active="request()->routeIs('universities.*')" class="text-white hover:text-purple-200">
+                            <i class="fas fa-university mr-1"></i> Universities
                         </x-nav-link>
 
                         <x-nav-link :href="route('faqs.index')" :active="request()->routeIs('faqs.*')" class="text-white hover:text-purple-200">
@@ -182,6 +196,10 @@
                     {{ __('Jobs') }}
                 </x-responsive-nav-link>
 
+                <x-responsive-nav-link :href="route('admin.portals.university')" :active="request()->routeIs('admin.portals.university')">
+                    {{ __('Universities') }}
+                </x-responsive-nav-link>
+
                 <x-responsive-nav-link :href="route('matching.index')" :active="request()->routeIs('matching.*')">
                     {{ __('Matches') }}
                 </x-responsive-nav-link>
@@ -189,6 +207,10 @@
                 @if(Auth::user()->is_admin)
                     <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
                         {{ __('Admin') }}
+                    </x-responsive-nav-link>
+                @elseif(auth()->user()->hasRole('university_manager'))
+                    <x-responsive-nav-link :href="route('university.dashboard')" :active="request()->routeIs('university.*')">
+                        {{ __('University Portal') }}
                     </x-responsive-nav-link>
                 @endif
             @else
@@ -206,6 +228,10 @@
 
                 <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.*')">
                     {{ __('Jobs') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('universities.index')" :active="request()->routeIs('universities.*')">
+                    {{ __('Universities') }}
                 </x-responsive-nav-link>
 
                 @auth

@@ -13,29 +13,29 @@
                     <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-8">
                         <div class="flex-1 mb-6 md:mb-0">
                             <div class="flex items-center mb-4">
-                                @if(\$jobListing->is_premium)
+                                @if($jobListing->is_premium)
                                     <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full mr-3">
                                         Premium
                                     </span>
                                     <span class="text-yellow-600 mr-2">⭐</span>
                                 @endif
-                                <h1 class="text-3xl font-bold text-gray-900">{{ \$jobListing->title }}</h1>
+                                <h1 class="text-3xl font-bold text-gray-900">{{ $jobListing->title }}</h1>
                             </div>
                             <div class="flex flex-wrap items-center text-sm text-gray-600 mb-4">
-                                <span class="mr-4">Employer: {{ \$jobListing->poster->name }}</span>
-                                <span class="mr-4">Type: {{ ucfirst(str_replace('_', ' ', \$jobListing->job_type)) }}</span>
-                                <span class="mr-4">Level: {{ ucfirst(\$jobListing->experience_level) }}</span>
-                                <span class="inline-block bg-{{ \$jobListing->job_status === 'published' ? 'green' : (\$jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ \$jobListing->job_status === 'published' ? 'green' : (\$jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
-                                    {{ ucfirst(\$jobListing->job_status) }}
+                                <span class="mr-4">Employer: {{ $jobListing->poster->name }}</span>
+                                <span class="mr-4">Type: {{ ucfirst(str_replace('_', ' ', $jobListing->job_type)) }}</span>
+                                <span class="mr-4">Level: {{ ucfirst($jobListing->experience_level) }}</span>
+                                <span class="inline-block bg-{{ $jobListing->job_status === 'published' ? 'green' : ($jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $jobListing->job_status === 'published' ? 'green' : ($jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
+                                    {{ ucfirst($jobListing->job_status) }}
                                 </span>
                             </div>
                         </div>
-                        @if(Auth::check() && Auth::id() === \$jobListing->posted_by)
+                        @if(Auth::check() && Auth::id() === $jobListing->posted_by)
                             <div class="flex space-x-2 mt-4 md:mt-0">
-                                <a href="{{ route('jobs.edit', \$jobListing) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded text-sm">
+                                <a href="{{ route('jobs.edit', $jobListing) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded text-sm">
                                     <i class="fas fa-edit mr-1"></i> Edit
                                 </a>
-                                <form action="{{ route('jobs.destroy', \$jobListing) }}" method="POST" class="inline">
+                                <form action="{{ route('jobs.destroy', $jobListing) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded text-sm" onclick="return confirm('Are you sure you want to delete this job?')">
@@ -54,17 +54,17 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Salary</h3>
-                                        @if(\$jobListing->salary_min && \$jobListing->salary_max)
-                                            <p class="text-2xl font-bold text-green-600">${{ number_format(\$jobListing->salary_min) }} - ${{ number_format(\$jobListing->salary_max) }}</p>
-                                        @elseif(\$jobListing->salary_min)
-                                            <p class="text-2xl font-bold text-green-600">Min: ${{ number_format(\$jobListing->salary_min) }}+</p>
+                                        @if($jobListing->salary_min && $jobListing->salary_max)
+                                            <p class="text-2xl font-bold text-green-600">${{ number_format($jobListing->salary_min) }} - ${{ number_format($jobListing->salary_max) }}</p>
+                                        @elseif($jobListing->salary_min)
+                                            <p class="text-2xl font-bold text-green-600">Min: ${{ number_format($jobListing->salary_min) }}+</p>
                                         @else
                                             <p class="text-2xl font-bold text-green-600">Salary: Negotiable</p>
                                         @endif
                                     </div>
                                     <div>
                                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Location</h3>
-                                        <p class="text-xl font-medium">{{ \$jobListing->location }}</p>
+                                        <p class="text-xl font-medium">{{ $jobListing->location }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                             <div class="mb-8">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-4 pb-2 border-b">Job Overview</h2>
                                 <div class="text-gray-700 whitespace-pre-line">
-                                    {{ \$jobListing->description }}
+                                    {{ $jobListing->description }}
                                 </div>
                             </div>
 
@@ -81,7 +81,7 @@
                             <div class="mb-8">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-4 pb-2 border-b">Key Responsibilities</h2>
                                 <div class="text-gray-700 whitespace-pre-line">
-                                    {{ \$jobListing->responsibilities }}
+                                    {{ $jobListing->responsibilities }}
                                 </div>
                             </div>
 
@@ -89,14 +89,14 @@
                             <div class="mb-8">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-4 pb-2 border-b">Requirements</h2>
                                 <div class="text-gray-700 whitespace-pre-line">
-                                    {{ \$jobListing->requirements }}
+                                    {{ $jobListing->requirements }}
                                 </div>
                             </div>
 
-                            @if(\$jobListing->application_deadline)
+                            @if($jobListing->application_deadline)
                                 <div class="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                                     <h3 class="text-lg font-semibold text-gray-900 mb-2">Application Deadline</h3>
-                                    <p class="text-gray-700">This job listing closes on {{ \Carbon\Carbon::parse(\$jobListing->application_deadline)->format('F j, Y') }}</p>
+                                    <p class="text-gray-700">This job listing closes on {{ \Carbon\Carbon::parse($jobListing->application_deadline)->format('F j, Y') }}</p>
                                 </div>
                             @endif
                         </div>
@@ -109,25 +109,25 @@
                                 <div class="space-y-4">
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Job type:</span>
-                                        <span class="font-medium">{{ ucfirst(str_replace('_', ' ', \$jobListing->job_type)) }}</span>
+                                        <span class="font-medium">{{ ucfirst(str_replace('_', ' ', $jobListing->job_type)) }}</span>
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Experience level:</span>
-                                        <span class="font-medium">{{ ucfirst(\$jobListing->experience_level) }}</span>
+                                        <span class="font-medium">{{ ucfirst($jobListing->experience_level) }}</span>
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Location:</span>
-                                        <span class="font-medium">{{ \$jobListing->location }}</span>
+                                        <span class="font-medium">{{ $jobListing->location }}</span>
                                     </div>
-                                    @if(\$jobListing->salary_min && \$jobListing->salary_max)
+                                    @if($jobListing->salary_min && $jobListing->salary_max)
                                         <div class="flex justify-between">
                                             <span class="text-gray-600">Salary:</span>
-                                            <span class="font-medium">${{ number_format(\$jobListing->salary_min) }} - ${{ number_format(\$jobListing->salary_max) }}</span>
+                                            <span class="font-medium">${{ number_format($jobListing->salary_min) }} - ${{ number_format($jobListing->salary_max) }}</span>
                                         </div>
-                                    @elseif(\$jobListing->salary_min)
+                                    @elseif($jobListing->salary_min)
                                         <div class="flex justify-between">
                                             <span class="text-gray-600">Min Salary:</span>
-                                            <span class="font-medium">${{ number_format(\$jobListing->salary_min) }}+</span>
+                                            <span class="font-medium">${{ number_format($jobListing->salary_min) }}+</span>
                                         </div>
                                     @else
                                         <div class="flex justify-between">
@@ -135,20 +135,20 @@
                                             <span class="font-medium">Negotiable</span>
                                         </div>
                                     @endif
-                                    @if(\$jobListing->application_deadline)
+                                    @if($jobListing->application_deadline)
                                         <div class="flex justify-between">
                                             <span class="text-gray-600">Closing date:</span>
-                                            <span class="font-medium">{{ \Carbon\Carbon::parse(\$jobListing->application_deadline)->format('F j, Y') }}</span>
+                                            <span class="font-medium">{{ \Carbon\Carbon::parse($jobListing->application_deadline)->format('F j, Y') }}</span>
                                         </div>
                                     @endif
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Posted:</span>
-                                        <span class="font-medium">{{ \Carbon\Carbon::parse(\$jobListing->created_at)->diffForHumans() }}</span>
+                                        <span class="font-medium">{{ \Carbon\Carbon::parse($jobListing->created_at)->diffForHumans() }}</span>
                                     </div>
                                     <div class="flex justify-between">
                                         <span class="text-gray-600">Status:</span>
-                                        <span class="inline-block bg-{{ \$jobListing->job_status === 'published' ? 'green' : (\$jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ \$jobListing->job_status === 'published' ? 'green' : (\$jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
-                                            {{ ucfirst(\$jobListing->job_status) }}
+                                        <span class="inline-block bg-{{ $jobListing->job_status === 'published' ? 'green' : ($jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-100 text-{{ $jobListing->job_status === 'published' ? 'green' : ($jobListing->job_status === 'draft' ? 'yellow' : 'red') }}-800 text-xs px-2 py-1 rounded-full">
+                                            {{ ucfirst($jobListing->job_status) }}
                                         </span>
                                     </div>
                                 </div>
@@ -161,8 +161,8 @@
                                     <p class="text-gray-600">Take the next step in your career</p>
                                 </div>
 
-                                @if(\$jobListing->job_status === 'published' && (!\$jobListing->application_deadline || \$jobListing->application_deadline > now()))
-                                    <a href="{{ route('jobs.apply.form', \$jobListing) }}" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg text-center inline-block transition duration-300">
+                                @if($jobListing->job_status === 'published' && (!$jobListing->application_deadline || $jobListing->application_deadline > now()))
+                                    <a href="{{ route('jobs.apply.form', $jobListing) }}" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg text-center inline-block transition duration-300">
                                         Apply Now
                                     </a>
 
@@ -173,9 +173,9 @@
                                     </div>
                                 @else
                                     <div class="text-center">
-                                        @if(\$jobListing->job_status !== 'published')
+                                        @if($jobListing->job_status !== 'published')
                                             <p class="text-gray-500">This job listing is not currently accepting applications.</p>
-                                        @elseif(\$jobListing->application_deadline && \$jobListing->application_deadline <= now())
+                                        @elseif($jobListing->application_deadline && $jobListing->application_deadline <= now())
                                             <p class="text-gray-500">Application deadline has passed.</p>
                                         @else
                                             <p class="text-gray-500">Applications are not available at this time.</p>
@@ -196,8 +196,8 @@
                                         <i class="fas fa-building text-gray-500 text-xl"></i>
                                     </div>
                                     <div class="ml-4">
-                                        <h4 class="font-medium text-gray-900">{{ \$jobListing->poster->name }}</h4>
-                                        <p class="text-sm text-gray-600">{{ \$jobListing->poster->email }}</p>
+                                        <h4 class="font-medium text-gray-900">{{ $jobListing->poster->name }}</h4>
+                                        <p class="text-sm text-gray-600">{{ $jobListing->poster->email }}</p>
                                     </div>
                                 </div>
                             </div>

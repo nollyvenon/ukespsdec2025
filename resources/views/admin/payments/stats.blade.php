@@ -66,24 +66,29 @@
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
+                                        <table class="table table-striped table-hover table-bordered">
+                                            <thead class="table-dark">
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>User</th>
-                                                    <th>Type</th>
-                                                    <th>Amount</th>
-                                                    <th>Gateway</th>
-                                                    <th>Status</th>
-                                                    <th>Date</th>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">User</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col">Gateway</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @forelse($recentTransactions as $transaction)
                                                     <tr>
                                                         <td>{{ $transaction->id }}</td>
-                                                        <td>{{ $transaction->user->name ?? 'N/A' }}</td>
-                                                        <td>{{ ucfirst(str_replace('_', ' ', $transaction->type)) }}</td>
+                                                        <td>
+                                                            <div class="d-flex flex-column">
+                                                                <span>{{ $transaction->user->name ?? 'N/A' }}</span>
+                                                                <small class="text-muted" title="{{ $transaction->user->email ?? 'N/A' }}">{{ Str::limit($transaction->user->email ?? 'N/A', 20) }}</small>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-truncate" style="max-width: 120px;" title="{{ ucfirst(str_replace('_', ' ', $transaction->type)) }}">{{ ucfirst(str_replace('_', ' ', $transaction->type)) }}</td>
                                                         <td>${{ number_format($transaction->amount, 2) }}</td>
                                                         <td>{{ ucfirst($transaction->payment_gateway) }}</td>
                                                         <td>
@@ -95,7 +100,7 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="7" class="text-center">No recent transactions</td>
+                                                        <td colspan="7" class="text-center py-4">No recent transactions</td>
                                                     </tr>
                                                 @endforelse
                                             </tbody>
@@ -175,14 +180,14 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
+                                        <table class="table table-striped table-hover table-bordered">
+                                            <thead class="table-dark">
                                                 <tr>
-                                                    <th>Month</th>
-                                                    <th>Transactions</th>
-                                                    <th>Total Revenue</th>
-                                                    <th>Success Rate</th>
-                                                    <th>Average Value</th>
+                                                    <th scope="col">Month</th>
+                                                    <th scope="col">Transactions</th>
+                                                    <th scope="col">Total Revenue</th>
+                                                    <th scope="col">Success Rate</th>
+                                                    <th scope="col">Average Value</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -191,7 +196,7 @@
                                                         $month = now()->subMonths($i);
                                                         $startOfMonth = $month->startOfMonth();
                                                         $endOfMonth = $month->endOfMonth();
-                                                        
+
                                                         $monthlyTransactions = \App\Models\Transaction::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
                                                         $monthlyCompleted = \App\Models\Transaction::where('status', 'completed')->whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
                                                         $monthlyRevenue = \App\Models\Transaction::where('status', 'completed')->whereBetween('created_at', [$startOfMonth, $endOfMonth])->sum('amount');

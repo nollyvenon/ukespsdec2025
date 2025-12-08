@@ -209,16 +209,16 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::post('/users', [App\Http\Controllers\AdminController::class, 'storeUser'])->name('users.store');
 
         // Admin routes for ads
-        Route::get('/ads', [App\Http\Controllers\AdController::class, 'adminIndex'])->name('admin.ads.index');
-        Route::get('/ads/slider', [App\Http\Controllers\AdController::class, 'sliderManagement'])->name('admin.ads.slider');
-        Route::get('/ads/create', [App\Http\Controllers\AdController::class, 'create'])->name('admin.ads.create');
-        Route::post('/ads', [App\Http\Controllers\AdController::class, 'store'])->name('admin.ads.store');
-        Route::get('/ads/{ad}', [App\Http\Controllers\AdController::class, 'show'])->name('admin.ads.show');
-        Route::get('/ads/{ad}/edit', [App\Http\Controllers\AdController::class, 'edit'])->name('admin.ads.edit');
-        Route::put('/ads/{ad}', [App\Http\Controllers\AdController::class, 'update'])->name('admin.ads.update');
-        Route::delete('/ads/{ad}', [App\Http\Controllers\AdController::class, 'destroy'])->name('admin.ads.destroy');
-        Route::post('/ads/{ad}/toggle-status', [App\Http\Controllers\AdController::class, 'toggleStatus'])->name('admin.ads.toggle-status');
-        Route::get('/ads/api/positions/{position}/{page?}', [App\Http\Controllers\AdController::class, 'getAdsForPosition'])->name('admin.ads.get-ads-for-position');
+        Route::get('/ads', [App\Http\Controllers\AdController::class, 'adminIndex'])->name('ads.index');
+        Route::get('/ads/slider', [App\Http\Controllers\AdController::class, 'sliderManagement'])->name('ads.slider');
+        Route::get('/ads/create', [App\Http\Controllers\AdController::class, 'create'])->name('ads.create');
+        Route::post('/ads', [App\Http\Controllers\AdController::class, 'store'])->name('ads.store');
+        Route::get('/ads/{ad}', [App\Http\Controllers\AdController::class, 'show'])->name('ads.show');
+        Route::get('/ads/{ad}/edit', [App\Http\Controllers\AdController::class, 'edit'])->name('ads.edit');
+        Route::put('/ads/{ad}', [App\Http\Controllers\AdController::class, 'update'])->name('ads.update');
+        Route::delete('/ads/{ad}', [App\Http\Controllers\AdController::class, 'destroy'])->name('ads.destroy');
+        Route::post('/ads/{ad}/toggle-status', [App\Http\Controllers\AdController::class, 'toggleStatus'])->name('ads.toggle-status');
+        Route::get('/ads/api/positions/{position}/{page?}', [App\Http\Controllers\AdController::class, 'getAdsForPosition'])->name('ads.get-ads-for-position');
 
         // Admin routes for hero content (explicitly named to ensure admin prefix)
         Route::get('/hero-contents', [App\Http\Controllers\HeroContentController::class, 'index'])->name('hero-contents.index');
@@ -228,6 +228,13 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
         Route::get('/hero-contents/{heroContent}/edit', [App\Http\Controllers\HeroContentController::class, 'edit'])->name('hero-contents.edit');
         Route::put('/hero-contents/{heroContent}', [App\Http\Controllers\HeroContentController::class, 'update'])->name('hero-contents.update');
         Route::delete('/hero-contents/{heroContent}', [App\Http\Controllers\HeroContentController::class, 'destroy'])->name('hero-contents.destroy');
+
+        // Admin routes for events
+        Route::get('/events/create', [App\Http\Controllers\EventsController::class, 'create'])->name('events.create');
+        Route::post('/events', [App\Http\Controllers\EventsController::class, 'store'])->name('events.store');
+        Route::get('/events/{event}/edit', [App\Http\Controllers\EventsController::class, 'edit'])->name('events.edit');
+        Route::put('/events/{event}', [App\Http\Controllers\EventsController::class, 'update'])->name('events.update');
+        Route::delete('/events/{event}', [App\Http\Controllers\EventsController::class, 'destroy'])->name('events.destroy');
 
         // Admin routes for applications
         Route::get('/applications', [App\Http\Controllers\JobListingsController::class, 'adminApplications'])->name('applications.index');
@@ -253,6 +260,11 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
             Route::delete('/{cv}', [App\Http\Controllers\CvUploadController::class, 'adminDestroy'])->name('destroy');
             Route::post('/{cv}/toggle-public', [App\Http\Controllers\CvUploadController::class, 'adminTogglePublic'])->name('toggle-public');
         });
+
+        // Admin routes for universities
+        Route::get('/universities', [App\Http\Controllers\AdminController::class, 'universitiesIndex'])->name('universities.index');
+        Route::get('/universities/{university}', [App\Http\Controllers\AdminController::class, 'universityCourses'])->name('universities.show');
+        Route::get('/universities/{university}/courses', [App\Http\Controllers\AdminController::class, 'universityCourses'])->name('universities.courses');
 
         // Admin portal routes
         Route::prefix('portals')->name('portals.')->middleware(['auth', 'admin'])->group(function () {
@@ -293,6 +305,11 @@ Route::prefix('universities')->name('universities.')->group(function () {
     Route::get('/search-results', [App\Http\Controllers\UniversityController::class, 'searchResults'])->name('search-results');
     Route::get('/courses/{id}', [App\Http\Controllers\UniversityController::class, 'coursesByUniversity'])->name('courses');
 });
+
+// Additional university routes for admin access
+Route::get('/admin/universities', [App\Http\Controllers\AdminController::class, 'universitiesIndex'])->name('admin.universities.index');
+Route::get('/admin/universities/{university}', [App\Http\Controllers\AdminController::class, 'universityCourses'])->name('admin.universities.show');
+Route::get('/admin/universities/{university}/courses', [App\Http\Controllers\AdminController::class, 'universityCourses'])->name('admin.universities.courses');
 
     // Payment processing routes
     Route::prefix('payment')->name('payment.')->group(function () {

@@ -82,7 +82,7 @@
                                                     <td>{{ $event->title }}</td>
                                                     <td>{{ $event->start_date->format('M j, Y g:i A') }}</td>
                                                     <td>{{ $event->location }}</td>
-                                                    <td>{{ $event->eventRegistrations->count() }}</td>
+                                                    <td>{{ $event->registrations->count() }}</td>
                                                     <td>
                                                         <span class="badge bg-{{ $event->event_status === 'published' ? 'success' : ($event->event_status === 'draft' ? 'warning' : 'danger') }}">
                                                             {{ ucfirst($event->event_status) }}

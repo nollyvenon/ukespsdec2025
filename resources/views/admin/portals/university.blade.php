@@ -33,7 +33,7 @@
                                 <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-school"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">Universities</span>
-                                    <span class="info-box-number">{{ $universities->count() }}</span>
+                                    <span class="info-box-number">{{ isset($universities) ? $universities->count() : 0 }}</span>
                                 </div>
                             </div>
                         </div>
@@ -172,25 +172,31 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        @foreach($universities as $uni)
-                                        <div class="col-md-4">
-                                            <div class="card card-outline card-info">
-                                                <div class="card-header">
-                                                    <h3 class="card-title">{{ $uni->name }}</h3>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p><strong>University:</strong> {{ $uni->name }}</p>
-                                                    @if($uni->description)
-                                                        <p><strong>Description:</strong> {{ Str::limit($uni->description, 100) }}</p>
-                                                    @endif
-                                                    <p><strong>Courses:</strong> {{ \App\Models\AffiliatedCourse::where('university_id', $uni->id)->count() }}</p>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <a href="{{ route('affiliated-courses.index') }}?university={{ urlencode($uni->name) }}" class="btn btn-sm btn-primary">View Courses</a>
+                                        @if(isset($universities) && $universities->count() > 0)
+                                            @foreach($universities as $uni)
+                                            <div class="col-md-4">
+                                                <div class="card card-outline card-info">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">{{ $uni->name }}</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <p><strong>University:</strong> {{ $uni->name }}</p>
+                                                        @if($uni->description)
+                                                            <p><strong>Description:</strong> {{ Str::limit($uni->description, 100) }}</p>
+                                                        @endif
+                                                        <p><strong>Courses:</strong> {{ \App\Models\AffiliatedCourse::where('university_id', $uni->id)->count() }}</p>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <a href="{{ route('affiliated-courses.index') }}?university={{ urlencode($uni->name) }}" class="btn btn-sm btn-primary">View Courses</a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        @endforeach
+                                            @endforeach
+                                        @else
+                                            <div class="col-12">
+                                                <p class="text-center text-muted">No universities with affiliated courses found.</p>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

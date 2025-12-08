@@ -275,7 +275,7 @@ class JobListingsController extends Controller
      */
     public function adminIndex()
     {
-        $jobListings = JobListing::with('poster')->paginate(15);
+        $jobListings = JobListing::with(['poster', 'jobApplications'])->paginate(15);
         return view('admin.job-listings.index', compact('jobListings'));
     }
 

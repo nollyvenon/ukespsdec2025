@@ -57,6 +57,7 @@
                         <a href="{{ route('about') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">About Us</a>
                         <a href="{{ route('services') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Services</a>
                         <a href="{{ route('courses.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Courses</a>
+                        <a href="{{ route('universities.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Universities</a>
                         <a href="{{ route('jobs.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Jobs</a>
                         <a href="{{ route('events.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">Events</a>
                         <a href="{{ route('faqs.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2">FAQs</a>
@@ -83,6 +84,7 @@
                     <a href="{{ route('about') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">About Us</a>
                     <a href="{{ route('services') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Services</a>
                     <a href="{{ route('courses.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Courses</a>
+                    <a href="{{ route('universities.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Universities</a>
                     <a href="{{ route('jobs.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Jobs</a>
                     <a href="{{ route('events.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Events</a>
                     <a href="{{ route('faqs.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">FAQs</a>

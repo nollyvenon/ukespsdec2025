@@ -256,6 +256,7 @@
                             <li><a href="{{ route('courses.index') }}" class="text-gray-400 hover:text-white">Courses</a></li>
                             <li><a href="{{ route('jobs.index') }}" class="text-gray-400 hover:text-white">Jobs</a></li>
                             <li><a href="{{ route('events.index') }}" class="text-gray-400 hover:text-white">Events</a></li>
+                            <li><a href="{{ route('universities.index') }}" class="text-gray-400 hover:text-white">Universities</a></li>
                         </ul>
                     </div>
                     <div>

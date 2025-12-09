@@ -3,8 +3,11 @@
 @section('title', $university->name)
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <!-- University Header -->
+<div class="py-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6">
+                <!-- University Header -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <div class="flex flex-col md:flex-row items-start md:items-center">
             @if($university->logo)
@@ -185,6 +188,8 @@
                 <p class="text-gray-600 mt-2">This university currently has no published courses.</p>
             </div>
         @endif
+            </div>
+        </div>
     </div>
 </div>
 @endsection

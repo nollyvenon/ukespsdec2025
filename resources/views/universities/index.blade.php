@@ -3,8 +3,11 @@
 @section('title', 'Universities')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">Universities</h1>
+<div class="py-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="p-6">
+                <h1 class="text-3xl font-bold text-gray-800 mb-8">Universities</h1>
     
     <!-- Search and Filter Section -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -119,5 +122,8 @@
             <p class="text-gray-600 mt-2">There are no universities matching your search criteria.</p>
         </div>
     @endif
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

@@ -61,7 +61,7 @@
                             </div>
 
                             <!-- Skills Covered -->
-                            @if($affiliatedCourse->skills_covered && count($affiliatedCourse->skills_covered) > 0)
+                            @if($affiliatedCourse->skills_covered && is_array($affiliatedCourse->skills_covered) && count($affiliatedCourse->skills_covered) > 0)
                                 <div class="mb-8">
                                     <h2 class="text-2xl font-bold text-gray-900 mb-4 pb-2 border-b">Skills You'll Gain</h2>
                                     <div class="flex flex-wrap gap-2">
@@ -93,7 +93,7 @@
                             @endif
 
                             <!-- Career Outcomes -->
-                            @if($affiliatedCourse->career_outcomes && count($affiliatedCourse->career_outcomes) > 0)
+                            @if($affiliatedCourse->career_outcomes && is_array($affiliatedCourse->career_outcomes) && count($affiliatedCourse->career_outcomes) > 0)
                                 <div class="mb-8">
                                     <h2 class="text-2xl font-bold text-gray-900 mb-4 pb-2 border-b">Career Outcomes</h2>
                                     <ul class="list-disc pl-5 space-y-2">

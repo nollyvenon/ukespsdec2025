@@ -91,7 +91,7 @@
                                                             Free
                                                         @endif
                                                     </td>
-                                                    <td>{{ $course->enrollments->count() }}</td>
+                                                    <td>{{ $course->affiliatedCourseEnrollments->count() }}</td>
                                                     <td>
                                                         <span class="badge bg-{{ $course->status === 'published' || $course->status === 'ongoing' ? 'success' : ($course->status === 'draft' ? 'warning' : 'danger') }}">
                                                             {{ ucfirst($course->status) }}

@@ -26,8 +26,9 @@
                                 <div class="mb-3 p-3 border rounded">
                                     <div class="flex items-center justify-between">
                                         <span class="font-medium">{{ $gateway->name }}</span>
-                                        <form method="POST" action="#" class="inline">
+                                        <form method="POST" action="{{ route('payment.initialize', $transaction->transaction_id) }}" class="inline">
                                             @csrf
+                                            <input type="hidden" name="gateway" value="{{ $gateway->slug }}">
                                             <button type="submit" class="bg-green-500 hover:bg-green-700 text-white py-1 px-3 rounded text-sm">
                                                 Pay Now
                                             </button>

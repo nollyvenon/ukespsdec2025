@@ -314,6 +314,7 @@ Route::get('/admin/universities/{university}/courses', [App\Http\Controllers\Adm
     // Payment processing routes
     Route::prefix('payment')->name('payment.')->group(function () {
         Route::get('/process/{transactionId}', [App\Http\Controllers\PaymentController::class, 'process'])->name('process');
+        Route::post('/initialize/{transactionId}', [App\Http\Controllers\PaymentController::class, 'initializePayment'])->name('initialize');
         Route::post('/webhook/{gateway}', [App\Http\Controllers\PaymentController::class, 'webhook'])->name('webhook');
         Route::get('/success/{transactionId}', [App\Http\Controllers\PaymentController::class, 'success'])->name('success');
         Route::get('/cancel/{transactionId}', [App\Http\Controllers\PaymentController::class, 'cancel'])->name('cancel');

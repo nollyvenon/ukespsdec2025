@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentGateway;
+use App\Models\Transaction;
+use App\Models\JobListing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
@@ -120,14 +123,75 @@ class PaymentController extends Controller
      */
     public function process($transactionId)
     {
-        // In a real implementation, this would redirect to the payment gateway
-        // For now, we'll simulate the payment flow
         $transaction = Transaction::where('transaction_id', $transactionId)->firstOrFail();
 
         // Get available payment gateways
         $gateways = PaymentGateway::where('is_active', true)->get();
 
         return view('payment.process', compact('transaction', 'gateways'));
+    }
+
+    /**
+     * Initialize payment with selected gateway.
+     */
+    public function initializePayment(Request $request, $transactionId)
+    {
+        $request->validate([
+            'gateway' => 'required|in:paystack,flutterwave,paypal,stripe'
+        ]);
+
+        $transaction = Transaction::where('transaction_id', $transactionId)->firstOrFail();
+
+        $paymentService = new \App\Services\PaymentService();
+
+        try {
+            $callbackUrl = route('payment.success', $transactionId);
+            $cancelUrl = route('payment.cancel', $transactionId);
+            $successUrl = route('payment.success', $transactionId);
+
+            $additionalData = [
+                'callback_url' => $callbackUrl,
+                'cancel_url' => $cancelUrl,
+                'success_url' => $successUrl,
+                'return_url' => $callbackUrl,
+            ];
+
+            $result = $paymentService->processPayment($transaction, $request->gateway, $additionalData);
+
+            if ($result) {
+                // Update transaction with payment gateway
+                $transaction->update(['payment_gateway' => $request->gateway]);
+
+                // Return the appropriate response based on the gateway
+                switch ($request->gateway) {
+                    case 'paystack':
+                    case 'flutterwave':
+                        if (isset($result['data']['authorization_url'])) {
+                            return redirect($result['data']['authorization_url']);
+                        }
+                        break;
+
+                    case 'paypal':
+                        // PayPal redirects happen on the frontend typically
+                        return response()->json([
+                            'approval_url' => $result->links[1]->href ?? null,
+                            'order_id' => $result->id ?? null,
+                        ]);
+
+                    case 'stripe':
+                        if (isset($result->url)) {
+                            return redirect($result->url);
+                        }
+                        break;
+                }
+            }
+
+            return redirect()->back()->with('error', 'Failed to initiate payment with selected gateway.');
+
+        } catch (\Exception $e) {
+            Log::error('Payment initialization error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to initiate payment. Please try again.');
+        }
     }
 
     /**
@@ -160,11 +224,16 @@ class PaymentController extends Controller
      */
     public function webhook($gateway)
     {
-        // Process webhook from payment gateway
-        // This would typically validate the webhook signature and update transaction status
-        // For now, returning a simple response
+        $request = request()->all();
 
-        return response()->json(['status' => 'received']);
+        $paymentService = new \App\Services\PaymentService();
+        $result = $paymentService->handleWebhook($gateway, $request);
+
+        if ($result) {
+            return response()->json(['status' => 'success']);
+        }
+
+        return response()->json(['status' => 'error'], 400);
     }
 
     /**

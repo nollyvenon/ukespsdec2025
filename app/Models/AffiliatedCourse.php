@@ -56,6 +56,14 @@ class AffiliatedCourse extends Model
     }
 
     /**
+     * Get the enrollments for this affiliated course (alias).
+     */
+    public function enrollments()
+    {
+        return $this->hasMany(AffiliatedCourseEnrollment::class);
+    }
+
+    /**
      * Get the university offering this affiliated course.
      */
     public function university()

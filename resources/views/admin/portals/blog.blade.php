@@ -55,9 +55,11 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Recent Posts</h3>
                                     <div class="card-tools">
-                                        <a href="{{ route('blog.create') }}" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-plus"></i> Create Post
-                                        </a>
+                                        @can('create', App\Models\BlogPost::class)
+                                            <a href="{{ route('blog.create') }}" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-plus"></i> Create Post
+                                            </a>
+                                        @endcan
                                     </div>
                                 </div>
                                 <div class="card-body p-0">

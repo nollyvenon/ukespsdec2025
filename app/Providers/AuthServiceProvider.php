@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\BlogPost;
 use App\Models\Event;
 use App\Models\Course;
 use App\Models\JobListing;
 use App\Models\Ad;
 use App\Models\CvUpload;
+use App\Policies\BlogPostPolicy;
 use App\Policies\EventPolicy;
 use App\Policies\CoursePolicy;
 use App\Policies\JobListingPolicy;
@@ -22,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+        BlogPost::class => BlogPostPolicy::class,
         Event::class => EventPolicy::class,
         Course::class => CoursePolicy::class,
         JobListing::class => JobListingPolicy::class,

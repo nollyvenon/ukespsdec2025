@@ -453,9 +453,26 @@ class AdminController extends Controller
      */
     public function universityPortal()
     {
-        $universityIds = AffiliatedCourse::pluck('university_id')->toArray();
-        $universities = $universityIds ? University::whereIn('id', $universityIds)->distinct()->get() : collect([]);
-        $universityCourses = AffiliatedCourse::with('university')->orderBy('created_at', 'desc')->paginate(20);
+        try {
+            // Get IDs of universities that have affiliated courses
+            $universityIds = AffiliatedCourse::pluck('university_id')->toArray();
+
+            // Remove null values and duplicates to ensure clean array
+            $universityIds = array_filter(array_unique($universityIds), function($id) {
+                return $id !== null && $id !== '';
+            });
+
+            if (!empty($universityIds)) {
+                $universities = University::whereIn('id', $universityIds)->distinct()->get();
+            } else {
+                $universities = collect(); // Return an empty collection, never null
+            }
+        } catch (\Exception $e) {
+            // In case of any error, ensure $universities is always a collection
+            $universities = collect();
+        }
+
+        $universityCourses = AffiliatedCourse::with(['university', 'enrollments'])->orderBy('created_at', 'desc')->paginate(20);
         $universityManagers = User::where(function($query) {
             $query->where('role', 'university_manager')
                   ->orWhere('role', 'academic');

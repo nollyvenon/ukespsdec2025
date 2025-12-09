@@ -95,14 +95,14 @@
                                 </ul>
                             </div>
 
-                            @auth
+                            @can('create', App\Models\BlogPost::class)
                                 <div class="mt-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
-                                    <a href="{{ route('blog.create') }}" 
+                                    <a href="{{ route('blog.create') }}"
                                        class="block text-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
                                         Create New Post
                                     </a>
                                 </div>
-                            @endauth
+                            @endcan
                         </div>
                     </div>
                 </div>

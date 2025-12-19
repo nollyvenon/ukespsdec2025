@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('job_applications', function (Blueprint $table) {
-            $table->string('application_status')->default('submitted') // Status: submitted, reviewed, shortlisted, interview, rejected, offered, accepted
-                   ->after('applied_position');
+            // Add new tracking fields (don't add application_status since it already exists)
             $table->text('application_notes')->nullable()
                    ->after('application_status');
             $table->timestamp('reviewed_at')->nullable()
@@ -40,7 +39,6 @@ return new class extends Migration
     {
         Schema::table('job_applications', function (Blueprint $table) {
             $table->dropColumn([
-                'application_status',
                 'application_notes',
                 'reviewed_at',
                 'interview_scheduled_at',

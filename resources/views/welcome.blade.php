@@ -447,15 +447,15 @@
                                         <div class="space-y-4 mb-6">
                                             <div class="flex items-center">
                                                 <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                                <span class="text-gray-900">Advanced search filters</span>
+                                                <span>Advanced search filters</span>
                                             </div>
                                             <div class="flex items-center">
                                                 <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                                <span class="text-gray-900">Access to premium CV database</span>
+                                                <span>Access to premium CV database</span>
                                             </div>
                                             <div class="flex items-center">
                                                 <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                                <span class="text-gray-900">Download and contact candidates</span>
+                                                <span>Download and contact candidates</span>
                                             </div>
                                         </div>
 

@@ -94,7 +94,7 @@ class HomepageSectionsSeeder extends Seeder
         ];
 
         foreach ($sections as $section) {
-            HomepageSection::updateOrCreate(
+            \App\Models\HomepageSection::updateOrCreate(
                 ['section_key' => $section['section_key']],
                 $section
             );

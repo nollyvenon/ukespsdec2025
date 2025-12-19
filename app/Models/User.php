@@ -47,6 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'cv_search_credits' => 'integer',
+            'cv_search_credits_used' => 'integer',
+            'cv_search_subscription_active' => 'boolean',
+            'cv_search_subscription_expiry' => 'datetime',
         ];
     }
 
@@ -299,5 +303,66 @@ class User extends Authenticatable
     public function isSubscribed(): bool
     {
         return $this->hasActiveSubscription();
+    }
+
+    /**
+     * Get the CV search logs for this user.
+     */
+    public function cvSearchLogs()
+    {
+        return $this->hasMany(\App\Models\CvSearchLog::class, 'user_id');
+    }
+
+    /**
+     * Check if the user has an active CV search subscription.
+     */
+    public function hasActiveCvSearchSubscription(): bool
+    {
+        return $this->cv_search_subscription_active &&
+               (!$this->cv_search_subscription_expiry || $this->cv_search_subscription_expiry->isFuture());
+    }
+
+    /**
+     * Check if the user has sufficient CV search credits.
+     */
+    public function hasCvSearchCredits(int $requiredCredits = 1): bool
+    {
+        return $this->cv_search_credits >= $requiredCredits;
+    }
+
+    /**
+     * Check if the user can perform CV search (has credits or subscription).
+     */
+    public function canPerformCvSearch(): bool
+    {
+        return $this->hasActiveCvSearchSubscription() || $this->hasCvSearchCredits(1);
+    }
+
+    /**
+     * Deduct CV search credits.
+     */
+    public function deductCvSearchCredits(int $amount = 1): void
+    {
+        if ($this->cv_search_credits >= $amount) {
+            $this->decrement('cv_search_credits', $amount);
+            $this->increment('cv_search_credits_used', $amount);
+        }
+    }
+
+
+    /**
+     * Add CV search credits.
+     */
+    public function addCvSearchCredits(int $amount): void
+    {
+        $this->increment('cv_search_credits', $amount);
+    }
+
+    /**
+     * Check if user can perform CV search (either has credits or subscription).
+     */
+    public function canPerformCvSearch(): bool
+    {
+        return $this->hasActiveCvSearchSubscription() || $this->hasCvSearchCredits(1);
     }
 }

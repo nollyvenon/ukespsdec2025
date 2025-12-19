@@ -390,6 +390,17 @@ Route::get('/admin/universities/{university}/courses', [App\Http\Controllers\Adm
         // CV search routes for recruiters
         Route::get('/cv-search', [App\Http\Controllers\CvUploadController::class, 'search'])->name('cv.search');
 
+        // CV search functionality with credits/subscriptions (Reed-style features)
+        Route::prefix('cv-search')->name('cv-search.')->middleware(['auth'])->group(function () {
+            Route::get('/dashboard', [App\Http\Controllers\CvSearchController::class, 'index'])->name('dashboard');
+            Route::get('/search', [App\Http\Controllers\CvSearchController::class, 'search'])->name('search');
+            Route::post('/purchase-credits', [App\Http\Controllers\CvSearchController::class, 'purchaseCredits'])->name('purchase-credits');
+            Route::post('/subscribe', [App\Http\Controllers\CvSearchController::class, 'subscribe'])->name('subscribe');
+            Route::get('/history', [App\Http\Controllers\CvSearchController::class, 'searchHistory'])->name('history');
+            Route::get('/cv/{cvId}', [App\Http\Controllers\CvSearchController::class, 'showCv'])->name('view-cv');
+            Route::get('/cv/{cvId}/download', [App\Http\Controllers\CvSearchController::class, 'downloadCv'])->name('download-cv');
+        });
+
         // Premium content payment routes
         Route::post('/payment/premium-job-post', [App\Http\Controllers\PaymentController::class, 'processPremiumJobPost'])->name('payment.premium-job-post');
         Route::post('/payment/premium-course', [App\Http\Controllers\PaymentController::class, 'processPremiumCoursePayment'])->name('payment.premium-course');

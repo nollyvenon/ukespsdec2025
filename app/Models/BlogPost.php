@@ -30,6 +30,7 @@ class BlogPost extends Model
         'content',
         'featured_image',
         'is_published',
+        'is_featured',
         'published_at',
         'view_count',
     ];

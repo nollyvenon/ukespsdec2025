@@ -46,6 +46,22 @@ class CvUpload extends Model
         'last_position_applied',
         'application_count',
         'last_application_at',
+        'parsed_skills',
+        'parsed_qualifications',
+        'parsed_experience',
+        'parsed_education',
+        'cv_summary',
+        'auto_parsed',
+        'parsed_at',
+        'skill_match_scores',
+        'qualification_match_scores',
+        'experience_match_scores',
+        'total_match_score',
+        'recommended_jobs',
+        'job_recommendation_scores',
+        'cover_letter_path',
+        'cover_letter_content',
+        'cover_letter_keywords',
     ];
 
     /**
@@ -74,6 +90,19 @@ class CvUpload extends Model
         'auto_parse_enabled' => 'boolean',
         'application_count' => 'integer',
         'last_application_at' => 'datetime',
+        'parsed_skills' => 'array',
+        'parsed_qualifications' => 'array',
+        'parsed_experience' => 'array',
+        'parsed_education' => 'array',
+        'auto_parsed' => 'boolean',
+        'parsed_at' => 'datetime',
+        'skill_match_scores' => 'array',
+        'qualification_match_scores' => 'array',
+        'experience_match_scores' => 'array',
+        'total_match_score' => 'float',
+        'recommended_jobs' => 'array',
+        'job_recommendation_scores' => 'array',
+        'cover_letter_keywords' => 'array',
     ];
 
     /**

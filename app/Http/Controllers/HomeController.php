@@ -31,6 +31,27 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
 
+        // Get premium (featured) jobs - these should be the "featured" jobs
+        $premiumJobs = JobListing::where('job_status', 'published')
+            ->where('is_premium', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(12)
+            ->get();
+
+        // Get premium (featured) events - these should be the "featured" events
+        $premiumEvents = Event::where('event_status', 'published')
+            ->where('is_premium', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(12)
+            ->get();
+
+        // Get featured blog posts
+        $featuredPosts = \App\Models\BlogPost::where('is_published', true)
+            ->where('is_featured', true)
+            ->orderBy('published_at', 'desc')
+            ->limit(12)
+            ->get();
+
         // Get featured courses
         $featuredCourses = AffiliatedCourse::where('status', 'published')
             ->where('is_featured', true)
@@ -47,12 +68,19 @@ class HomeController extends Controller
         // Get hero content
         $heroContents = \App\Models\HeroContent::activeOrdered()->get();
 
+        // Get homepage sections configuration
+        $homepageSections = \App\Models\HomepageSection::orderBy('display_order')->get();
+
         return view('welcome', compact(
             'latestJobs',
             'latestEvents',
+            'premiumJobs',
+            'premiumEvents',
+            'featuredPosts',
             'featuredCourses',
             'testimonials',
-            'heroContents'
+            'heroContents',
+            'homepageSections'
         ));
     }
 }

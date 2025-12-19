@@ -25,6 +25,7 @@ class Event extends Model
         'registration_deadline',
         'event_image',
         'event_status',
+        'is_featured',
         'created_by',
         'is_premium',
         'premium_fee',

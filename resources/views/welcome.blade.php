@@ -21,24 +21,24 @@
         .hero-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        
+
         .feature-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        
+
         .hover-lift {
             transition: all 0.3s ease;
         }
-        
+
         .hover-lift:hover {
             transform: translateY(-5px);
         }
-        
+
         .ad-placement {
             background-color: #f9fafb;
             border: 1px dashed #d1d5db;
@@ -46,7 +46,7 @@
             text-align: center;
             margin: 10px 0;
         }
-        
+
         .swiper-slide img {
             width: 100%;
             height: 400px;
@@ -166,104 +166,687 @@
             </div>
         @endif>
 
-        <!-- Hero Section -->
-        <section class="relative bg-gray-900 text-white overflow-hidden">
-            <!-- Hero Content Slider -->
-            @if(isset($heroContents) && $heroContents->count() > 0)
-                <div class="swiper heroSwiper">
-                    <div class="swiper-wrapper">
-                        @foreach($heroContents as $heroContent)
-                            <div class="swiper-slide h-[700px]">
-                                @if($heroContent->content_type === 'image' && $heroContent->content_url)
-                                    <img src="{{ asset('storage/' . $heroContent->content_url) }}" alt="{{ $heroContent->title }}" class="w-full h-full object-cover">
-                                @elseif($heroContent->content_type === 'youtube' && $heroContent->youtube_url)
-                                    <div class="relative w-full h-full">
-                                        <iframe
-                                            class="w-full h-full"
-                                            src="{{ str_replace('watch?v=', 'embed/', str_replace('youtu.be/', 'youtube.com/embed/', $heroContent->youtube_url)) }}"
-                                            title="{{ $heroContent->title }}"
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                @elseif($heroContent->content_type === 'video' && $heroContent->content_url)
-                                    <video autoplay muted loop class="w-full h-full object-cover">
-                                        <source src="{{ asset('storage/' . $heroContent->content_url) }}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                @else
-                                    <div class="hero-bg w-full h-full flex items-center justify-center">
-                                        <div class="text-center max-w-4xl px-4">
-                                            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-                                                {{ $heroContent->title }}
-                                            </h1>
-                                            @if($heroContent->subtitle)
-                                                <p class="text-xl md:text-2xl mb-10 opacity-90">
-                                                    {{ $heroContent->subtitle }}
-                                                </p>
-                                            @endif
-                                            @if($heroContent->button_text && $heroContent->button_url)
-                                                <a href="{{ $heroContent->button_url }}" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-700 transition-all duration-300 hover-lift">
-                                                    {{ $heroContent->button_text }}
-                                                </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endif
+        <!-- Render homepage sections based on configuration -->
+        @if(isset($homepageSections))
+            @foreach($homepageSections as $section)
+                @switch($section->section_key)
+                    @case('hero_banner')
+                        @if($section->is_enabled)
+                            <!-- Hero Section -->
+                            <section class="relative bg-gray-900 text-white overflow-hidden">
+                                <!-- Hero Content Slider -->
+                                @if(isset($heroContents) && $heroContents->count() > 0)
+                                    <div class="swiper heroSwiper">
+                                        <div class="swiper-wrapper">
+                                            @foreach($heroContents as $heroContent)
+                                                <div class="swiper-slide h-[700px]">
+                                                    @if($heroContent->content_type === 'image' && $heroContent->content_url)
+                                                        <img src="{{ asset('storage/' . $heroContent->content_url) }}" alt="{{ $heroContent->title }}" class="w-full h-full object-cover">
+                                                    @elseif($heroContent->content_type === 'youtube' && $heroContent->youtube_url)
+                                                        <div class="relative w-full h-full">
+                                                            <iframe
+                                                                class="w-full h-full"
+                                                                src="{{ str_replace('watch?v=', 'embed/', str_replace('youtu.be/', 'youtube.com/embed/', $heroContent->youtube_url)) }}"
+                                                                title="{{ $heroContent->title }}"
+                                                                frameborder="0"
+                                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                allowfullscreen>
+                                                            </iframe>
+                                                        </div>
+                                                    @elseif($heroContent->content_type === 'video' && $heroContent->content_url)
+                                                        <video autoplay muted loop class="w-full h-full object-cover">
+                                                            <source src="{{ asset('storage/' . $heroContent->content_url) }}" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    @else
+                                                        <div class="hero-bg w-full h-full flex items-center justify-center">
+                                                            <div class="text-center max-w-4xl px-4">
+                                                                <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+                                                                    {{ $heroContent->title }}
+                                                                </h1>
+                                                                @if($heroContent->subtitle)
+                                                                    <p class="text-xl md:text-2xl mb-10 opacity-90">
+                                                                        {{ $heroContent->subtitle }}
+                                                                    </p>
+                                                                @endif
+                                                                @if($heroContent->button_text && $heroContent->button_url)
+                                                                    <a href="{{ $heroContent->button_url }}" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-700 transition-all duration-300 hover-lift">
+                                                                        {{ $heroContent->button_text }}
+                                                                    </a>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endif
 
-                                <!-- Overlay for text when there's media content -->
-                                @if(in_array($heroContent->content_type, ['image', 'video', 'youtube']))
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
-                                        <div class="text-center max-w-4xl px-4">
-                                            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-                                                {{ $heroContent->title }}
-                                            </h1>
-                                            @if($heroContent->subtitle)
-                                                <p class="text-xl md:text-2xl mb-10 opacity-90">
-                                                    {{ $heroContent->subtitle }}
+                                                    <!-- Overlay for text when there's media content -->
+                                                    @if(in_array($heroContent->content_type, ['image', 'video', 'youtube']))
+                                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
+                                                            <div class="w-full max-w-6xl mx-auto px-4">
+                                                                <div class="text-center mb-10">
+                                                                    <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">
+                                                                        {{ $heroContent->title }}
+                                                                    </h1>
+                                                                    @if($heroContent->subtitle)
+                                                                        <p class="text-xl md:text-2xl mb-10 opacity-90 text-white">
+                                                                            {{ $heroContent->subtitle }}
+                                                                        </p>
+                                                                    @endif
+                                                                </div>
+
+                                                                <!-- Job Search Form -->
+                                                                <div class="bg-white rounded-xl shadow-2xl p-6 max-w-5xl mx-auto">
+                                                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                                        <div class="relative">
+                                                                            <label for="what" class="block text-sm font-medium text-gray-700 mb-1">What</label>
+                                                                            <div class="relative">
+                                                                                <input type="text" id="what" name="what" placeholder="Job title, keywords, or company" class="w-full rounded-lg border-gray-300 border py-3 px-4 pr-10 focus:border-indigo-500 focus:ring-indigo-500">
+                                                                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                                                                    <i class="fas fa-search text-gray-400"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="relative">
+                                                                            <label for="where" class="block text-sm font-medium text-gray-700 mb-1">Where</label>
+                                                                            <input type="text" id="where" name="where" placeholder="City, region or postcode" class="w-full rounded-lg border-gray-300 border py-3 px-4 focus:border-indigo-500 focus:ring-indigo-500">
+                                                                        </div>
+                                                                        <div class="relative">
+                                                                            <label class="block text-sm font-medium text-gray-700 mb-1">&nbsp;</label>
+                                                                            <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                                                                                Find Jobs
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mt-4 text-center">
+                                                                        <a href="{{ route('jobs.index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                                                            Advanced job search
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <!-- Add Arrows -->
+                                        <div class="swiper-button-next text-white"></div>
+                                        <div class="swiper-button-prev text-white"></div>
+                                        <!-- Add Pagination -->
+                                        <div class="swiper-pagination"></div>
+                                    </div>
+                                @else
+                                    <!-- Fallback static hero with job search form -->
+                                    <div class="hero-bg h-[700px] flex items-center">
+                                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                                            <div class="text-center mb-10">
+                                                <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">
+                                                    Transform Your Career Journey
+                                                </h1>
+                                                <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90 text-white">
+                                                    Connect with the best courses, events, and job opportunities tailored just for you.
+                                                    Find your perfect match in education and career advancement.
                                                 </p>
-                                            @endif
-                                            @if($heroContent->button_text && $heroContent->button_url)
-                                                <a href="{{ $heroContent->button_url }}" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-indigo-700 transition-all duration-300 hover-lift">
-                                                    {{ $heroContent->button_text }}
-                                                </a>
-                                            @endif
+                                            </div>
+
+                                            <!-- Job Search Form -->
+                                            <div class="bg-white rounded-xl shadow-2xl p-6 max-w-5xl mx-auto">
+                                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                    <div class="relative">
+                                                        <label for="what" class="block text-sm font-medium text-gray-700 mb-1">What</label>
+                                                        <div class="relative">
+                                                            <input type="text" id="what" name="what" placeholder="Job title, keywords, or company" class="w-full rounded-lg border-gray-300 border py-3 px-4 pr-10 focus:border-indigo-500 focus:ring-indigo-500">
+                                                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                                                <i class="fas fa-search text-gray-400"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="relative">
+                                                        <label for="where" class="block text-sm font-medium text-gray-700 mb-1">Where</label>
+                                                        <input type="text" id="where" name="where" placeholder="City, region or postcode" class="w-full rounded-lg border-gray-300 border py-3 px-4 focus:border-indigo-500 focus:ring-indigo-500">
+                                                    </div>
+                                                    <div class="relative">
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">&nbsp;</label>
+                                                        <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                                                            Find Jobs
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-4 text-center">
+                                                    <a href="{{ route('jobs.index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                                        Advanced job search
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
-                            </div>
-                        @endforeach
-                    </div>
-                    <!-- Add Arrows -->
-                    <div class="swiper-button-next text-white"></div>
-                    <div class="swiper-button-prev text-white"></div>
-                    <!-- Add Pagination -->
-                    <div class="swiper-pagination"></div>
-                </div>
-            @else
-                <!-- Fallback static hero in case no dynamic content exists -->
-                <div class="hero-bg h-[700px] flex items-center">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-                        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight text-white">
-                            Transform Your Career Journey
-                        </h1>
-                        <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90 text-white">
-                            Connect with the best courses, events, and job opportunities tailored just for you.
-                            Find your perfect match in education and career advancement.
-                        </p>
-                        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                            <a href="{{ route('register') }}" class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 hover-lift inline-block">
-                                Get Started
-                            </a>
-                            <a href="#features" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-indigo-600 transition inline-block">
-                                Learn More
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        </section>
+                            </section>
+                        @endif
+                        @break
+                    @case('featured_events')
+                        @if($section->is_enabled)
+                            <!-- Premium Events Horizontal Scroll Section -->
+                            @if(isset($premiumEvents) && $premiumEvents->count() > 0)
+                            <section class="py-12 bg-white">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <h2 class="text-3xl font-bold text-gray-900">Featured Events</h2>
+                                        <a href="{{ route('events.index') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">View All</a>
+                                    </div>
+
+                                    <div class="overflow-x-auto pb-4">
+                                        <div class="flex space-x-4" style="scroll-snap-type: x mandatory;">
+                                            @foreach($premiumEvents as $event)
+                                                <div class="flex-shrink-0 w-80 bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" style="scroll-snap-align: start;">
+                                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ Str::limit($event->title, 40) }}</h3>
+                                                    <p class="text-gray-600 mb-3">{{ Str::limit($event->description, 80) }}</p>
+                                                    <div class="text-sm text-gray-500 mb-4">
+                                                        <p><i class="fas fa-calendar-alt mr-2"></i>{{ \Carbon\Carbon::parse($event->start_date)->format('M d, Y') }}</p>
+                                                        <p><i class="fas fa-map-marker-alt mr-2"></i>{{ Str::limit($event->location, 30) }}</p>
+                                                    </div>
+                                                    <a href="{{ route('events.show', $event) }}" class="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 text-sm">
+                                                        View Details
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            @endif
+                        @endif
+                        @break
+                    @case('featured_jobs')
+                        @if($section->is_enabled)
+                            <!-- Premium Jobs Horizontal Scroll Section -->
+                            @if(isset($premiumJobs) && $premiumJobs->count() > 0)
+                            <section class="py-12 bg-gray-50">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <h2 class="text-3xl font-bold text-gray-900">Featured Jobs</h2>
+                                        <a href="{{ route('jobs.index') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">View All</a>
+                                    </div>
+
+                                    <div class="overflow-x-auto pb-4">
+                                        <div class="flex space-x-4" style="scroll-snap-type: x mandatory;">
+                                            @foreach($premiumJobs as $job)
+                                                <div class="flex-shrink-0 w-80 bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" style="scroll-snap-align: start;">
+                                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ Str::limit($job->title, 40) }}</h3>
+                                                    <p class="text-gray-600 mb-2">{{ Str::limit($job->company, 40) }}</p>
+                                                    <p class="text-gray-600 mb-3">{{ Str::limit($job->description, 80) }}</p>
+                                                    <div class="text-sm text-gray-500 mb-4">
+                                                        <p><i class="fas fa-map-marker-alt mr-2"></i>{{ Str::limit($job->location, 30) }}</p>
+                                                        <p><i class="fas fa-clock mr-2"></i>{{ $job->job_type }}</p>
+                                                    </div>
+                                                    <a href="{{ route('jobs.show', $job) }}" class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm">
+                                                        View Details
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            @endif
+                        @endif
+                        @break
+                    @case('featured_posts')
+                        @if($section->is_enabled)
+                            <!-- Featured Posts Horizontal Scroll Section -->
+                            @if(isset($featuredPosts) && $featuredPosts->count() > 0)
+                            <section class="py-12 bg-white">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <h2 class="text-3xl font-bold text-gray-900">Featured Posts</h2>
+                                        <a href="{{ route('blog.index') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">View All</a>
+                                    </div>
+
+                                    <div class="overflow-x-auto pb-4">
+                                        <div class="flex space-x-4" style="scroll-snap-type: x mandatory;">
+                                            @foreach($featuredPosts as $post)
+                                                <div class="flex-shrink-0 w-80 bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" style="scroll-snap-align: start;">
+                                                    @if($post->featured_image)
+                                                        <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-40 object-cover">
+                                                    @endif
+                                                    <div class="p-5">
+                                                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ Str::limit($post->title, 40) }}</h3>
+                                                        <p class="text-gray-600 text-sm mb-3">{{ Str::limit($post->excerpt ?: $post->content, 70) }}</p>
+                                                        <div class="text-xs text-gray-500 mb-4">
+                                                            {{ $post->published_at ? $post->published_at->format('M d, Y') : $post->created_at->format('M d, Y') }}
+                                                        </div>
+                                                        <a href="{{ route('blog.show', $post->slug) }}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 text-sm">
+                                                            Read More
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            @endif
+                        @endif
+                        @break
+                    @case('cv_search')
+                        @if($section->is_enabled)
+                            <!-- CV Search Section -->
+                            <section class="py-16 bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="text-center mb-12">
+                                        <h2 class="text-3xl font-bold mb-4">Find the Right Candidates</h2>
+                                        <p class="text-xl opacity-90">Search our database of talented professionals</p>
+                                    </div>
+
+                                    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                                        <div class="text-center mb-6">
+                                            <i class="fas fa-search text-blue-500 text-4xl mb-4"></i>
+                                            <h3 class="text-2xl font-bold text-gray-900 mb-2">CV Search Service</h3>
+                                            <p class="text-gray-600">Access our premium CV database to find qualified candidates for your organization.</p>
+                                        </div>
+
+                                        <div class="space-y-4 mb-6">
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                                <span class="text-gray-900">Advanced search filters</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                                <span class="text-gray-900">Access to premium CV database</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                                <span class="text-gray-900">Download and contact candidates</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <a href="{{ route('cv.search') }}" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors">
+                                                Search CVs Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('top_jobs')
+                        @if($section->is_enabled)
+                            <!-- Top Jobs Section -->
+                            <section class="py-16 bg-gray-100">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <div>
+                                            <h2 class="text-3xl font-bold text-gray-900">Latest Jobs</h2>
+                                            <p class="text-lg text-gray-600">Find your next career opportunity</p>
+                                        </div>
+                                        <a href="{{ route('jobs.index') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">See all jobs</a>
+                                    </div>
+
+                                    @if(isset($latestJobs) && $latestJobs->count() > 0)
+                                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                                            @foreach($latestJobs as $job)
+                                                <div class="border-b border-gray-200 last:border-b-0 p-6">
+                                                    <div class="flex justify-between items-start">
+                                                        <div class="flex-1 pr-4">
+                                                            <h3 class="text-lg font-bold text-indigo-700 mb-1 hover:text-indigo-900 transition-colors">
+                                                                <a href="{{ route('jobs.show', $job) }}">{{ $job->title }}</a>
+                                                            </h3>
+                                                            <div class="text-gray-600 text-sm mb-1">
+                                                                {{ $job->company }} · {{ $job->location }}
+                                                            </div>
+                                                            @if($job->salary_min || $job->salary_max)
+                                                                <div class="text-green-700 font-semibold text-sm mb-2">
+                                                                    @if($job->salary_min && $job->salary_max)
+                                                                        £{{ number_format($job->salary_min) }} - £{{ number_format($job->salary_max) }}
+                                                                    @elseif($job->salary_min)
+                                                                        £{{ number_format($job->salary_min) }}+
+                                                                    @elseif($job->salary_max)
+                                                                        Up to £{{ number_format($job->salary_max) }}
+                                                                    @endif
+                                                                    @if($job->salary_type) {{ ucfirst($job->salary_type) }} @endif
+                                                                </div>
+                                                            @endif
+                                                            <div class="text-gray-500 text-xs">
+                                                                {{ $job->job_type }} · {{ \Carbon\Carbon::parse($job->created_at)->diffForHumans() }}
+                                                            </div>
+                                                        </div>
+                                                        <a href="{{ route('jobs.show', $job) }}" class="self-start bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700 transition-colors">
+                                                            View Job
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="bg-white rounded-lg shadow-md p-12 text-center">
+                                            <i class="fas fa-briefcase text-5xl text-gray-300 mb-4"></i>
+                                            <h3 class="text-xl font-medium text-gray-900 mb-2">No jobs available at the moment</h3>
+                                            <p class="text-gray-600">Check back later for new opportunities</p>
+                                        </div>
+                                    @endif
+
+                                    <div class="text-center mt-8">
+                                        <a href="{{ route('jobs.index') }}" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-medium">
+                                            Browse All Jobs
+                                        </a>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('top_careers')
+                        @if($section->is_enabled)
+                            <!-- Top Careers Section -->
+                            <section class="py-16 bg-white">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="text-center mb-12">
+                                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Top Career Paths</h2>
+                                        <p class="text-lg text-gray-600">Discover trending career paths that offer growth and stability</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                        <div class="text-center p-6 bg-gray-50 rounded-lg">
+                                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <i class="fas fa-laptop-code text-2xl text-blue-600"></i>
+                                            </div>
+                                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Technology</h3>
+                                            <p class="text-sm text-gray-600">High-demand tech jobs with excellent growth prospects</p>
+                                        </div>
+
+                                        <div class="text-center p-6 bg-gray-50 rounded-lg">
+                                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <i class="fas fa-stethoscope text-2xl text-green-600"></i>
+                                            </div>
+                                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Healthcare</h3>
+                                            <p class="text-sm text-gray-600">Stable careers with societal impact and growth</p>
+                                        </div>
+
+                                        <div class="text-center p-6 bg-gray-50 rounded-lg">
+                                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <i class="fas fa-chart-line text-2xl text-purple-600"></i>
+                                            </div>
+                                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Finance</h3>
+                                            <p class="text-sm text-gray-600">Lucrative careers in banking, investment, and analytics</p>
+                                        </div>
+
+                                        <div class="text-center p-6 bg-gray-50 rounded-lg">
+                                            <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <i class="fas fa-graduation-cap text-2xl text-yellow-600"></i>
+                                            </div>
+                                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Education</h3>
+                                            <p class="text-sm text-gray-600">Rewarding careers in teaching and academic leadership</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('features')
+                        @if($section->is_enabled)
+                            <!-- Features Section -->
+                            <section id="features" class="py-20 bg-white">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="text-center mb-16">
+                                        <h2 class="text-4xl font-bold text-gray-900 mb-4">Why Choose Us?</h2>
+                                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                                            We provide comprehensive solutions for all your educational and career needs in one platform.
+                                        </p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                        <!-- Feature 1 -->
+                                        <div class="feature-card bg-gray-50 p-8 rounded-xl">
+                                            <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                                                <i class="fas fa-graduation-cap text-3xl text-indigo-600"></i>
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Comprehensive Courses</h3>
+                                            <p class="text-gray-600 text-center">
+                                                Access hundreds of courses from top institutions and industry experts. Learn at your own pace with our flexible learning options.
+                                            </p>
+                                        </div>
+
+                                        <!-- Feature 2 -->
+                                        <div class="feature-card bg-gray-50 p-8 rounded-xl">
+                                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                                                <i class="fas fa-briefcase text-3xl text-green-600"></i>
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Career Opportunities</h3>
+                                            <p class="text-gray-600 text-center">
+                                                Explore job listings and career opportunities tailored to your skills and interests. Connect with employers directly.
+                                            </p>
+                                        </div>
+
+                                        <!-- Feature 3 -->
+                                        <div class="feature-card bg-gray-50 p-8 rounded-xl">
+                                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                                                <i class="fas fa-magic text-3xl text-purple-600"></i>
+                                            </div>
+                                            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Smart Matching</h3>
+                                            <p class="text-gray-600 text-center">
+                                                Our intelligent system analyzes your profile to recommend the most suitable courses and opportunities for your career goals.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('services')
+                        @if($section->is_enabled)
+                            <!-- Our Services Section -->
+                            <section class="py-16 bg-gray-100">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="text-center mb-12">
+                                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
+                                        <p class="text-lg text-gray-600">Comprehensive solutions for your career growth</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="bg-white rounded-lg shadow-md p-6 hover-lift">
+                                            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                                                <i class="fas fa-chalkboard-teacher text-xl text-indigo-600"></i>
+                                            </div>
+                                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Online Courses</h3>
+                                            <p class="text-gray-600">Access high-quality courses from expert instructors across various subjects and skill levels.</p>
+                                        </div>
+
+                                        <div class="bg-white rounded-lg shadow-md p-6 hover-lift">
+                                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                                                <i class="fas fa-briefcase text-xl text-green-600"></i>
+                                            </div>
+                                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Job Placements</h3>
+                                            <p class="text-gray-600">Connect with employers offering relevant job opportunities based on your skills.</p>
+                                        </div>
+
+                                        <div class="bg-white rounded-lg shadow-md p-6 hover-lift">
+                                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                                                <i class="fas fa-network-wired text-xl text-purple-600"></i>
+                                            </div>
+                                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Networking</h3>
+                                            <p class="text-gray-600">Build meaningful connections with peers, mentors, and industry leaders.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('different_sectors')
+                        @if($section->is_enabled)
+                            <!-- Different Sectors Section -->
+                            <section class="py-16 bg-white">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="text-center mb-12">
+                                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Different Sectors</h2>
+                                        <p class="text-lg text-gray-600">Explore opportunities across various industries and domains</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                        <a href="{{ route('jobs.index') }}?search=Manufacturing" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-cogs text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">Manufacturing</h3>
+                                        </a>
+                                        <a href="{{ route('jobs.index') }}?search=Healthcare" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-heartbeat text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">Healthcare</h3>
+                                        </a>
+                                        <a href="{{ route('jobs.index') }}?search=Finance" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-chart-bar text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">Finance</h3>
+                                        </a>
+                                        <a href="{{ route('jobs.index') }}?search=IT Services" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-globe text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">IT Services</h3>
+                                        </a>
+                                        <a href="{{ route('jobs.index') }}?search=Education" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-graduation-cap text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">Education</h3>
+                                        </a>
+                                        <a href="{{ route('jobs.index') }}?search=Automotive" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-car text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">Automotive</h3>
+                                        </a>
+                                        <a href="{{ route('jobs.index') }}?search=Environment" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-tree text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">Environment</h3>
+                                        </a>
+                                        <a href="{{ route('jobs.index') }}?search=Food Service" class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:bg-gray-50 transition-colors">
+                                            <i class="fas fa-utensils text-3xl text-indigo-600 mb-3"></i>
+                                            <h3 class="font-semibold text-gray-900">Food Service</h3>
+                                        </a>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('stats')
+                        @if($section->is_enabled)
+                            <!-- Stats Section -->
+                            <section class="py-20 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                                        <div>
+                                            <div class="text-5xl font-bold mb-2">500+</div>
+                                            <div class="text-xl">Courses Available</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-5xl font-bold mb-2">200+</div>
+                                            <div class="text-xl">Partner Universities</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-5xl font-bold mb-2">10K+</div>
+                                            <div class="text-xl">Happy Students</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-5xl font-bold mb-2">50+</div>
+                                            <div class="text-xl">Industry Experts</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('testimonials')
+                        @if($section->is_enabled)
+                            <!-- Testimonials -->
+                            <section class="py-20 bg-gray-50">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="text-center mb-16">
+                                        <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
+                                        <p class="text-xl text-gray-600">
+                                            Hear from people who transformed their careers with our platform.
+                                        </p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="bg-white p-8 rounded-xl shadow-md">
+                                            <div class="flex items-center mb-4">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                                                    <span class="text-gray-700 font-bold">AJ</span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <h4 class="font-bold text-gray-900">Alex Johnson</h4>
+                                                    <p class="text-gray-600">Software Engineer</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-600 italic">
+                                                "The matching system helped me find courses that perfectly matched my career goals. I landed my dream job after completing a course recommended by the system!"
+                                            </p>
+                                            <div class="flex text-yellow-400 mt-4">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="bg-white p-8 rounded-xl shadow-md">
+                                            <div class="flex items-center mb-4">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                                                    <span class="text-gray-700 font-bold">MS</span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <h4 class="font-bold text-gray-900">Maria Santos</h4>
+                                                    <p class="text-gray-600">Marketing Director</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-600 italic">
+                                                "I found the perfect job opportunity through this platform. The application process was smooth and I got hired within a month!"
+                                            </p>
+                                            <div class="flex text-yellow-400 mt-4">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="bg-white p-8 rounded-xl shadow-md">
+                                            <div class="flex items-center mb-4">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                                                    <span class="text-gray-700 font-bold">DR</span>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <h4 class="font-bold text-gray-900">David Roberts</h4>
+                                                    <p class="text-gray-600">Data Scientist</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-gray-600 italic">
+                                                "The courses are of exceptional quality. The instructors are industry professionals with real-world experience. Highly recommended!"
+                                            </p>
+                                            <div class="flex text-yellow-400 mt-4">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                    @case('call_to_action')
+                        @if($section->is_enabled)
+                            <!-- Call to Action -->
+                            <section class="py-20 bg-indigo-700 text-white">
+                                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                                    <h2 class="text-4xl font-bold mb-6">Ready to Transform Your Career?</h2>
+                                    <p class="text-xl mb-10 opacity-90">
+                                        Join thousands of successful professionals who have achieved their career goals with our platform.
+                                    </p>
+                                    <a href="{{ route('register') }}" class="inline-block bg-white text-indigo-600 px-10 py-5 rounded-lg font-bold text-xl hover:bg-gray-100 transition-all duration-300 hover-lift">
+                                        Start Your Journey Today
+                                    </a>
+                                </div>
+                            </section>
+                        @endif
+                        @break
+                @endswitch
+            @endforeach
+        @endif>
 
         <!-- Ad placement in hero section -->
         @if(isset($ads_hero) && $ads_hero->count() > 0)
@@ -284,6 +867,10 @@
                 </div>
             </div>
         @endif>
+
+
+
+
 
         <!-- Top Slider Section -->
         @if(isset($sliderAds) && $sliderAds->count() > 0)
@@ -325,446 +912,7 @@
             </section>
         @endif>
 
-        <!-- About Section -->
-        <section id="about" class="py-20 bg-gray-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-4">About Our Platform</h2>
-                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                        {{ \App\Models\SiteSetting::get('about_us') ?: 'We\'re dedicated to connecting learners with the best educational opportunities and career paths.' }}
-                    </p>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
-                        <p class="text-gray-600 mb-6">
-                            {{ \App\Models\SiteSetting::get('about_us') ?: 'Our mission is to democratize access to quality education and career opportunities.
-                            We connect students, professionals, and organizations through our comprehensive platform
-                            that offers courses, job listings, and career matching services.' }}
-                        </p>
-
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
-                        <p class="text-gray-600">
-                            We envision a world where anyone can access the educational resources and career
-                            opportunities they need to achieve their goals, regardless of their background or location.
-                        </p>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-xl shadow-lg">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Why Choose Us</h3>
-                        <ul class="space-y-4">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                                <span>Curated from top institutions and industry experts</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                                <span>Personalized recommendations based on your profile</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                                <span>Direct connection with employers and educators</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
-                                <span>Flexible learning options with self-paced courses</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
-                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                        {{ \App\Models\SiteSetting::get('services_info') ?: 'Comprehensive solutions for all your educational and career development needs.' }}
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-gray-50 p-8 rounded-xl text-center hover-lift">
-                        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-graduation-cap text-3xl text-indigo-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Online Courses</h3>
-                        <p class="text-gray-600">
-                            Access hundreds of courses from top institutions with flexible learning schedules.
-                            Learn from industry experts at your own pace.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-50 p-8 rounded-xl text-center hover-lift">
-                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-briefcase text-3xl text-green-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Job Placements</h3>
-                        <p class="text-gray-600">
-                            Find career opportunities that match your skills and experience.
-                            Connect directly with potential employers.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-50 p-8 rounded-xl text-center hover-lift">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-calendar-alt text-3xl text-purple-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Events & Workshops</h3>
-                        <p class="text-gray-600">
-                            Attend industry events, workshops, and conferences to network and enhance your skills.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-50 p-8 rounded-xl text-center hover-lift">
-                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-magic text-3xl text-blue-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Smart Matching</h3>
-                        <p class="text-gray-600">
-                            Our AI-powered system recommends the best courses and opportunities based on your profile.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-50 p-8 rounded-xl text-center hover-lift">
-                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-users text-3xl text-yellow-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Career Coaching</h3>
-                        <p class="text-gray-600">
-                            Get personalized guidance from industry experts to accelerate your career growth.
-                        </p>
-                    </div>
-
-                    <div class="bg-gray-50 p-8 rounded-xl text-center hover-lift">
-                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-certificate text-3xl text-red-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Certifications</h3>
-                        <p class="text-gray-600">
-                            Earn recognized certifications upon course completion to boost your professional profile.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Why Choose Us?</h2>
-                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                        We provide comprehensive solutions for all your educational and career needs in one platform.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <!-- Feature 1 -->
-                    <div class="feature-card bg-gray-50 p-8 rounded-xl">
-                        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                            <i class="fas fa-graduation-cap text-3xl text-indigo-600"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Comprehensive Courses</h3>
-                        <p class="text-gray-600 text-center">
-                            Access hundreds of courses from top institutions and industry experts. Learn at your own pace with our flexible learning options.
-                        </p>
-                    </div>
-
-                    <!-- Feature 2 -->
-                    <div class="feature-card bg-gray-50 p-8 rounded-xl">
-                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                            <i class="fas fa-briefcase text-3xl text-green-600"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Career Opportunities</h3>
-                        <p class="text-gray-600 text-center">
-                            Explore job listings and career opportunities tailored to your skills and interests. Connect with employers directly.
-                        </p>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="feature-card bg-gray-50 p-8 rounded-xl">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                            <i class="fas fa-magic text-3xl text-purple-600"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Smart Matching</h3>
-                        <p class="text-gray-600 text-center">
-                            Our intelligent system analyzes your profile to recommend the most suitable courses and opportunities for your career goals.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Top Jobs Section -->
-        <section class="py-16 bg-gray-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Top Job Opportunities</h2>
-                    <p class="text-lg text-gray-600">Explore the top job listings available on our platform</p>
-                </div>
-
-                @if(isset($latestJobs) && $latestJobs->count() > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach($latestJobs as $job)
-                            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                                <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ $job->title }}</h3>
-                                <p class="text-gray-600 mb-2">{{ Str::limit($job->description, 100) }}</p>
-                                <div class="flex justify-between items-center">
-                                    <div class="text-sm text-gray-500">
-                                        <p>{{ $job->company }}</p>
-                                        <p>{{ $job->location }}</p>
-                                    </div>
-                                    <a href="{{ route('jobs.show', $job) }}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-                                        Apply Now
-                                    </a>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <p class="text-center text-gray-500">No jobs available at the moment.</p>
-                @endif
-
-                <div class="text-center mt-8">
-                    <a href="{{ route('jobs.index') }}" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">
-                        View All Jobs
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Top Careers Section -->
-        <section class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Top Career Paths</h2>
-                    <p class="text-lg text-gray-600">Discover trending career paths that offer growth and stability</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="text-center p-6 bg-gray-50 rounded-lg">
-                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-laptop-code text-2xl text-blue-600"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Technology</h3>
-                        <p class="text-sm text-gray-600">High-demand tech jobs with excellent growth prospects</p>
-                    </div>
-
-                    <div class="text-center p-6 bg-gray-50 rounded-lg">
-                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-stethoscope text-2xl text-green-600"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Healthcare</h3>
-                        <p class="text-sm text-gray-600">Stable careers with societal impact and growth</p>
-                    </div>
-
-                    <div class="text-center p-6 bg-gray-50 rounded-lg">
-                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-chart-line text-2xl text-purple-600"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Finance</h3>
-                        <p class="text-sm text-gray-600">Lucrative careers in banking, investment, and analytics</p>
-                    </div>
-
-                    <div class="text-center p-6 bg-gray-50 rounded-lg">
-                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-graduation-cap text-2xl text-yellow-600"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Education</h3>
-                        <p class="text-sm text-gray-600">Rewarding careers in teaching and academic leadership</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Our Services Section -->
-        <section class="py-16 bg-gray-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
-                    <p class="text-lg text-gray-600">Comprehensive solutions for your career growth</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-lg shadow-md p-6 hover-lift">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-chalkboard-teacher text-xl text-indigo-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Online Courses</h3>
-                        <p class="text-gray-600">Access high-quality courses from expert instructors across various subjects and skill levels.</p>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow-md p-6 hover-lift">
-                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-briefcase text-xl text-green-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Job Placements</h3>
-                        <p class="text-gray-600">Connect with employers offering relevant job opportunities based on your skills.</p>
-                    </div>
-
-                    <div class="bg-white rounded-lg shadow-md p-6 hover-lift">
-                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                            <i class="fas fa-network-wired text-xl text-purple-600"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Networking</h3>
-                        <p class="text-gray-600">Build meaningful connections with peers, mentors, and industry leaders.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Different Sectors Section -->
-        <section class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Different Sectors</h2>
-                    <p class="text-lg text-gray-600">Explore opportunities across various industries and domains</p>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-cogs text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">Manufacturing</h3>
-                    </div>
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-heartbeat text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">Healthcare</h3>
-                    </div>
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-chart-bar text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">Finance</h3>
-                    </div>
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-globe text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">IT Services</h3>
-                    </div>
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-graduation-cap text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">Education</h3>
-                    </div>
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-car text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">Automotive</h3>
-                    </div>
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-tree text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">Environment</h3>
-                    </div>
-                    <div class="text-center p-4 border border-gray-200 rounded-lg hover:shadow-md">
-                        <i class="fas fa-utensils text-3xl text-indigo-600 mb-3"></i>
-                        <h3 class="font-semibold text-gray-900">Food Service</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section class="py-20 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <div class="text-5xl font-bold mb-2">500+</div>
-                        <div class="text-xl">Courses Available</div>
-                    </div>
-                    <div>
-                        <div class="text-5xl font-bold mb-2">200+</div>
-                        <div class="text-xl">Partner Universities</div>
-                    </div>
-                    <div>
-                        <div class="text-5xl font-bold mb-2">10K+</div>
-                        <div class="text-xl">Happy Students</div>
-                    </div>
-                    <div>
-                        <div class="text-5xl font-bold mb-2">50+</div>
-                        <div class="text-xl">Industry Experts</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials -->
-        <section class="py-20 bg-gray-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
-                    <p class="text-xl text-gray-600">
-                        Hear from people who transformed their careers with our platform.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-xl shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span class="text-gray-700 font-bold">AJ</span>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-900">Alex Johnson</h4>
-                                <p class="text-gray-600">Software Engineer</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">
-                            "The matching system helped me find courses that perfectly matched my career goals. I landed my dream job after completing a course recommended by the system!"
-                        </p>
-                        <div class="flex text-yellow-400 mt-4">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-xl shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span class="text-gray-700 font-bold">MS</span>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-900">Maria Santos</h4>
-                                <p class="text-gray-600">Marketing Director</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">
-                            "I found the perfect job opportunity through this platform. The application process was smooth and I got hired within a month!"
-                        </p>
-                        <div class="flex text-yellow-400 mt-4">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-xl shadow-md">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span class="text-gray-700 font-bold">DR</span>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="font-bold text-gray-900">David Roberts</h4>
-                                <p class="text-gray-600">Data Scientist</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 italic">
-                            "The courses are of exceptional quality. The instructors are industry professionals with real-world experience. Highly recommended!"
-                        </p>
-                        <div class="flex text-yellow-400 mt-4">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Ad placement above footer -->
         @if(isset($ads_above_footer) && $ads_above_footer->count() > 0)
@@ -786,18 +934,6 @@
             </div>
         @endif>
 
-        <!-- Call to Action -->
-        <section class="py-20 bg-indigo-700 text-white">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-4xl font-bold mb-6">Ready to Transform Your Career?</h2>
-                <p class="text-xl mb-10 opacity-90">
-                    Join thousands of successful professionals who have achieved their career goals with our platform.
-                </p>
-                <a href="{{ route('register') }}" class="inline-block bg-white text-indigo-600 px-10 py-5 rounded-lg font-bold text-xl hover:bg-gray-100 transition-all duration-300 hover-lift">
-                    Start Your Journey Today
-                </a>
-            </div>
-        </section>
 
         <!-- Side Ad Placements -->
         <div class="fixed top-1/2 left-2 transform -translate-y-1/2 z-50 hidden lg:block">
@@ -935,6 +1071,37 @@
                 },
             },
         });
+
+        // Job Search Form Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.querySelector('.bg-white.rounded-xl.shadow-2xl');
+            if (searchForm) {
+                const searchButton = searchForm.querySelector('button[type="submit"]');
+                if (searchButton) {
+                    searchButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const whatInput = searchForm.querySelector('#what');
+                        const whereInput = searchForm.querySelector('#where');
+
+                        let searchParams = new URLSearchParams();
+                        if (whatInput && whatInput.value.trim() !== '') {
+                            searchParams.append('search', whatInput.value.trim());
+                        }
+                        if (whereInput && whereInput.value.trim() !== '') {
+                            searchParams.append('location', whereInput.value.trim());
+                        }
+
+                        let searchUrl = "{{ route('jobs.index') }}";
+                        if (searchParams.toString() !== '') {
+                            searchUrl += '?' + searchParams.toString();
+                        }
+
+                        window.location.href = searchUrl;
+                    });
+                }
+            }
+        });
     </script>
 </body>
 </html>
+

@@ -294,6 +294,10 @@ Route::get('/portal/jobs', [DashboardController::class, 'jobsPortal'])->name('po
             Route::get('/stats', [App\Http\Controllers\AdminController::class, 'paymentStats'])->name('stats');
             Route::get('/premium', [App\Http\Controllers\AdminController::class, 'premiumPayments'])->name('premium');
         });
+
+        // Homepage Sections Management
+        Route::get('/homepage-sections', [App\Http\Controllers\Admin\HomepageSectionController::class, 'index'])->name('homepage-sections.index');
+        Route::put('/homepage-sections', [App\Http\Controllers\Admin\HomepageSectionController::class, 'update'])->name('homepage-sections.update');
     });
 //}); // Close the auth middleware group
 
@@ -372,6 +376,16 @@ Route::get('/admin/universities/{university}/courses', [App\Http\Controllers\Adm
 
         // CV download route
         Route::get('/cv/{cvUpload}/download', [App\Http\Controllers\CvUploadController::class, 'download'])->name('cv.download');
+
+        // CV analysis routes
+        Route::prefix('cv-analysis')->name('cv-analysis.')->group(function () {
+            Route::get('/analyze/{cvId}', [App\Http\Controllers\CvAnalysisController::class, 'analyzeCv'])->name('analyze');
+            Route::get('/score/{cvId}/job/{jobId}', [App\Http\Controllers\CvAnalysisController::class, 'scoreCvAgainstJob'])->name('score');
+            Route::get('/recommendations/{cvId}', [App\Http\Controllers\CvAnalysisController::class, 'getJobRecommendations'])->name('recommendations');
+            Route::get('/detailed-analysis/{cvId}', [App\Http\Controllers\CvAnalysisController::class, 'getDetailedAnalysis'])->name('detailed-analysis');
+            Route::post('/attach-cover-letter/{cvId}', [App\Http\Controllers\CvAnalysisController::class, 'attachCoverLetter'])->name('attach-cover-letter');
+            Route::get('/career-trend/{cvId}', [App\Http\Controllers\CvAnalysisController::class, 'getCareerTrendAnalysis'])->name('career-trend');
+        });
 
         // CV search routes for recruiters
         Route::get('/cv-search', [App\Http\Controllers\CvUploadController::class, 'search'])->name('cv.search');

@@ -22,6 +22,14 @@ class JobApplication extends Model
         'resume_path',
         'application_status',
         'applied_position',
+        'application_notes',
+        'reviewed_at',
+        'interview_scheduled_at',
+        'decision_made_at',
+        'application_timeline',
+        'is_notified',
+        'last_notification_sent',
+        'application_stage',
     ];
 
     /**
